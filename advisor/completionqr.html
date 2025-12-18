@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Completion QR Management - Admin Portal</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "primary-hover": "#14cc5e",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#111714",
+                        "surface-dark": "#1c2621",
+                        "surface-light": "#ffffff",
+                        "border-dark": "#29382f",
+                        "border-light": "#e5e7eb"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        #sidebar-toggle:checked ~ .layout-container aside { width: 5rem; }
+        #sidebar-toggle:checked ~ .layout-container main { margin-left: 0; }
+        @media (min-width: 1024px) {
+            #sidebar-toggle:checked ~ .layout-container main { margin-left: 5rem; }
+        }
+        #sidebar-toggle:checked ~ .layout-container aside .nav-label { display: none; }
+        #sidebar-toggle:checked ~ .layout-container aside .nav-item { justify-content: center; padding: 0; }
+        #sidebar-toggle:checked ~ .layout-container aside .system-status { display: none; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #29382f; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #19e66b; }
+
+        select::-ms-expand { display: none; }
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+        
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
+
+    <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+
+    <header class="fixed top-0 left-0 right-0 h-20 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark flex items-center justify-between px-6">
+        <div class="flex items-center gap-4">
+            <label class="p-2 -ml-2 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer" for="sidebar-toggle">
+                <span class="material-symbols-outlined">menu</span>
+            </label>
+            <div class="flex items-center gap-3">
+                <div class="size-8 text-primary shrink-0">
+                    <svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+                    </svg>
+                </div>
+                <h1 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block">VNUK Event Management Portal</h1>
+            </div>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-3">
+            <button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors relative">
+                <span class="material-symbols-outlined text-[22px] text-gray-600 dark:text-gray-300">notifications</span>
+                <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border-2 border-background-light dark:border-surface-dark"></span>
+            </button>
+            <button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                <span class="material-symbols-outlined text-[22px] text-gray-600 dark:text-gray-300">settings</span>
+            </button>
+            <button class="flex items-center justify-center size-10 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                <span class="material-symbols-outlined text-[22px] text-gray-600 dark:text-gray-300">dark_mode</span>
+            </button>
+            <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                    <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super Admin</p>
+                </div>
+                <div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout-container flex pt-20 h-screen overflow-hidden">
+        
+        <aside class="fixed inset-y-0 left-0 top-20 z-40 w-72 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 hidden lg:flex">
+            <nav class="flex-1 py-6 px-4 space-y-1">
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group" href="home.html">
+                    <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">home</span>
+                    <span class="nav-label">Home</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group" href="eventdetail.html">
+                    <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">event</span>
+                    <span class="nav-label">Event Detail</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group" href="participants.html">
+                    <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">groups</span>
+                    <span class="nav-label">Participant Management</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group" href="checkin.html">
+                    <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">fact_check</span>
+                    <span class="nav-label">Check-in Management</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-black dark:text-white bg-primary/10 border border-primary/20 transition-colors shadow-sm shadow-primary/5" href="qr.html">
+                    <span class="material-symbols-outlined text-[22px] text-primary">qr_code_scanner</span>
+                    <span class="nav-label">Completion QR Management</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group" href="#">
+                    <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">analytics</span>
+                    <span class="nav-label">Reports</span>
+                </a>
+            </nav>
+            <div class="p-4 mt-auto system-status">
+                <div class="rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-white/5 dark:to-white/10 p-4 border border-border-light dark:border-white/5">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="size-8 rounded-full bg-surface-light dark:bg-surface-dark flex items-center justify-center shadow-sm text-primary">
+                            <span class="material-symbols-outlined text-[18px]">help</span>
+                        </div>
+                        <span class="text-sm font-bold dark:text-white">Need Help?</span>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Check the docs for admin guides.</p>
+                    <button class="w-full py-2 text-xs font-bold text-center rounded-lg bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 hover:border-primary/50 transition-colors shadow-sm">Documentation</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 lg:ml-72 flex flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark relative transition-all duration-300">
+            <div class="flex-1 overflow-y-auto p-6 lg:p-10">
+                
+                <div class="flex flex-col mb-8">
+                    <h2 class="text-3xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">Completion QR Management</h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm max-w-3xl">Search and select an event to view or control its shared completion QR code.</p>
+                </div>
+
+                <div class="bg-white dark:bg-surface-dark p-2 rounded-2xl border border-gray-200 dark:border-border-dark mb-8 shadow-sm">
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                            <input class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder-gray-500 dark:placeholder-gray-500 text-gray-900 dark:text-white" placeholder="Search event by name or code..." type="text"/>
+                        </div>
+                        <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 px-1 md:px-0">
+                            <div class="relative">
+                                <select class="appearance-none pl-4 pr-10 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                                    <option>All Status</option>
+                                    <option>Upcoming</option>
+                                    <option>Ongoing</option>
+                                    <option>Closed</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">expand_more</span>
+                            </div>
+                            <button class="px-5 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors whitespace-nowrap">
+                                Reset Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <div class="bg-white dark:bg-surface-dark p-5 rounded-3xl border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md dark:hover:shadow-primary/5 transition-all group flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-5 opacity-5 pointer-events-none">
+                            <span class="material-symbols-outlined text-[120px] text-primary">qr_code_2</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-hover border border-primary/20 text-xs font-bold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                                Ongoing
+                            </span>
+                            <span class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs font-bold text-primary">+5 DRL</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white leading-tight mb-4 relative z-10 group-hover:text-primary transition-colors">Introduction to AI & Ethics</h3>
+                        <div class="space-y-3 text-sm text-gray-500 dark:text-gray-400 mb-6 flex-1 relative z-10">
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                <span>Oct 24, 2023 | 14:00</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                <span>Hall A, VNUK Campus</span>
+                            </div>
+                        </div>
+                        <a href="qr.html" class="w-full py-3 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white font-bold text-sm transition-all border border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/20 flex items-center justify-center gap-2 relative z-10 shadow-sm decoration-0">
+                            <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+                            Manage QR
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-surface-dark p-5 rounded-3xl border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md transition-all group flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-5 opacity-5 pointer-events-none">
+                            <span class="material-symbols-outlined text-[120px] text-gray-500">qr_code_2</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-white/10 text-xs font-bold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-500"></span>
+                                Closed
+                            </span>
+                            <span class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs font-bold text-primary">+3 DRL</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white leading-tight mb-4 relative z-10 group-hover:text-primary transition-colors">Advanced Python for Data Science</h3>
+                        <div class="space-y-3 text-sm text-gray-500 dark:text-gray-400 mb-6 flex-1 relative z-10">
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                <span>Oct 23, 2023 | 09:00</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                <span>Lab 3, VNUK Campus</span>
+                            </div>
+                        </div>
+                        <a href="qr.html" class="w-full py-3 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white font-bold text-sm transition-all border border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/20 flex items-center justify-center gap-2 relative z-10 shadow-sm decoration-0">
+                            <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+                            Manage QR
+                        </a>
+                    </div>
+
+                    <div class="bg-white dark:bg-surface-dark p-5 rounded-3xl border border-gray-200 dark:border-border-dark shadow-sm hover:shadow-md transition-all group flex flex-col h-full relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-5 opacity-5 pointer-events-none">
+                            <span class="material-symbols-outlined text-[120px] text-blue-500">qr_code_2</span>
+                        </div>
+                        <div class="flex justify-between items-start mb-4 relative z-10">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-900/30 text-xs font-bold">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                Upcoming
+                            </span>
+                            <span class="px-2.5 py-1 rounded-md bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-xs font-bold text-primary">+10 DRL</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white leading-tight mb-4 relative z-10 group-hover:text-blue-400 transition-colors">Community Leadership Summit</h3>
+                        <div class="space-y-3 text-sm text-gray-500 dark:text-gray-400 mb-6 flex-1 relative z-10">
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                                <span>Nov 01, 2023 | 10:00</span>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                <span>Main Auditorium</span>
+                            </div>
+                        </div>
+                        <a href="qr.html" class="w-full py-3 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 text-gray-900 dark:text-white font-bold text-sm transition-all border border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/20 flex items-center justify-center gap-2 relative z-10 shadow-sm decoration-0">
+                            <span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+                            Manage QR
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

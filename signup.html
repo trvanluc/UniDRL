@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VNUK University Signup</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#36e27b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0d131a",
+                        "card-dark": "#16202b",
+                        "input-bg": "#0a1016",
+                        "border-color": "#1f2a37"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .glass-card {
+            background: rgba(22, 32, 43, 0.6);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-background-dark">
+    
+    <div class="relative flex min-h-screen w-full flex-col overflow-hidden">
+        <div class="flex h-full grow flex-col md:flex-row">
+
+            <div class="relative hidden md:flex md:w-1/2 lg:w-7/12 flex-col justify-end p-10 lg:p-16 overflow-hidden">
+                <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat" 
+                     data-alt="Abstract image of network connections" 
+                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBn1-kQ2VDNbFPZv_gXksGkYXS6GS4J0NNg2p57aksOcDAXJVCGl8MqL761D98aUXqB5qlsuDpxEnLhFHtM8ol9V1dzza5rloLFXseeamsckT3K5w1cp1-CWDvxKpNqjyr05pyXCk_pVXuqHBxRVVcVizd38zb9HiEEI2VjIMZrbcNoWjxbZjuykZEoCWyXWtXiqVJp_ZzIUCA2oOL9OWjPTR36LJj_ZjZz8d0vIDfU04TAXTJKV3TBnOIcr2OfhGls7fnC6RLeRTQ");'>
+                </div>
+                
+                <div class="absolute inset-0 z-10 bg-background-dark/70 mix-blend-multiply"></div>
+                <div class="absolute inset-0 z-10 bg-gradient-to-t from-background-dark via-background-dark/40 to-transparent"></div>
+                
+                <div class="relative z-20 flex flex-col gap-6 max-w-xl">
+                    <div class="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center backdrop-blur-md border border-primary/30 mb-4">
+                        <span class="material-symbols-outlined text-primary text-3xl">rocket_launch</span>
+                    </div>
+                    <h1 class="text-white text-4xl lg:text-6xl font-black leading-tight tracking-tight">
+                        Start Your Journey. <span class="text-primary">Develop Your Future.</span>
+                    </h1>
+                    <p class="text-gray-300 text-lg lg:text-xl font-medium max-w-md">
+                        Unlock powerful tools and resources tailored for your growth at VNUK. Sign up now!
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex w-full md:w-1/2 lg:w-5/12 flex-col justify-center items-center p-6 sm:p-12 relative z-30">
+                
+                <div class="absolute inset-0 md:hidden z-0 bg-cover bg-center" 
+                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6ieJZqMIyjbVRInro6IGxvo6UWtBnSd1W-FvrsMOKdKWSs3Rl72KRO1BRa2-GXNG2x-vpcVRx2OAIAugszL-SEVu6P7Xw619daeikhWQW7FOy66fOfZL95YrWN8XY1aCuBWjlLOQpfxcRrrAU6tM124MXWmyyJ1b3nqu_DML5GllIgAWrFGp0BjJ-rT-s0W0iCawgOGRKBLLZp2-A9SwPOMS1oc_j-QpHDXCZMHZzeLau9QpN6LDH3p6PurPWGUNmAdWsqfk3hV4");'>
+                    <div class="absolute inset-0 bg-background-dark/90"></div>
+                </div>
+
+                <div class="relative z-10 w-full max-w-[440px] flex flex-col gap-8">
+                    <a href="login.html" class="md:hidden text-primary hover:text-primary/80 transition-colors font-medium text-sm flex items-center gap-1">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        Back to Login
+                    </a>
+                    
+                    <div class="flex flex-col gap-2 text-center md:text-left">
+                        <h2 class="text-3xl font-bold text-white tracking-tight">Create Your Account</h2>
+                        <p class="text-gray-400 text-base">Join the VNUK Development Community today.</p>
+                    </div>
+
+                    <div class="glass-card p-6 sm:p-8 rounded-xl shadow-2xl shadow-black/20">
+                        
+                        <form class="flex flex-col gap-5 signup-form">
+                            
+                            <div class="space-y-2">
+                                <label class="block text-gray-300 text-sm font-semibold pl-1" for="fullname">Full Name</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-gray-500 text-[20px]">person</span>
+                                    </div>
+                                    <input class="w-full h-12 pl-11 pr-4 bg-input-bg border border-border-color rounded-full text-white placeholder-gray-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm" 
+                                           id="fullname" placeholder="John Doe" type="text" />
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-gray-300 text-sm font-semibold pl-1" for="email">Email / Student ID</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-gray-500 text-[20px]">school</span>
+                                    </div>
+                                    <input class="w-full h-12 pl-11 pr-4 bg-input-bg border border-border-color rounded-full text-white placeholder-gray-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm" 
+                                           id="email" placeholder="102220001 or student@vnuk.edu.vn" type="text" />
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-gray-300 text-sm font-semibold pl-1" for="role">I am a</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-gray-500 text-[20px]">badge</span>
+                                    </div>
+                                    <select id="role" class="form-select block w-full pl-11 pr-10 h-12 bg-input-bg border border-border-color rounded-full text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm appearance-none cursor-pointer">
+                                        <option value="student">Student</option>
+                                        <option value="advisor">Advisor</option>
+                                        <option value="manager">Manager</option>
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-gray-500 text-[20px]">expand_more</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label class="block text-gray-300 text-sm font-semibold pl-1" for="password">Password</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <span class="material-symbols-outlined text-gray-500 text-[20px]">lock</span>
+                                        </div>
+                                        <input class="w-full h-12 pl-11 pr-4 bg-input-bg border border-border-color rounded-full text-white placeholder-gray-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm" 
+                                               id="password" placeholder="••••••••" type="password" />
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-gray-300 text-sm font-semibold pl-1" for="confirm-password">Confirm</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <span class="material-symbols-outlined text-gray-500 text-[20px]">lock_reset</span>
+                                        </div>
+                                        <input class="w-full h-12 pl-11 pr-4 bg-input-bg border border-border-color rounded-full text-white placeholder-gray-600 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors text-sm" 
+                                               id="confirm-password" placeholder="••••••••" type="password" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start pt-1">
+                                <div class="flex items-center h-5">
+                                    <input id="terms" type="checkbox" class="w-5 h-5 border border-border-color rounded bg-input-bg text-primary focus:ring-primary focus:ring-offset-0 cursor-pointer" />
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="terms" class="font-normal text-gray-400">
+                                        I agree to the <a href="#" class="font-medium text-primary hover:underline">Terms</a> and <a href="#" class="font-medium text-primary hover:underline">Privacy Policy</a>.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="mt-2 w-full h-12 bg-primary hover:bg-primary/90 text-background-dark font-bold rounded-full transition-all duration-200 transform active:scale-[0.98] shadow-[0_0_20px_rgba(54,226,123,0.3)] hover:shadow-[0_0_25px_rgba(54,226,123,0.5)] flex items-center justify-center gap-2">
+                                <span>Create Account</span>
+                                <span class="material-symbols-outlined text-[20px] font-bold">how_to_reg</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="text-gray-400 text-sm">
+                            Already have an account?
+                            <a class="text-primary hover:text-primary/80 font-medium transition-colors inline-flex items-center gap-1 group" href="login.html">
+                                Log In
+                                <span class="transition-transform group-hover:translate-x-1">→</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Gắn sự kiện chuẩn
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector(".signup-form");
+            if (form) {
+                form.addEventListener("submit", handleSignup);
+            }
+        });
+    </script>
+
+</body>
+</html>

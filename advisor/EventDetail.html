@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin Event Detail – Event Management</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        #sidebar-toggle:checked ~ .layout-container aside { width: 5rem; }
+        #sidebar-toggle:checked ~ .layout-container main { margin-left: 0; }
+        @media (min-width: 1024px) {
+            #sidebar-toggle:checked ~ .layout-container main { margin-left: 5rem; }
+        }
+        #sidebar-toggle:checked ~ .layout-container aside .nav-label { display: none; }
+        #sidebar-toggle:checked ~ .layout-container aside .nav-item { justify-content: center; padding: 0; }
+        #sidebar-toggle:checked ~ .layout-container aside .system-status { display: none; }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "primary-hover": "#16cd60",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#111714",
+                        "surface-dark": "#1c2621",
+                        "surface-light": "#ffffff",
+                        "danger": "#ef4444"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-x-hidden text-gray-900 dark:text-white relative transition-colors duration-300">
+
+    <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+
+    <nav class="fixed top-0 z-50 w-full bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-[#29382f]">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <div class="flex items-center gap-4 min-w-[240px]">
+                    <label class="p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer text-gray-500 dark:text-gray-400 hover:text-primary transition-colors hidden lg:block" for="sidebar-toggle">
+                        <span class="material-symbols-outlined text-[24px]">menu</span>
+                    </label>
+                    <div class="flex items-center gap-3">
+                        <div class="size-8 text-primary">
+                            <svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+                                <path clip-rule="evenodd" d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1187 3.29028 29.2403 4.41187Z" fill="currentColor" fill-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block">VNUK Event Management Portal</span>
+                        <span class="text-lg font-bold tracking-tight text-gray-900 dark:text-white sm:hidden">VNUK</span>
+                    </div>
+                </div>
+                
+                <div class="flex-1"></div>
+                
+                <div class="flex items-center gap-3">
+                    <button class="relative flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined text-[24px]">notifications</span>
+                        <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border-2 border-background-light dark:border-background-dark"></span>
+                    </button>
+                    <button class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined text-[24px]">settings</span>
+                    </button>
+                    <button class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-gray-600 dark:text-gray-300">
+                        <span class="material-symbols-outlined text-[24px]">dark_mode</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="layout-container flex pt-16 sm:pt-20 min-h-screen">
+        
+        <aside class="fixed left-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-64 bg-background-light dark:bg-background-dark border-r border-gray-200 dark:border-[#29382f] overflow-y-auto hidden lg:flex flex-col z-40 transition-all duration-300">
+            <div class="p-4 space-y-2">
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden" href="home.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">dashboard</span>
+                    <span class="nav-label whitespace-nowrap">Home</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden" href="#">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">event</span>
+                    <span class="nav-label whitespace-nowrap">Event Detail</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden" href="participants.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
+                    <span class="nav-label whitespace-nowrap">Participant Management</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden" href="checkin.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
+                    <span class="nav-label whitespace-nowrap">Check-in Management</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden" href="#">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">qr_code_scanner</span>
+                    <span class="nav-label whitespace-nowrap">Completion QR</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden" href="#">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
+                    <span class="nav-label whitespace-nowrap">Reports</span>
+                </a>
+            </div>
+            <div class="mt-auto p-6 border-t border-gray-200 dark:border-[#29382f] system-status">
+                <div class="bg-surface-dark/5 dark:bg-white/5 rounded-xl p-4">
+                    <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">System Status</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">Operational</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 w-full lg:ml-64 p-4 sm:p-6 lg:p-8 transition-all duration-300">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <div class="relative w-full rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/9]">
+                    <img alt="Event Cover" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMxT6-74EG8BDXQ8DCA4oxoTMn_mZG3zSpx6o3TwNctat7KeB2H0VIZ0sH_JaRJieWKs34GrGqGn24uuqCz5FLkndINMi2bKO29ix0VIdhLWkKNNrt4QVXT65eVIWlRQMLf70rguO37p68UbAqN2UWaUWu0w7AqULJvMKaNeauZYywKIY7wy6pJ5J4yDSRmG_XP-6YouEpH3ujxQG6epd6P8p5-ig5UkTrjFV3zu3C_VlrlhM9lN5PXuTbR7FRDP4huRsXwfW2UyI" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-2 space-y-8">
+                        <div>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 rounded-full bg-surface-dark/5 dark:bg-white/10 text-gray-600 dark:text-gray-300 text-xs font-bold uppercase tracking-wide border border-gray-200 dark:border-white/10">Academic</span>
+                                <span class="px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-bold uppercase tracking-wide">50 DRL Points</span>
+                                <span class="px-3 py-1 rounded-full bg-surface-dark/5 dark:bg-white/10 text-gray-600 dark:text-gray-300 text-xs font-bold uppercase tracking-wide border border-gray-200 dark:border-white/10">Open to All</span>
+                            </div>
+                            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight mb-6">Introduction to AI & Ethics Workshop</h1>
+                            <div class="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
+                                <p>Join us for an immersive workshop exploring the ethical implications of Artificial Intelligence. As AI systems become increasingly integrated into our daily lives, understanding the balance between innovation and responsibility is crucial for future leaders.</p>
+                                <p>This interactive session will cover algorithmic bias, transparency in machine learning models, and the future of human-AI collaboration. Students will participate in group case studies and hear from industry experts regarding the current landscape of AI regulation.</p>
+                            </div>
+                        </div>
+
+                        <div class="border-b border-gray-200 dark:border-white/10 my-8"></div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">timeline</span>
+                                Attendance Journey
+                            </h3>
+                            <div class="bg-white dark:bg-[#1c2621] rounded-3xl p-6 md:p-8 border border-gray-100 dark:border-white/5 shadow-sm">
+                                <div class="relative">
+                                    <div class="absolute left-6 top-6 bottom-6 w-0.5 bg-gray-200 dark:bg-white/10"></div>
+                                    
+                                    <div class="relative pl-16 py-2">
+                                        <div class="absolute left-3 -translate-x-1/2 top-2 size-6 rounded-full bg-primary border-4 border-white dark:border-[#1c2621] z-10"></div>
+                                        <div class="space-y-1">
+                                            <p class="text-sm font-bold text-primary uppercase tracking-wider">Step 1 • Completed</p>
+                                            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Registration</h4>
+                                            <p class="text-gray-500 dark:text-gray-400">You are viewing the event details.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="relative pl-16 py-8">
+                                        <div class="absolute left-3 -translate-x-1/2 top-8 size-6 rounded-full bg-gray-200 dark:bg-white/20 border-4 border-white dark:border-[#1c2621] z-10"></div>
+                                        <div class="space-y-1 opacity-60">
+                                            <p class="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Step 2 • Upcoming</p>
+                                            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Check-in at Event</h4>
+                                            <p class="text-gray-500 dark:text-gray-400">Scan QR code at the entrance to confirm attendance.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="relative pl-16 py-8">
+                                        <div class="absolute left-3 -translate-x-1/2 top-8 size-6 rounded-full bg-gray-200 dark:bg-white/20 border-4 border-white dark:border-[#1c2621] z-10"></div>
+                                        <div class="space-y-1 opacity-60">
+                                            <p class="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Step 3 • Locked</p>
+                                            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Event Feedback</h4>
+                                            <p class="text-gray-500 dark:text-gray-400">Complete a short survey to unlock your certificate.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="relative pl-16 py-2">
+                                        <div class="absolute left-3 -translate-x-1/2 top-2 size-6 rounded-full bg-gray-200 dark:bg-white/20 border-4 border-white dark:border-[#1c2621] z-10"></div>
+                                        <div class="space-y-1 opacity-60">
+                                            <p class="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Step 4 • Locked</p>
+                                            <h4 class="text-lg font-bold text-gray-900 dark:text-white">Receive Certificate</h4>
+                                            <p class="text-gray-500 dark:text-gray-400">Download your verified certificate of completion.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1 space-y-6">
+                        
+                        <div class="bg-white dark:bg-[#1c2621] rounded-3xl p-6 border border-gray-100 dark:border-white/5 shadow-sm space-y-3">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Admin Actions</h3>
+                            <button class="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gradient-to-r from-[#19e66b] to-[#10b981] hover:from-[#16cd60] hover:to-[#059669] text-black font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 text-lg">
+                                <span class="material-symbols-outlined">edit_square</span>
+                                Edit Event
+                            </button>
+                            <button class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl hover:bg-red-500/10 hover:text-red-500 text-gray-500 dark:text-gray-400 font-medium transition-colors text-sm">
+                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                                Delete Event
+                            </button>
+                        </div>
+
+                        <div class="bg-white dark:bg-[#1c2621] rounded-3xl p-6 border border-gray-100 dark:border-white/5 shadow-sm space-y-6">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Event Details</h3>
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 rounded-2xl bg-surface-dark/5 dark:bg-white/5 text-primary shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">calendar_month</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-900 dark:text-white">Wednesday, Oct 24th</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">2:00 PM - 4:00 PM</p>
+                                    <a class="text-xs font-bold text-primary hover:underline mt-1 inline-block cursor-pointer">Add to Calendar</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 rounded-2xl bg-surface-dark/5 dark:bg-white/5 text-primary shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">location_on</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-900 dark:text-white">Science Building</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Room 304, North Wing</p>
+                                    <a class="text-xs font-bold text-primary hover:underline mt-1 inline-block cursor-pointer">View Map</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="p-3 rounded-2xl bg-surface-dark/5 dark:bg-white/5 text-primary shrink-0">
+                                    <span class="material-symbols-outlined text-[24px]">workspace_premium</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-900 dark:text-white">Benefits</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">50 DRL Points</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Certificate of Completion</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-[#1c2621] rounded-3xl p-5 border border-gray-100 dark:border-white/5 shadow-sm flex items-center gap-4">
+                            <div class="size-12 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden">
+                                <img alt="Organizer" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiArJohMxbbtya6S0Ahm-eQJtFXSRkWEIZipHTYZebgVBKkcTxuxLwg7ykoPR6SxXhEs5b-P1KMFjIHXMIo3SjAe4cAeGsuanj03KHIlgaHkpx4bAyz8ORc6e_-zVhyXnVI7WTRNx3fCa0md-BgI_wxXVv19yrzlBhqKpNU-LaWo37gbKVi8KPHROCMR1nxbz1fRhe93d9YXx3uBaxZ-aXEnCtCio8fm1JxKzPrjNCJW5bGnITGBL-bGrZ9SHPQz1sD14aKAlnG_s" />
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Created By</p>
+                                <p class="font-bold text-gray-900 dark:text-white">Admin Team</p>
+                                <p class="text-xs text-gray-500">Last updated: 2 hours ago</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-[#1c2621] rounded-3xl p-6 border border-gray-100 dark:border-white/5 shadow-sm space-y-4">
+                            <h3 class="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Participation Snapshot</h3>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-500">Total Students</p>
+                                    <p class="text-xl font-bold text-gray-900 dark:text-white">45</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-500">Checked-in</p>
+                                    <p class="text-xl font-bold text-primary">0</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-500">Attendance Rate</p>
+                                    <p class="text-xl font-bold text-gray-900 dark:text-white">0%</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-500">Waitlist</p>
+                                    <p class="text-xl font-bold text-orange-500">12</p>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 dark:border-white/10 pt-4 mt-2">
+                                <a class="flex items-center justify-center gap-2 w-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-primary transition-colors group" href="#">
+                                    View Participants
+                                    <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

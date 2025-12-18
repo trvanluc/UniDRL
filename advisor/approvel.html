@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VNUK Adviser Portal - Approval Center</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#112117",
+                        "surface-dark": "#1c2e24",
+                        "surface-light": "#ffffff",
+                        "text-secondary": "#9db8a8",
+                        "danger": "#ff4d4d",
+                        "warning": "#ffa500",
+                        "success": "#19e66b"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem", 
+                        "lg": "2rem", 
+                        "xl": "1.5rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        /* Scrollbar styles for Dark Mode */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #112117; }
+        ::-webkit-scrollbar-thumb { background: #29382f; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3c5345; }
+        /* Glassmorphism effect */
+        .glass-surface {
+            background: rgba(28, 46, 36, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Table styles */
+        .zebra-row:nth-child(even) { background-color: rgba(41, 56, 47, 0.3); }
+        .zebra-row:hover { background-color: rgba(25, 230, 107, 0.08); }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased overflow-hidden">
+
+<div class="flex h-screen w-full">
+
+    <aside class="hidden lg:flex w-[280px] flex-col border-r border-[#29382f] bg-background-dark p-6 justify-between shrink-0 z-20">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 bg-primary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">school</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-white text-base font-bold leading-tight">VNUK Portal</h1>
+                    <p class="text-text-secondary text-xs font-normal">Adviser Dashboard</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#"><span class="material-symbols-outlined group-hover:text-white">home</span><p class="text-sm font-medium">Home</p></a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#"><span class="material-symbols-outlined group-hover:text-white">dashboard</span><p class="text-sm font-medium">Dashboard</p></a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#"><span class="material-symbols-outlined group-hover:text-white">groups</span><p class="text-sm font-medium">Advisee List</p></a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 border-l-4 border-primary transition-all" href="#"><span class="material-symbols-outlined text-primary icon-filled">fact_check</span><p class="text-primary text-sm font-bold">Approval Center</p></a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#"><span class="material-symbols-outlined group-hover:text-white">analytics</span><p class="text-sm font-medium">Reports</p></a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#"><span class="material-symbols-outlined group-hover:text-white">person</span><p class="text-sm font-medium">Profile</p></a>
+            </nav>
+        </div>
+        <div class="border-t border-[#29382f] pt-4 mt-auto">
+            <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-[#29382f]/50 transition-colors group">
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 bg-gray-700 shrink-0 border border-[#29382f]" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBiroNfk3wQWpLKXaLBZ9lGU-oRWMqR6WbxAGxeC8eI7fN7bTwYw-m_kRpReRkjGBpK5zG84V7ksuhJGyYPdog_SSexQcKgx386irct5ZL26Vun9nvXbq5-t1_4ApWheUVWcbp0g-y48aWLin_G1UD0k8qnQkd5JImPHKkwRO0GFA9qgSqVgNvKC3WZY5xTVxB3REBnWNsvv_tOgGro9-7VCxt4wX84k1LTgFk3VaTFp14D7tCeGxbulqqwNvpSnMGRa-alm49IjZM");'></div>
+                <div class="flex flex-col overflow-hidden flex-1 min-w-0">
+                    <p class="text-white text-sm font-bold truncate">Dr. Minh Tran</p>
+                    <p class="text-text-secondary text-xs truncate">ID: ADV-2023</p>
+                </div>
+                <button class="text-text-secondary hover:text-white group-hover:bg-[#29382f] p-1.5 rounded-lg transition-colors" title="Logout">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex flex-col flex-1 h-full overflow-hidden relative">
+        
+        <header class="flex h-[70px] w-full shrink-0 items-center justify-between border-b border-[#3c5345] bg-background-light dark:bg-background-dark px-6 py-3 z-30 transition-colors">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-[#1c2620] dark:text-white hover:text-primary transition-colors"><span class="material-symbols-outlined">menu</span></button>
+                <h1 class="font-display text-xl font-bold text-[#1c2620] dark:text-white truncate">Approval Center</h1>
+            </div>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <button class="group relative flex items-center justify-center p-2 rounded-full text-gray-500 dark:text-text-secondary hover:text-[#19e66b] transition-colors" title="Notifications">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-[#19e66b] border border-background-light dark:border-background-dark"></span>
+                </button>
+                <button class="group flex items-center justify-center p-2 rounded-full text-gray-500 dark:text-text-secondary hover:text-[#19e66b] transition-colors" title="Settings">
+                    <span class="material-symbols-outlined transition-transform duration-500 group-hover:rotate-90">settings</span>
+                </button>
+                <button class="group flex items-center justify-center p-2 rounded-full text-gray-500 dark:text-text-secondary hover:text-[#19e66b] transition-colors" title="Toggle Theme">
+                    <span class="material-symbols-outlined transition-transform duration-500 group-hover:-rotate-12">light_mode</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#29382f] p-6 lg:p-8">
+            <div class="w-full max-w-[1600px] mx-auto flex flex-col gap-8">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-surface-dark border border-[#29382f] p-6 rounded-2xl flex flex-col gap-2 relative overflow-hidden group hover:border-primary/30 transition-all shadow-lg shadow-black/20">
+                        <div class="absolute right-0 top-0 p-24 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+                        <div class="flex items-center justify-between z-10">
+                            <h3 class="text-text-secondary text-sm font-medium uppercase tracking-wide">Total Pending Requests</h3>
+                            <span class="material-symbols-outlined text-primary bg-primary/10 p-2 rounded-xl">pending_actions</span>
+                        </div>
+                        <div class="flex items-end gap-3 mt-1">
+                            <p class="text-4xl font-bold text-white z-10">14</p>
+                            <span class="text-xs text-primary font-medium mb-1.5 flex items-center bg-primary/10 px-2 py-0.5 rounded-md">
+                                <span class="material-symbols-outlined text-[14px] mr-1">update</span> Needs Review
+                            </span>
+                        </div>
+                        <p class="text-xs text-text-secondary mt-1">From all advisee students</p>
+                    </div>
+
+                    <div class="bg-surface-dark border border-[#29382f] p-6 rounded-2xl flex flex-col gap-2 relative overflow-hidden group hover:border-warning/30 transition-all shadow-lg shadow-black/20">
+                        <div class="absolute right-0 top-0 p-24 bg-warning/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+                        <div class="flex items-center justify-between z-10">
+                            <h3 class="text-text-secondary text-sm font-medium uppercase tracking-wide">Urgent Requests</h3>
+                            <span class="material-symbols-outlined text-warning bg-warning/10 p-2 rounded-xl">schedule</span>
+                        </div>
+                        <div class="flex items-end gap-3 mt-1">
+                            <p class="text-4xl font-bold text-white z-10">3</p>
+                            <span class="text-xs text-text-secondary font-medium mb-1.5">due today</span>
+                        </div>
+                        <div class="w-full bg-[#29382f] h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-warning h-full rounded-full" style="width: 25%"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface-dark border border-[#29382f] p-6 rounded-2xl flex flex-col gap-2 relative overflow-hidden group hover:border-blue-400/30 transition-all shadow-lg shadow-black/20">
+                        <div class="absolute right-0 top-0 p-24 bg-blue-500/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none"></div>
+                        <div class="flex items-center justify-between z-10">
+                            <h3 class="text-text-secondary text-sm font-medium uppercase tracking-wide">Avg Approval Time</h3>
+                            <span class="material-symbols-outlined text-blue-400 bg-blue-400/10 p-2 rounded-xl">timer</span>
+                        </div>
+                        <div class="flex items-end gap-3 mt-1">
+                            <p class="text-4xl font-bold text-white z-10">18h</p>
+                            <span class="text-xs text-blue-400 font-medium mb-1.5 flex items-center bg-blue-400/10 px-2 py-0.5 rounded-md">
+                                Since last month
+                            </span>
+                        </div>
+                        <p class="text-xs text-text-secondary mt-1">Goal is < 24 hours</p>
+                    </div>
+                </div>
+
+                <div class="glass-surface p-4 rounded-xl flex flex-col lg:flex-row gap-4 items-center justify-between shadow-sm">
+                    <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                        <div class="relative group">
+                            <select class="appearance-none bg-[#112117] border border-[#29382f] text-white text-sm rounded-lg pl-3 pr-10 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer hover:border-primary/50 transition-colors">
+                                <option>Request Type: All</option>
+                                <option>Activity Registration</option>
+                                <option>DRL Appeal</option>
+                                <option>Course Waiver</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-3 text-text-secondary pointer-events-none text-[18px]">expand_more</span>
+                        </div>
+                        <div class="relative group">
+                            <select class="appearance-none bg-[#112117] border border-[#29382f] text-white text-sm rounded-lg pl-3 pr-10 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer hover:border-primary/50 transition-colors">
+                                <option>Class: All</option>
+                                <option>21SE1</option>
+                                <option>22BA2</option>
+                                <option>20IT1</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-3 text-text-secondary pointer-events-none text-[18px]">expand_more</span>
+                        </div>
+                        <div class="relative group">
+                            <select class="appearance-none bg-[#112117] border border-[#29382f] text-white text-sm rounded-lg pl-3 pr-10 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary outline-none cursor-pointer hover:border-primary/50 transition-colors">
+                                <option>Urgency: All</option>
+                                <option>Urgent (DUE TODAY)</option>
+                                <option>Normal</option>
+                            </select>
+                            <span class="material-symbols-outlined absolute right-3 top-3 text-text-secondary pointer-events-none text-[18px]">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="flex w-full lg:w-auto gap-3">
+                        <div class="relative flex-1 lg:w-64">
+                            <input class="w-full bg-[#112117] border border-[#29382f] text-white text-sm rounded-lg pl-10 pr-4 py-2.5 focus:ring-1 focus:ring-primary focus:border-primary placeholder-text-secondary/50" placeholder="Search by name/ID/request" type="text"/>
+                            <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span>
+                        </div>
+                        <button class="bg-primary text-background-dark px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-white transition-colors flex items-center gap-2 shadow-lg shadow-primary/20 shrink-0">
+                            <span class="material-symbols-outlined text-[18px]">rule</span>
+                            Bulk Review
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-surface-dark border border-[#29382f] rounded-2xl overflow-hidden shadow-xl">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-text-secondary">
+                            <thead class="bg-[#15231b] text-xs uppercase font-semibold text-text-secondary border-b border-[#29382f]">
+                                <tr>
+                                    <th class="px-6 py-4 cursor-pointer hover:text-white group"><div class="flex items-center gap-1">Student Name <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span></div></th>
+                                    <th class="px-6 py-4">Student ID</th>
+                                    <th class="px-6 py-4">Class</th>
+                                    <th class="px-6 py-4 cursor-pointer hover:text-white group"><div class="flex items-center gap-1">Request Type <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span></div></th>
+                                    <th class="px-6 py-4 cursor-pointer hover:text-white group"><div class="flex items-center gap-1">Submitted On <span class="material-symbols-outlined text-[14px] opacity-0 group-hover:opacity-100 transition-opacity">unfold_more</span></div></th>
+                                    <th class="px-6 py-4">Status</th>
+                                    <th class="px-6 py-4 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#29382f]">
+                                <tr class="zebra-row transition-colors group cursor-pointer bg-danger/5 hover:!bg-danger/10">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-gray-700 bg-cover bg-center border border-[#3c5345]" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD8-Q3t9-0BSk1UshzGF_rfGeAgP-Li6qFPyaXaT8Qfe5GmBKruRpTFE3MEat-GsfZk8oUMZuvhLbMTQrEbgI_TYDF3pp_qbOMziT8sWzO8uvXZYZ1kFFgRWjp069WnIPudACC2RghhcDdX4EgowRSI0Vutzpib5Rs5o3boKiii_SoSg9cZoavJKLyiHHPac23trhtmbkdkJZ9uOq8K8cxT7CSBF1YOnISNF3OdxtkrmChF-fv1oSQkofllKL3_FX9mNM54dyLtKB0");'></div>
+                                            <div class="font-medium text-white">Trinh Hoang F</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-xs">22014022</td>
+                                    <td class="px-6 py-4">22BA2</td>
+                                    <td class="px-6 py-4 text-danger font-medium">Activity Registration</td>
+                                    <td class="px-6 py-4">2023-12-14 09:30</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/20 text-danger border border-danger/50">Urgent</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="text-white hover:text-primary p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg transition-colors" title="Approve">
+                                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                            </button>
+                                            <button class="text-danger hover:text-white p-1.5 hover:bg-danger/20 rounded-lg transition-colors" title="Reject">
+                                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                            </button>
+                                            <button class="text-text-secondary hover:text-white p-1.5 hover:bg-[#29382f] rounded-lg transition-colors" title="View Detail">
+                                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="zebra-row transition-colors group cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-indigo-900 flex items-center justify-center text-xs font-bold text-white border border-[#3c5345]">DK</div>
+                                            <div class="font-medium text-white">Do Khanh E</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-xs">21087654</td>
+                                    <td class="px-6 py-4">21SE1</td>
+                                    <td class="px-6 py-4 text-warning font-medium">DRL Appeal</td>
+                                    <td class="px-6 py-4">2023-12-13 16:45</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-400 border border-blue-900/50">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="text-white hover:text-primary p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg transition-colors" title="Approve">
+                                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                            </button>
+                                            <button class="text-danger hover:text-white p-1.5 hover:bg-danger/20 rounded-lg transition-colors" title="Reject">
+                                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                            </button>
+                                            <button class="text-text-secondary hover:text-white p-1.5 hover:bg-[#29382f] rounded-lg transition-colors" title="View Detail">
+                                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="zebra-row transition-colors group cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-purple-900 flex items-center justify-center text-xs font-bold text-white border border-[#3c5345]">TH</div>
+                                            <div class="font-medium text-white">Tran Hoang C</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-xs">20055599</td>
+                                    <td class="px-6 py-4">20IT1</td>
+                                    <td class="px-6 py-4 text-primary font-medium">Course Waiver</td>
+                                    <td class="px-6 py-4">2023-12-13 10:10</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-400 border border-blue-900/50">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="text-white hover:text-primary p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg transition-colors" title="Approve">
+                                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                            </button>
+                                            <button class="text-danger hover:text-white p-1.5 hover:bg-danger/20 rounded-lg transition-colors" title="Reject">
+                                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                            </button>
+                                            <button class="text-text-secondary hover:text-white p-1.5 hover:bg-[#29382f] rounded-lg transition-colors" title="View Detail">
+                                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="zebra-row transition-colors group cursor-pointer">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-pink-900 flex items-center justify-center text-xs font-bold text-white border border-[#3c5345]">PM</div>
+                                            <div class="font-medium text-white">Pham Minh D</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-xs">23012345</td>
+                                    <td class="px-6 py-4">23MK1</td>
+                                    <td class="px-6 py-4 text-danger font-medium">Activity Registration</td>
+                                    <td class="px-6 py-4">2023-12-12 11:55</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/30 text-blue-400 border border-blue-900/50">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="text-white hover:text-primary p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg transition-colors" title="Approve">
+                                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                            </button>
+                                            <button class="text-danger hover:text-white p-1.5 hover:bg-danger/20 rounded-lg transition-colors" title="Reject">
+                                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                            </button>
+                                            <button class="text-text-secondary hover:text-white p-1.5 hover:bg-[#29382f] rounded-lg transition-colors" title="View Detail">
+                                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="zebra-row transition-colors group cursor-pointer bg-danger/5 hover:!bg-danger/10">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center text-xs font-bold text-white border border-[#3c5345]">LT</div>
+                                            <div class="font-medium text-white">Le Thi B</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-xs">22011122</td>
+                                    <td class="px-6 py-4">22BA2</td>
+                                    <td class="px-6 py-4 text-warning font-medium">DRL Appeal</td>
+                                    <td class="px-6 py-4">2023-12-11 08:00</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-danger/20 text-danger border border-danger/50">Urgent</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right" onclick="event.stopPropagation()">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <button class="text-white hover:text-primary p-1.5 bg-primary/20 hover:bg-primary/30 rounded-lg transition-colors" title="Approve">
+                                                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                            </button>
+                                            <button class="text-danger hover:text-white p-1.5 hover:bg-danger/20 rounded-lg transition-colors" title="Reject">
+                                                <span class="material-symbols-outlined text-[20px]">cancel</span>
+                                            </button>
+                                            <button class="text-text-secondary hover:text-white p-1.5 hover:bg-[#29382f] rounded-lg transition-colors" title="View Detail">
+                                                <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-[#29382f] flex items-center justify-between">
+                        <span class="text-sm text-text-secondary">Showing 1-10 of 14 pending requests</span>
+                        <div class="flex items-center gap-2">
+                            <button class="p-2 rounded-lg bg-[#29382f] text-text-secondary hover:text-white disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                            </button>
+                            <button class="w-8 h-8 rounded-lg bg-primary text-background-dark font-bold text-sm">1</button>
+                            <button class="w-8 h-8 rounded-lg hover:bg-[#29382f] text-text-secondary hover:text-white text-sm">2</button>
+                            <button class="p-2 rounded-lg bg-[#29382f] text-text-secondary hover:text-white">
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="fixed bottom-6 right-6 z-50 bg-surface-dark border border-primary/20 p-4 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-500" id="toast">
+    <span class="material-symbols-outlined text-primary">check_circle</span>
+    <div>
+        <p class="text-white text-sm font-bold">Success</p>
+        <p class="text-text-secondary text-xs">Request approved successfully. Student notified.</p>
+    </div>
+    <button class="ml-4 text-text-secondary hover:text-white" onclick="document.getElementById('toast').classList.add('translate-y-20', 'opacity-0')">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+    </button>
+</div>
+
+<script>
+    setTimeout(() => {
+        const toast = document.getElementById('toast');
+        if(toast) {
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            // Hide after 3 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    }, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VNUK Student Development Portal - User Profile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#19e66b",
+                    "background-light": "#f6f8f7",
+                    "background-dark": "#112117",
+                    "surface-dark": "#1c2e24", 
+                    "border-dark": "#29382f", 
+                    "text-secondary": "#9db8a8"
+                },
+                fontFamily: {
+                    "display": ["Spline Sans", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            },
+        },
+    }
+</script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .icon-fill {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #112117; }
+    ::-webkit-scrollbar-thumb { background: #29382f; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a4f42; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white h-screen overflow-hidden antialiased selection:bg-primary selection:text-background-dark">
+<div class="flex h-screen w-full overflow-hidden">
+
+<aside class="hidden lg:flex w-[280px] flex-col border-r border-border-dark bg-background-dark shrink-0 z-20">
+    <div class="flex h-full flex-col justify-between p-6">
+        <div class="flex flex-col gap-8">
+            <div class="flex items-center gap-3 px-2">
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 bg-primary/20 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-primary">school</span>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-white text-base font-bold leading-tight">VNUK Portal</h1>
+                    <p class="text-text-secondary text-xs font-normal">Student Development</p>
+                </div>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#">
+                    <span class="material-symbols-outlined group-hover:text-white">home</span>
+                    <p class="text-sm font-medium">Home</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-[#29382f] hover:text-white transition-colors group" href="#">
+                    <span class="material-symbols-outlined group-hover:text-white">history</span>
+                    <p class="text-sm font-medium">My Journey</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 border border-primary/20 transition-all" href="#">
+                    <span class="material-symbols-outlined icon-fill text-primary">person</span>
+                    <p class="text-primary text-sm font-bold">Profile</p>
+                </a>
+            </nav>
+        </div>
+        <div class="border-t border-border-dark pt-4 mt-auto">
+            <div class="flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-[#29382f]/50 transition-colors group">
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0 border border-border-dark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWaMMkzICesSUr1xTas0UAG5TXYmlLLsRadZEhZz_3EzAlMcOj5B4xbIsKJ7UWK4tro4Ipv_W768ZvBZt5D8pc4ZQ1Qki7g2TRAI4SZEEFs3FRy6AaXMpphSMFQp611PgWB6kb3ApBMmbgCsB6nNUis6ekW9QDuQYPeQGSVE0W76d8OCfUrRxSZz-Pt8IBNoSVGhImlmcQio-PqmTPnr6UjTBy5IrmTlXwolNnffZSnq4WyQ9dbiwnL_MAWUfKJGTtrWeleTjAv4o");'></div>
+                <div class="flex flex-col flex-1 min-w-0">
+                    <p class="text-white text-sm font-bold truncate">Nguyen Van A</p>
+                    <p class="text-text-secondary text-xs truncate">Student ID: 19203</p>
+                </div>
+                <button class="text-text-secondary hover:text-white group-hover:bg-[#29382f] p-1.5 rounded-lg transition-colors" title="Logout">
+                    <span class="material-symbols-outlined text-[20px]">logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+    <header class="flex-none h-20 px-6 lg:px-10 flex items-center justify-between border-b border-border-dark bg-background-dark/95 backdrop-blur-sm z-10 sticky top-0">
+        <div class="flex items-center gap-4">
+            <button class="lg:hidden p-2 text-white hover:bg-surface-dark rounded-full">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="flex flex-col gap-0.5">
+                <h2 class="text-lg font-bold text-white leading-tight">Profile</h2>
+                <div class="hidden sm:flex items-center gap-2 text-xs text-text-secondary">
+                    <a class="hover:text-primary transition-colors" href="#">Home</a>
+                    <span class="material-symbols-outlined text-[12px] text-text-secondary">chevron_right</span>
+                    <span class="text-white font-medium">Profile</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="relative text-text-secondary hover:text-white transition-colors p-2 rounded-full hover:bg-surface-dark">
+                <span class="material-symbols-outlined">notifications</span>
+                <span class="absolute top-2.5 right-2.5 size-2 bg-red-500 rounded-full border border-background-dark"></span>
+            </button>
+            <button class="text-text-secondary hover:text-white transition-colors p-2 rounded-full hover:bg-surface-dark">
+                <span class="material-symbols-outlined">settings</span>
+            </button>
+            <button class="text-text-secondary hover:text-white transition-colors p-2 rounded-full hover:bg-surface-dark">
+                <span class="material-symbols-outlined">light_mode</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 overflow-y-auto p-4 md:p-8 lg:px-10 scroll-smooth">
+        <div class="max-w-7xl mx-auto space-y-8">
+
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-white tracking-tight">My Profile</h1>
+                    <p class="text-text-secondary mt-2">Manage your personal information and view your development progress.</p>
+                </div>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary border border-primary/20">
+                    Student Account
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+                
+                <div class="xl:col-span-5 flex flex-col bg-surface-dark rounded-xl p-8 border border-border-dark shadow-lg relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 -mt-16 -mr-16 size-64 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="relative z-10 flex flex-col items-center text-center">
+                        <div class="relative">
+                            <div class="size-32 rounded-full bg-cover bg-center border-4 border-background-dark ring-2 ring-primary shadow-2xl" data-alt="Close up portrait of a student" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB3HQxuSF4Tixy3f5HfTJT2k6AIqkC1Y09yzEwS3aJc0rK1PHxaGUkI7z56f0lgeadGRgkxG5UZGAeatvVJgy2Xb399wT3C0y7sWWoGZzJSDtFz9w45ZLBb3gIB91Bxa3qnWN_KaB_J2f_K_j8gvnSP5FRvY-120H3uuAuqYmpuVYvcH5qivvcg88IbI-wYrdOjvX42KaL43L6AqgZLDWDclXEtWz4_GGXOcYFPdOcIwn6vWVp0uiNFSz7XmlNJoKu6IdbAISXWS3I");'>
+                            </div>
+                            <div class="absolute bottom-1 right-1 bg-primary text-background-dark p-1.5 rounded-full border-2 border-background-dark cursor-pointer hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined text-[18px] font-bold">edit</span>
+                            </div>
+                        </div>
+                        
+                        <h2 class="mt-6 text-2xl font-bold text-white">Nguyen Van A</h2>
+                        <p class="text-primary font-medium mt-1">Computer Science Major</p>
+                        <p class="text-text-secondary text-sm">Class of 2025</p>
+
+                        <div class="w-full mt-8 flex flex-col gap-4">
+                            <div class="flex items-center justify-between p-4 rounded-lg bg-background-dark/50 border border-border-dark">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-text-secondary">badge</span>
+                                    <span class="text-text-secondary text-sm">Student ID</span>
+                                </div>
+                                <span class="text-white font-medium">19203</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 rounded-lg bg-background-dark/50 border border-border-dark">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-text-secondary">mail</span>
+                                    <span class="text-text-secondary text-sm">Email</span>
+                                </div>
+                                <span class="text-white font-medium truncate max-w-[150px] sm:max-w-none">student@vnuk.edu.vn</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 rounded-lg bg-background-dark/50 border border-border-dark">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-text-secondary">call</span>
+                                    <span class="text-text-secondary text-sm">Phone</span>
+                                </div>
+                                <span class="text-white font-medium">+84 905 123 456</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 rounded-lg bg-background-dark/50 border border-border-dark">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-text-secondary">cake</span>
+                                    <span class="text-text-secondary text-sm">DOB</span>
+                                </div>
+                                <span class="text-white font-medium">01/01/2000</span>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full grid grid-cols-2 gap-3 mt-8">
+                            <button class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-background-dark font-bold py-3 px-4 rounded-full transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]">edit_square</span>
+                                Edit Info
+                            </button>
+                            <button class="flex items-center justify-center gap-2 bg-transparent border border-border-dark hover:border-primary text-white hover:text-primary font-bold py-3 px-4 rounded-full transition-all active:scale-95">
+                                <span class="material-symbols-outlined text-[20px]">lock_reset</span>
+                                Password
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="xl:col-span-7 flex flex-col gap-6">
+
+                    <div class="bg-surface-dark rounded-xl p-8 border border-border-dark shadow-lg relative overflow-hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative z-10">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1">DRL Score Overview</h3>
+                                <p class="text-text-secondary text-sm">Academic Year 2023 - 2024</p>
+                                <div class="mt-6 flex items-baseline gap-2">
+                                    <span class="text-5xl font-bold text-primary">85</span>
+                                    <span class="text-xl text-text-secondary font-medium">/ 100</span>
+                                </div>
+                                <div class="mt-2 inline-flex items-center gap-1 text-primary text-sm font-medium bg-primary/10 px-2 py-1 rounded">
+                                    <span class="material-symbols-outlined text-[16px]">trending_up</span>
+                                    Top 15% of class
+                                </div>
+                            </div>
+                            <div class="relative size-40 flex-shrink-0">
+                                <div class="size-full rounded-full bg-border-dark flex items-center justify-center" style="background: conic-gradient(#19e66b 85%, #29382f 0);">
+                                    <div class="size-[85%] bg-surface-dark rounded-full flex flex-col items-center justify-center">
+                                        <span class="text-white text-sm font-medium uppercase tracking-widest">Rank</span>
+                                        <span class="text-primary text-xl font-bold">Good</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-surface-dark rounded-xl p-6 border border-border-dark hover:border-primary/50 transition-colors cursor-pointer group">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-text-secondary text-sm font-medium mb-1">Events Attended</p>
+                                    <p class="text-3xl font-bold text-white group-hover:text-primary transition-colors">12</p>
+                                </div>
+                                <div class="p-2 rounded-full bg-background-dark text-text-secondary group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+                                    <span class="material-symbols-outlined">event_available</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-surface-dark rounded-xl p-6 border border-border-dark hover:border-primary/50 transition-colors cursor-pointer group">
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <p class="text-text-secondary text-sm font-medium mb-1">Pending Approval</p>
+                                    <p class="text-3xl font-bold text-white group-hover:text-primary transition-colors">2</p>
+                                </div>
+                                <div class="p-2 rounded-full bg-background-dark text-text-secondary group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+                                    <span class="material-symbols-outlined">pending_actions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface-dark rounded-xl border border-border-dark overflow-hidden">
+                        <div class="p-6 border-b border-border-dark flex justify-between items-center bg-background-dark/30">
+                            <h3 class="text-lg font-bold text-white">Recent Activity</h3>
+                            <a class="text-sm text-primary hover:text-white font-medium transition-colors" href="#">View All</a>
+                        </div>
+                        <div class="divide-y divide-border-dark">
+                            <div class="p-4 hover:bg-background-dark/50 transition-colors flex gap-4 items-center">
+                                <div class="bg-primary/20 p-2.5 rounded-full text-primary flex-shrink-0">
+                                    <span class="material-symbols-outlined text-[20px]">check_circle</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium truncate">Attended "Python for Data Science"</p>
+                                    <p class="text-text-secondary text-xs">Verified by Organizer</p>
+                                </div>
+                                <span class="text-text-secondary text-xs whitespace-nowrap">2 hours ago</span>
+                            </div>
+                            <div class="p-4 hover:bg-background-dark/50 transition-colors flex gap-4 items-center">
+                                <div class="bg-blue-500/20 p-2.5 rounded-full text-blue-400 flex-shrink-0">
+                                    <span class="material-symbols-outlined text-[20px]">how_to_reg</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium truncate">Registered for "Career Talk 2024"</p>
+                                    <p class="text-text-secondary text-xs">Waiting for check-in</p>
+                                </div>
+                                <span class="text-text-secondary text-xs whitespace-nowrap">Yesterday</span>
+                            </div>
+                            <div class="p-4 hover:bg-background-dark/50 transition-colors flex gap-4 items-center">
+                                <div class="bg-orange-500/20 p-2.5 rounded-full text-orange-400 flex-shrink-0">
+                                    <span class="material-symbols-outlined text-[20px]">edit_document</span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium truncate">Updated Profile Information</p>
+                                    <p class="text-text-secondary text-xs">Phone number changed</p>
+                                </div>
+                                <span class="text-text-secondary text-xs whitespace-nowrap">Oct 20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 mb-8 text-center">
+                <p class="text-text-secondary text-sm">
+                    Need help? <a class="text-primary hover:underline" href="#">Contact Student Affairs</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+</body>
+</html>
