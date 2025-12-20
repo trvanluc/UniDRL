@@ -274,7 +274,7 @@
                     <div class="relative">
                         <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-primary/50 to-transparent -translate-y-1/2 z-0 opacity-70"></div>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
-                            <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center gap-4 hover:-translate-y-2 transition-transform duration-300 border border-white/10 shadow-lg hover:shadow-primary/20">
+                            <div class="glass-card p-6 rounded-2xl flex flex-col items-center text-center gap-4 hover:-translate-y-2 transition-transform duration-300 border border-white/10 shadow-lg hover:shadow-white/10">
                                 <div class="w-12 h-12 rounded-full bg-background-dark border-2 border-primary flex items-center justify-center text-white font-bold shadow-[0_0_15px_rgba(54,226,123,0.3)]">1</div>
                                 <h5 class="text-white font-bold font-display">Create Account</h5>
                                 <p class="text-xs text-slate-400 font-body">Sign up with your student ID.</p>
@@ -348,7 +348,7 @@
     </section>
 
     <section class="py-32 relative">
-        <div class="absolute inset-0 bg-gradient-to-b from-[#05090d] to-[#0a1016]"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from[#05090d] to[#0a1016]"></div>
         <div class="container mx-auto px-6 relative z-10">
             <div class="glass-card rounded-[3rem] p-12 md:p-20 text-center border border-white/10 relative overflow-hidden max-w-5xl mx-auto shadow-2xl shadow-primary/10">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-blue-900/40 opacity-30"></div>
@@ -360,10 +360,10 @@
                         Join thousands of students and faculty members in the most advanced student management platform.
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                        <a href="signup.html" class="cta-button-main h-14 px-10 rounded-full bg-primary text-background-dark text-lg font-bold hover:bg-green-400 active:scale-95">
+                        <a href="signup.html" class="cta-button-main flex items-center justify-center h-14 px-10 rounded-full bg-primary text-background-dark text-lg font-bold hover:bg-green-400 active:scale-95 transition-all">
                             Create Account
                         </a>
-                        <a href="login.html" class="h-14 px-10 rounded-full bg-white/5 border border-white/20 text-white text-lg font-bold hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95">
+                        <a href="login.html" class="flex items-center justify-center h-14 px-10 rounded-full bg-white/5 border border-white/20 text-white text-lg font-bold hover:bg-white/10 transition-all backdrop-blur-sm active:scale-95">
                             Log In
                         </a>
                     </div>
@@ -422,6 +422,17 @@
         </div>
     </footer>
 
+    <script>
+        // Optional: Show logout if logged in on landing
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('currentUser');
+            if (currentUser) {
+                // Add logout button to header or alert
+                console.log('Already logged in on landing. Add logout if needed.');
+                // Example: Add logout to Get Started button
+                // or keep as is, since landing is public.
+            }
+        });
+    </script>
 </body>
-
 </html>
