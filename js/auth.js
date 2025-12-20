@@ -22,6 +22,13 @@ function handleSignup(e) {
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
+
+    const confirmPassword = document.getElementById("confirm-password").value.trim();
+    if (password !== confirmPassword) {
+        alert("Mật khẩu xác nhận không khớp!");
+        return;
+    }
+
     const role = roleInput.value; // Lấy giá trị từ thẻ select (student/advisor/manager)
 
     // Validate dữ liệu trống
@@ -54,7 +61,7 @@ function handleSignup(e) {
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
 
-    alert(`Đăng ký tài khoản ${role.toUpperCase()} thành công! Vui lòng đăng nhập.`);
+    alert(`Đăng ký ${role.toUpperCase()} thành công! Vui lòng đăng nhập.`);
     window.location.href = "login.html";
 }
 
@@ -100,20 +107,8 @@ function handleLogin(e) {
     // Đăng nhập thành công -> Lưu session
     localStorage.setItem("currentUser", JSON.stringify(user));
 
-    // Chuyển hướng
-    switch (user.role) {
-        case "student":
-            window.location.href = "student/home.html"; // Chắc chắn folder là 'student'
-            break;
-        case "advisor":
-            window.location.href = "advisor/home.html"; // Chắc chắn folder là 'advisor'
-            break;
-        case "manager":
-            window.location.href = "manager/home.html";
-            break;
-        default:
-            alert("Lỗi: Không xác định được quyền truy cập.");
-    }
+    // Chuyển hướng đến home chung cho tất cả role
+    window.location.href = "home.html";
 }
 
 // ===== 3. TỰ ĐỘNG GẮN SỰ KIỆN (AUTO BINDING) =====
