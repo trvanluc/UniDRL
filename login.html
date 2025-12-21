@@ -51,6 +51,13 @@
     </style>
 </head>
 
+<!-- 
+  Login Page
+  - UI only
+  - Authentication logic handled in js/pages/login.page.js
+-->
+
+<script type="module" src="./js/pages/login.page.js"></script>
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-background-dark">
     
     <div class="relative flex min-h-screen w-full flex-col overflow-hidden">
@@ -166,18 +173,6 @@
 
         </div>
     </div>
-    <!-- AUTH LOGIC -->
-<script src="js/auth.js"></script>
-<script>
-  // Gắn logic sau khi DOM load xong
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    if (form) {
-      form.addEventListener("submit", handleLogin);
-    }
-  });
-</script>
 
 </body>
-
 </html>
