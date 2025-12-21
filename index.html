@@ -5,6 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VNUK - Empowering Student Growth</title>
+    <meta name="description" content="VNUK Student Management Portal - Track participation, achievements, and training score" in one centralized platform." />
+    <meta name="keywords" content="VNUK, training score, student management, QR attendance">
+    <meta name="author" content="VNUK Institute" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -116,6 +119,14 @@
         }
     </style>
 </head>
+
+<!-- 
+  Landing Page (Public Page)
+  - No authentication required
+  - No role-based logic
+  - Used only for introduction & navigation
+-->
+
 
 <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-body overflow-x-hidden antialiased">
 
@@ -422,17 +433,5 @@
         </div>
     </footer>
 
-    <script>
-        // Optional: Show logout if logged in on landing
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = localStorage.getItem('currentUser');
-            if (currentUser) {
-                // Add logout button to header or alert
-                console.log('Already logged in on landing. Add logout if needed.');
-                // Example: Add logout to Get Started button
-                // or keep as is, since landing is public.
-            }
-        });
-    </script>
 </body>
 </html>
