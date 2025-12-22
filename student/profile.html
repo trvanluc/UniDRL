@@ -1,173 +1,124 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Student Profile - Basic</title>
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Student Profile - Basic</title>
 
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#36e27b",
-              "background-light": "#f6f8f7",
-              "background-dark": "#112117",
-              "card-dark": "#1a2620",
-              "input-dark": "#23332b",
-
-              // Custom colors extracted from your design
-              "border-dark": "#29382f",
-              "text-main": "#111714",
-              "text-muted": "#63756b",
-              "text-muted-dark": "#9eb7a8",
-              "btn-light": "#e8eef0",
-            },
-            fontFamily: {
-              display: ["Spline Sans", "sans-serif"],
-            },
-            borderRadius: {
-              DEFAULT: "1rem",
-              lg: "2rem",
-              xl: "3rem",
-              full: "9999px",
-            },
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#36e27b",
+            "background-light": "#f6f8f7",
+            "background-dark": "#112117",
+            "card-dark": "#1c2620",
+            "surface-dark": "#2a3630",
+          },
+          fontFamily: {
+            display: ["Spline Sans", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
+            "2xl": "2.5rem",
+            full: "9999px",
+          },
+          boxShadow: {
+            glow: "0 0 20px -5px rgba(54, 226, 123, 0.3)",
           },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-    <style>
-      body {
-        font-family: "Spline Sans", sans-serif;
-      }
+  <style>
+    body { font-family: "Spline Sans", sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #112117; }
+    ::-webkit-scrollbar-thumb { background: #2a3630; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #36e27b; }
 
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
+    #settings-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #1c2620;
+      border: 1px solid #29382f;
+      border-radius: 8px;
+      padding: 8px;
+    }
+  </style>
+</head>
 
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #112117;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #29382f;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #36e27b;
-      }
-    </style>
-  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300">
+  <!-- <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden"> -->
 
-  <body
-    class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-white overflow-x-hidden min-h-screen flex flex-col transition-colors duration-200"
-  >
-    <nav
-      class="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md"
-    >
-      <div class="px-4 md:px-10 py-3 flex items-center justify-between">
-        <a
-          href="../home.html"
-          class="flex items-center gap-4 text-white hover:opacity-80 transition-opacity"
-        >
-          <div class="size-8 text-primary">
-            <svg
-              class="w-full h-full"
-              fill="none"
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </div>
-          <h2
-            class="text-text-main dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]"
-          >
-            VN-UK
-          </h2>
-        </a>
+    <header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
+  <div class="flex items-center gap-4">
+    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+      <span class="material-symbols-outlined">school</span>
+    </div>
+    <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+      VN-UK
+    </h2>
+  </div>
 
-        <div class="hidden md:flex flex-1 justify-center gap-8">
-          <a
-            class="text-text-muted dark:text-text-muted-dark hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors"
-            href="../home.html"
-            >Home</a
-          >
-          <a
-            class="text-text-muted dark:text-text-muted-dark hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors"
-            href="my-event.html"
-            >My Events</a
-          >
-          <a
-            class="text-text-muted dark:text-text-muted-dark hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors"
-            href="my-journey.html"
-            >My Journey</a
-          >
-          <a
-            class="text-primary text-sm font-bold leading-normal"
-            href="profile.html"
-            >Profile</a
-          >
-        </div>
+  <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
+    <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
+    <a href="my-event.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Events</a>
+    <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
+    <a href="profile.html" class="text-primary font-bold relative">
+      Profile
+      <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary"></span>
+    </a>
+  </nav>
 
-        <div class="flex gap-2 relative">
-          <button
-            class="flex items-center justify-center rounded-full h-10 w-10 bg-btn-light dark:bg-border-dark text-text-main dark:text-white hover:bg-primary/20 transition-colors"
-          >
-            <span class="material-symbols-outlined text-[20px]"
-              >notifications</span
-            >
+  <div class="flex gap-3 relative">
+    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+      <span class="material-symbols-outlined text-[20px]">notifications</span>
+    </button>
+    <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+    </button>
+    <div id="settings-dropdown" class="hidden">
+      <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
+        Logout
+      </button>
+    </div>
+    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+      <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
+    </button>
+
+    <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+
+<!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
+<div class="flex items-center justify-center">
+  <div id="user-avatar-initial" 
+       class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
+    A
+  </div>
+</div>
+<button id="sidebar-toggle-btn"
+            class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
+            <span class="material-symbols-outlined text-[20px]">menu</span>
           </button>
-          <button
-            id="settings-btn"
-            class="flex items-center justify-center rounded-full h-10 w-10 bg-btn-light dark:bg-border-dark text-text-main dark:text-white hover:bg-primary/20 transition-colors"
-          >
-            <span class="material-symbols-outlined text-[20px]">settings</span>
-          </button>
-          <div
-            id="settings-dropdown"
-            class="hidden absolute top-full right-0 mt-2 bg-white dark:bg-[#1c2620] border border-gray-200 dark:border-[#29382f] rounded-lg shadow-xl min-w-[160px] py-1 z-50 opacity-0 transition-opacity duration-200"
-          >
-            <button
-              id="logout-btn"
-              class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 flex items-center gap-2 transition-colors"
-            >
-              <span class="material-symbols-outlined text-[20px]">logout</span>
-              Logout
-            </button>
-          </div>
-          <button
-            class="flex items-center justify-center rounded-full h-10 w-10 bg-btn-light dark:bg-border-dark text-text-main dark:text-white hover:bg-primary/20 transition-colors"
-          >
-            <span class="material-symbols-outlined theme-toggle-icon"
-              >light_mode</span
-            >
-          </button>
-        </div>
-      </div>
-    </nav>
+  </div>
+</header>
 
     <main class="flex-1 flex flex-col items-center py-8 px-4 md:px-10">
       <div class="w-full max-w-[800px] flex flex-col gap-8">
@@ -414,5 +365,6 @@ Passionate about AI and Student Government. Always looking for new hackathons to
       </div>
     </main>
     <script type="module" src="../js/pages/student-base.page.js"></script>
+    <!-- </div> -->
   </body>
 </html>
