@@ -447,14 +447,25 @@ function setupAdminQRActions(event) {
       `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrText)}`;
   
     qrImg.classList.remove("hidden"); // ✅ QUAN TRỌNG
+
+    saveQRStatus(event.id, {
+      active: true,
+      code: qrText,
+      expiresAt: null
+    });
   
     alert("Completion QR opened (mock)");
   });
   
 
   closeBtn?.addEventListener("click", () => {
-    alert(` QR Code CLOSED for: ${event.title}\n\nNo more completions accepted.`);
+    saveQRStatus(event.id, {
+      active: false
+    });
+  
+    alert("QR has been CLOSED");
   });
+  
 
   setTimeBtn?.addEventListener("click", () => {
     const minutes = validityInput?.value;
@@ -467,6 +478,12 @@ function setupAdminQRActions(event) {
 
   regenerateBtn?.addEventListener("click", () => {
     const newQR = generateCompletionQR(event.id);
+
+    saveQRStatus(event.id, {
+      active: true,
+      code: newQR,
+      expiresAt: null
+    });
   
     const qrs = JSON.parse(localStorage.getItem("completionQRs")) || {};
     qrs[event.id] = newQR;
@@ -482,6 +499,15 @@ function setupAdminQRActions(event) {
   
     alert("QR regenerated successfully");
   });
+  function saveQRStatus(eventId, data) {
+    const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
+    store[eventId] = {
+      ...store[eventId],
+      ...data
+    };
+    localStorage.setItem("completionQRStatus", JSON.stringify(store));
+  }
+  
   
   
 }

@@ -401,8 +401,8 @@
                         </div>
                         <div class="flex flex-wrap items-center gap-3 w-full xl:w-auto">
                             <button
-                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors border border-gray-200 dark:border-white/10 whitespace-nowrap shadow-sm"
-                                onclick="showToast('Participant list exported.')">
+                                id="export-csv-btn"
+                                class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors border border-gray-200 dark:border-white/10 whitespace-nowrap shadow-sm">
                                 <span class="material-symbols-outlined text-[18px]">download</span>
                                 Export List
                             </button>
@@ -430,7 +430,7 @@
                                             Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-gray-200 dark:divide-white/5">
+                                <tbody class="divide-y divide-gray-200 dark:divide-white/5" id="participants-body">
                                     <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                                         <td class="py-4 px-6 font-medium text-gray-900 dark:text-white">Alex Johnson
                                         </td>
@@ -447,7 +447,7 @@
                                             <div class="flex items-center justify-end gap-2">
                                                 <button
                                                     class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400 transition-colors"
-                                                    onclick="openModal('edit-modal')">
+                                                    onclick="openEditModal('20230592')">
                                                     <span class="material-symbols-outlined text-[20px]">edit</span>
                                                 </button>
                                                 <button
@@ -514,6 +514,7 @@
                     class="px-6 py-2.5 rounded-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
                     onclick="closeModal('edit-modal')">Cancel</button>
                 <button
+                    id="save-status-btn"
                     class="px-6 py-2.5 rounded-full text-sm font-bold bg-primary text-black hover:bg-[#2fd16d] shadow-lg shadow-primary/20 transition-all"
                     onclick="closeModal('edit-modal'); showToast('Status updated successfully.', 'success')">Save
                     Changes</button>
@@ -606,7 +607,7 @@
             }, 3000);
         }
     </script>
-
+    <script type="module" src="../js/admin/participants-management.js"></script>
 </body>
 
 </html>
