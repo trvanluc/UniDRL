@@ -7,6 +7,7 @@
 import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
+import { Theme } from "../utils/theme.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
@@ -15,9 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("User authenticated:", user.name, "| Role:", user.role);
   console.log("Events loaded:", EVENTS.length, "events");
 
+  Theme.init();
+  setupThemeToggle();
+
   renderWelcome(user);
   renderLayoutByRole(user);
   initEvents();
+  setupLogout();
 });
 
 /**
@@ -30,6 +35,28 @@ function renderWelcome(user) {
   if (!title) return;
 
   title.textContent = `Welcome back, ${user.name || "User"}.`;
+}
+
+/**
+ * =========================
+ *  THEME TOGGLE
+ * =========================
+ */
+function setupThemeToggle() {
+  const themeButtons = document.querySelectorAll('button:has(.theme-toggle-icon)');
+  
+  themeButtons.forEach(button => {
+    // Update icon on page load
+    const icon = button.querySelector('.material-symbols-outlined');
+    if (icon && !icon.classList.contains('theme-toggle-icon')) {
+      icon.classList.add('theme-toggle-icon');
+    }
+    
+    button.addEventListener("click", () => {
+      const newTheme = Theme.toggleTheme();
+      Theme.updateIcon(newTheme);
+    });
+  });
 }
 
 /**
