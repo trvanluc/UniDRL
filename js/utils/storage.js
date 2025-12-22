@@ -2,6 +2,7 @@
  * ==========================================
  * STORAGE - LocalStorage Wrapper
  * ==========================================
+ * BACKWARD COMPATIBLE: Sử dụng key "currentUser" thay vì "vnuk_currentUser"
  */
 
 import { STORAGE_KEYS } from "../config/constants.js";
@@ -17,15 +18,17 @@ export const Storage = {
   },
 
   setCurrentUser(user) {
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
+    localStorage.setItem("currentUser", JSON.stringify(user));
   },
 
+
   getCurrentUser() {
-    const data = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    const data = localStorage.getItem("currentUser");
     return data ? JSON.parse(data) : null;
   },
 
+
   clearSession() {
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    localStorage.removeItem("currentUser");
   }
 };
