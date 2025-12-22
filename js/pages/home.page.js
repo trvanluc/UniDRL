@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
   if (!user) return;
 
-  console.log("✅ User authenticated:", user.name, "| Role:", user.role);
-  console.log("✅ Events loaded:", EVENTS.length, "events");
+  console.log("User authenticated:", user.name, "| Role:", user.role);
+  console.log("Events loaded:", EVENTS.length, "events");
 
   renderWelcome(user);
   renderLayoutByRole(user);
@@ -67,11 +67,13 @@ function renderLayoutByRole(user) {
 
 /**
  * =========================
- * EVENT INITIALIZATION
+ * EVENT INITIALIZATION WITH SEARCH & PAGINATION
  * =========================
  */
 function initEvents() {
   const grid = document.getElementById("events-grid");
+  const searchInput = document.querySelector('input[placeholder*="Search"]');
+  
   if (!grid) {
     console.error("Element #events-grid not found");
     return;
@@ -79,24 +81,36 @@ function initEvents() {
 
   const filterButtons = document.querySelectorAll("[data-filter]");
   
-  // ===== PAGINATION STATE =====
+  // ===== STATE =====
   let currentPage = 1;
   const eventsPerPage = 6;
   let currentFilter = "All";
+  let searchQuery = "";
 
-  function renderEvents(filter = "All", page = 1) {
+  function renderEvents(filter = "All", page = 1, search = "") {
     currentFilter = filter;
     currentPage = page;
+    searchQuery = search.toLowerCase();
     
     grid.innerHTML = "";
 
-    // Filter events
-    const filteredEvents =
+    // Filter by category
+    let filteredEvents =
       filter === "All"
         ? EVENTS
         : EVENTS.filter(event => event.category === filter);
 
-    console.log(`🔍 Filter: ${filter} | Found: ${filteredEvents.length} events`);
+    // Filter by search query
+    if (searchQuery) {
+      filteredEvents = filteredEvents.filter(event =>
+        event.title.toLowerCase().includes(searchQuery) ||
+        event.category.toLowerCase().includes(searchQuery) ||
+        event.location.toLowerCase().includes(searchQuery) ||
+        event.organizer.toLowerCase().includes(searchQuery)
+      );
+    }
+
+    console.log(`🔍 Filter: ${filter} | Search: "${search}" | Found: ${filteredEvents.length} events`);
 
     // Calculate pagination
     const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
@@ -107,9 +121,13 @@ function initEvents() {
     // Render events
     if (!eventsToShow.length) {
       grid.innerHTML = `
-        <p class="col-span-full text-center text-gray-500">
-          No events found
-        </p>`;
+        <div class="col-span-full flex flex-col items-center justify-center py-12">
+          <span class="material-symbols-outlined text-6xl text-gray-400 mb-4">search_off</span>
+          <p class="text-center text-gray-500 text-lg font-medium">
+            ${searchQuery ? `No events found for "${search}"` : 'No events found'}
+          </p>
+          ${searchQuery ? '<p class="text-center text-gray-400 text-sm mt-2">Try different keywords or clear the search</p>' : ''}
+        </div>`;
       renderPagination(0, page);
       return;
     }
@@ -180,16 +198,34 @@ function initEvents() {
 
   // Global function for pagination buttons
   window.changePage = function(page) {
-    const totalEvents = currentFilter === "All" 
-      ? EVENTS.length 
-      : EVENTS.filter(e => e.category === currentFilter).length;
-    const totalPages = Math.ceil(totalEvents / eventsPerPage);
+    // Recalculate based on current filter and search
+    let filteredEvents = currentFilter === "All" 
+      ? EVENTS 
+      : EVENTS.filter(e => e.category === currentFilter);
+    
+    if (searchQuery) {
+      filteredEvents = filteredEvents.filter(event =>
+        event.title.toLowerCase().includes(searchQuery) ||
+        event.category.toLowerCase().includes(searchQuery) ||
+        event.location.toLowerCase().includes(searchQuery) ||
+        event.organizer.toLowerCase().includes(searchQuery)
+      );
+    }
+    
+    const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
 
     if (page < 1 || page > totalPages) return;
     
-    renderEvents(currentFilter, page);
+    renderEvents(currentFilter, page, searchInput?.value || "");
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Search input handler
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      renderEvents(currentFilter, 1, e.target.value); // Reset to page 1 on search
+    });
+  }
 
   // Filter button handlers
   filterButtons.forEach(button => {
@@ -199,12 +235,12 @@ function initEvents() {
       );
 
       button.classList.add("bg-primary", "text-background-dark");
-      renderEvents(button.dataset.filter, 1); // Reset to page 1 on filter change
+      renderEvents(button.dataset.filter, 1, searchInput?.value || ""); // Reset to page 1
     });
   });
 
   // Initial render
-  renderEvents("All", 1);
+  renderEvents("All", 1, "");
 }
 
 /**
