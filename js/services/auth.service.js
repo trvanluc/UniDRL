@@ -1,6 +1,15 @@
-//login function
-import { Storage } from "../utils/storage.js";
+/**
+ * ==========================================
+ * AUTH SERVICE - Authentication Logic
+ * ==========================================
+ */
 
+import { Storage } from "../utils/storage.js";
+import { ROLES } from "../config/constants.js";
+
+/**
+ * Login function
+ */
 export function login(email, password, role) {
   const users = Storage.getUsers();
 
@@ -22,10 +31,9 @@ export function login(email, password, role) {
   return user;
 }
 
-//signup function
-import { Storage } from "../utils/storage.js";
-import { ROLES } from "../config/constants.js";
-
+/**
+ * Signup function
+ */
 export function signup({ name, email, password, role }) {
   const users = Storage.getUsers();
 
