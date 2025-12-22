@@ -72,7 +72,7 @@
       #admin-sidebar {
         position: fixed;
         left: 0;
-        top: 64px; /* Height of header (adjust if needed) */
+        top: 64px;
         height: calc(100vh - 64px);
         width: 250px;
         background: #112117;
@@ -102,6 +102,12 @@
       }
     </style>
   </head>
+
+  <!-- 
+    Home Page
+    - Authentication & role handled by auth.guard.js
+    - UI rendering handled in home.page.js
+  -->
 
   <body
     class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300"
@@ -146,7 +152,7 @@
           </button>
           <div id="settings-dropdown" class="hidden">
             <button
-              onclick="logout()"
+              id="logout-btn"
               class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10"
             >
               Logout
@@ -171,7 +177,7 @@
       <!-- Admin Sidebar (nav fixed under header) -->
       <aside id="admin-sidebar" class="flex-col hidden z-40">
         <div class="p-4 space-y-2">
-          <a
+          
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden"
             href="home.html"
           >
@@ -180,7 +186,7 @@
             >
             <span class="nav-label whitespace-nowrap">Home</span>
           </a>
-          <a
+          
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
             href="admin/participants-management.html"
           >
@@ -191,7 +197,7 @@
               >Participant Management</span
             >
           </a>
-          <a
+          
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
             href="admin/check-in-management.html"
           >
@@ -200,7 +206,7 @@
             >
             <span class="nav-label whitespace-nowrap">Check-in Management</span>
           </a>
-          <a
+          
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
             href="admin/completion-qr-management.html"
           >
@@ -211,7 +217,7 @@
               >Completion QR Management</span
             >
           </a>
-          <a
+          
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
             href="admin/report.html"
           >
@@ -333,15 +339,13 @@
                 Workshops
               </button>
             </div>
-
-            <!-- Removed admin-status-filter -->
           </div>
 
           <div class="flex items-center justify-between pt-4">
             <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
               Upcoming Events
             </h2>
-            <a
+            
               class="text-sm font-bold text-primary hover:underline flex items-center gap-1"
               href="#"
             >
@@ -532,9 +536,7 @@
       </div>
     </div>
 
-    <!-- LOAD EVENT DATA -->
-    <script src="js/events.data.js"></script>
+    
     <script type="module" src="./js/pages/home.page.js"></script>
-
   </body>
 </html>
