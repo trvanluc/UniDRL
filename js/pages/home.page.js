@@ -73,15 +73,24 @@ function renderLayoutByRole(user) {
 function initEvents() {
   const grid = document.getElementById("events-grid");
   if (!grid) {
-    console.error("❌ Element #events-grid not found");
+    console.error("Element #events-grid not found");
     return;
   }
 
   const filterButtons = document.querySelectorAll("[data-filter]");
+  
+  // ===== PAGINATION STATE =====
+  let currentPage = 1;
+  const eventsPerPage = 6;
+  let currentFilter = "All";
 
-  function renderEvents(filter = "All") {
+  function renderEvents(filter = "All", page = 1) {
+    currentFilter = filter;
+    currentPage = page;
+    
     grid.innerHTML = "";
 
+    // Filter events
     const filteredEvents =
       filter === "All"
         ? EVENTS
@@ -89,19 +98,100 @@ function initEvents() {
 
     console.log(`🔍 Filter: ${filter} | Found: ${filteredEvents.length} events`);
 
-    if (!filteredEvents.length) {
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+    const startIndex = (page - 1) * eventsPerPage;
+    const endIndex = startIndex + eventsPerPage;
+    const eventsToShow = filteredEvents.slice(startIndex, endIndex);
+
+    // Render events
+    if (!eventsToShow.length) {
       grid.innerHTML = `
         <p class="col-span-full text-center text-gray-500">
           No events found
         </p>`;
+      renderPagination(0, page);
       return;
     }
 
-    filteredEvents.forEach(event => {
+    eventsToShow.forEach(event => {
       grid.insertAdjacentHTML("beforeend", createEventCard(event));
     });
+
+    // Render pagination controls
+    renderPagination(totalPages, page);
   }
 
+  function renderPagination(totalPages, currentPage) {
+    const paginationContainer = document.querySelector(".flex.items-center.justify-center.gap-2.py-8");
+    if (!paginationContainer) return;
+
+    if (totalPages <= 1) {
+      paginationContainer.innerHTML = "";
+      return;
+    }
+
+    let paginationHTML = `
+      <button 
+        onclick="window.changePage(${currentPage - 1})"
+        ${currentPage === 1 ? 'disabled' : ''}
+        class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}"
+      >
+        <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+      </button>
+    `;
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      if (
+        i === 1 || 
+        i === totalPages || 
+        (i >= currentPage - 1 && i <= currentPage + 1)
+      ) {
+        paginationHTML += `
+          <button 
+            onclick="window.changePage(${i})"
+            class="w-10 h-10 flex items-center justify-center rounded-lg ${
+              i === currentPage
+                ? 'bg-primary text-background-dark font-bold shadow-glow'
+                : 'border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400'
+            }"
+          >
+            ${i}
+          </button>
+        `;
+      } else if (i === currentPage - 2 || i === currentPage + 2) {
+        paginationHTML += `<span class="px-2 text-slate-400">...</span>`;
+      }
+    }
+
+    paginationHTML += `
+      <button 
+        onclick="window.changePage(${currentPage + 1})"
+        ${currentPage === totalPages ? 'disabled' : ''}
+        class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}"
+      >
+        <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+      </button>
+    `;
+
+    paginationContainer.innerHTML = paginationHTML;
+  }
+
+  // Global function for pagination buttons
+  window.changePage = function(page) {
+    const totalEvents = currentFilter === "All" 
+      ? EVENTS.length 
+      : EVENTS.filter(e => e.category === currentFilter).length;
+    const totalPages = Math.ceil(totalEvents / eventsPerPage);
+
+    if (page < 1 || page > totalPages) return;
+    
+    renderEvents(currentFilter, page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Filter button handlers
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
       filterButtons.forEach(btn =>
@@ -109,11 +199,12 @@ function initEvents() {
       );
 
       button.classList.add("bg-primary", "text-background-dark");
-      renderEvents(button.dataset.filter);
+      renderEvents(button.dataset.filter, 1); // Reset to page 1 on filter change
     });
   });
 
-  renderEvents("All");
+  // Initial render
+  renderEvents("All", 1);
 }
 
 /**
