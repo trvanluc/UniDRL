@@ -116,6 +116,8 @@ function renderLayoutByRole(user) {
   const adminSidebar = document.getElementById("admin-sidebar");
   const openCreateModal = document.getElementById("open-create-modal");
   const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
+  const adminProfileHeader = document.getElementById("admin-profile-header");
+  const studentProfileHeader = document.getElementById("student-profile-header");
 
   if (!navMenu) return;
 
@@ -131,6 +133,16 @@ function renderLayoutByRole(user) {
     adminSidebar?.classList.add("hidden");
     openCreateModal?.classList.add("hidden");
     sidebarToggleBtn?.classList.add("hidden");
+    adminProfileHeader?.classList.add("hidden");
+    studentProfileHeader?.classList.remove("hidden");
+
+    if (user.name) {
+      studentProfileHeader.innerHTML = `
+      <div class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center font-black">
+        ${user.name.charAt(0).toUpperCase()}
+      </div>
+    `;
+    }
     return;
   }
 
