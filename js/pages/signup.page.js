@@ -1,3 +1,9 @@
+/**
+ * ==========================================
+ * SIGNUP PAGE CONTROLLER
+ * ==========================================
+ */
+
 import { signup } from "../services/auth.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {

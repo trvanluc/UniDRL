@@ -1,3 +1,9 @@
+/**
+ * ==========================================
+ * LOGIN PAGE CONTROLLER
+ * ==========================================
+ */
+
 import { login } from "../services/auth.service.js";
 
 document.addEventListener("DOMContentLoaded", () => {
