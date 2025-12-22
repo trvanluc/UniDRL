@@ -1,8 +1,15 @@
+/**
+ * ==========================================
+ * STORAGE - LocalStorage Wrapper
+ * ==========================================
+ */
+
 import { STORAGE_KEYS } from "../config/constants.js";
 
 export const Storage = {
   getUsers() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS)) || [];
+    const data = localStorage.getItem(STORAGE_KEYS.USERS);
+    return data ? JSON.parse(data) : [];
   },
 
   saveUsers(users) {
@@ -14,7 +21,8 @@ export const Storage = {
   },
 
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER));
+    const data = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
+    return data ? JSON.parse(data) : null;
   },
 
   clearSession() {
