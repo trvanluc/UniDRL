@@ -75,27 +75,34 @@
     #admin-sidebar {
       position: fixed;
       left: 0;
-      top: 64px;
-      height: calc(100vh - 64px);
+      top: 5rem;
+      /* dùng 5rem thống nhất với header */
+      height: calc(100vh - 5rem);
       width: 250px;
-      background-color: #05110a !important;
-      /* Màu đen xanh đậm cực sâu */
-      border-right: 1px solid #1a2e23;
-      display: none;
-      /* Mặc định ẩn trên mobile */
+      /* default width */
+      background-color: #112117 !important;
+      /* màu thống nhất */
+      border-right: 1px solid #1c2620;
+      display: flex;
+      /* mặc định ẩn trên mobile */
       flex-direction: column;
       padding: 20px 12px;
-      z-index: 45;
+      z-index: 40;
+      transition: width 0.3s ease-in-out;
     }
 
     /* Hiện sidebar trên màn hình lớn */
     @media (min-width: 1024px) {
-      #admin-sidebar {
-        display: flex;
+      #sidebar-toggle:checked~.layout-container main {
+        margin-left: 5rem;
       }
     }
 
-    /* Các mục Menu - Sửa tên class cho khớp HTML của bạn */
+    #admin-sidebar.hidden {
+      display: none !important;
+    }
+
+    /* Các mục Menu */
     .nav-item {
       display: flex;
       align-items: center;
@@ -110,7 +117,7 @@
       margin-bottom: 4px;
     }
 
-    /* Trạng thái Active - Nút Home màu xanh giống hình 1 */
+    /* Trạng thái Active - Nút Home màu xanh */
     .nav-item.active {
       background-color: #163020 !important;
       color: #34d399 !important;
@@ -125,7 +132,6 @@
     /* Phần System Status ở đáy Sidebar */
     .system-status {
       margin-top: auto;
-      /* Đẩy xuống đáy */
       padding: 16px;
       background: #0d1f14;
       border-radius: 16px;
@@ -133,8 +139,13 @@
       margin-bottom: 10px;
     }
 
+    /* Sidebar toggle */
     #sidebar-toggle:checked~.layout-container aside {
       width: 5rem;
+    }
+
+    #sidebar-toggle:checked~.layout-container aside .nav-label {
+      display: none;
     }
 
     @media (min-width: 1024px) {
@@ -146,23 +157,6 @@
       #sidebar-toggle:checked~.layout-container main {
         margin-left: 5rem;
       }
-    }
-
-    #admin-sidebar {
-      position: fixed;
-      left: 0;
-      top: 5rem;
-      height: calc(100vh - 5rem);
-      background-color: #112117 !important;
-      border-right: 1px solid #1c2620;
-      z-index: 40;
-      transition: width 0.3s ease-in-out;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #sidebar-toggle:checked~.layout-container aside .nav-label {
-      display: none;
     }
 
     /* Dropdown for settings */
