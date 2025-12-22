@@ -8,6 +8,7 @@ import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Theme } from "../utils/theme.js";
+import { Storage } from "../utils/storage.js";  // Import Storage để clear session
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
@@ -22,8 +23,54 @@ document.addEventListener("DOMContentLoaded", () => {
   renderWelcome(user);
   renderLayoutByRole(user);
   initEvents();
-  setupLogout();
+  setupSettingsDropdown();  // Thêm để xử lý toggle dropdown
+  setupLogout();  // Thêm để xử lý logout
 });
+
+/**
+ * =========================
+ * SETUP SETTINGS DROPDOWN (Toggle with animation)
+ * =========================
+ */
+function setupSettingsDropdown() {
+  const settingsBtn = document.getElementById("settings-btn");
+  const dropdown = document.getElementById("settings-dropdown");
+
+  if (!settingsBtn || !dropdown) return;
+
+  settingsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();  // Ngăn click lan ra ngoài
+    const isVisible = dropdown.style.display === "block";
+    dropdown.style.display = isVisible ? "none" : "block";
+    dropdown.style.opacity = isVisible ? "0" : "1";  // Animation fade
+  });
+
+  // Đóng dropdown khi click ngoài
+  document.addEventListener("click", (e) => {
+    if (!settingsBtn.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.style.display = "none";
+      dropdown.style.opacity = "0";
+    }
+  });
+}
+
+/**
+ * =========================
+ * SETUP LOGOUT
+ * =========================
+ */
+function setupLogout() {
+  const logoutBtn = document.getElementById("logout-btn");
+
+  if (!logoutBtn) return;
+
+  logoutBtn.addEventListener("click", () => {
+    if (confirm("Are you sure you want to logout?")) {
+      Storage.clearSession();  // Xóa session từ localStorage
+      window.location.href = "login.html";  // Redirect về login
+    }
+  });
+}
 
 /**
  * =========================
