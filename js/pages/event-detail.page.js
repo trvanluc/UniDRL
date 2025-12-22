@@ -13,6 +13,7 @@ import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Storage } from "../utils/storage.js";
+import { Theme } from "../utils/theme.js";
 
 /**
  * =========================
@@ -20,6 +21,10 @@ import { Storage } from "../utils/storage.js";
  * =========================
  */
 document.addEventListener("DOMContentLoaded", () => {
+
+  Theme.init();
+  setupThemeToggle();
+
   // 1. Check authentication
   const user = requireAuth();
   if (!user) return;
@@ -150,6 +155,28 @@ function renderEventInfo(event) {
     journeyPointsEl.textContent = `${event.points} DRL points added to your profile automatically.`;
   }
 }
+
+/**
+ * =========================
+ *   THEME TOGGLE
+ * =========================
+ */
+function setupThemeToggle() {
+  const themeButtons = document.querySelectorAll('button:has(.theme-toggle-icon)');
+  
+  themeButtons.forEach(button => {
+    const icon = button.querySelector('.material-symbols-outlined');
+    if (icon && !icon.classList.contains('theme-toggle-icon')) {
+      icon.classList.add('theme-toggle-icon');
+    }
+    
+    button.addEventListener("click", () => {
+      const newTheme = Theme.toggleTheme();
+      Theme.updateIcon(newTheme);
+    });
+  });
+}
+
 
 /**
  * =========================
