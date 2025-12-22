@@ -129,11 +129,10 @@ function renderLayoutByRole(user) {
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
     `;
+    const mainContent = document.getElementById("main-content");
+    mainContent.style.marginLeft = "0"; // reset margin-left
 
-    adminSidebar?.classList.add("hidden");
-    openCreateModal?.classList.add("hidden");
-    sidebarToggleBtn?.classList.add("hidden");
-    adminProfileHeader?.classList.add("hidden");
+    [adminSidebar, openCreateModal, sidebarToggleBtn, adminProfileHeader].forEach(el => el?.classList.add("hidden"));
     studentProfileHeader?.classList.remove("hidden");
 
     if (user.name) {
@@ -147,8 +146,18 @@ function renderLayoutByRole(user) {
   }
 
   // ===== ADMIN / ADVISOR / MANAGER =====
-  adminSidebar?.classList.remove("hidden");
-  openCreateModal?.classList.remove("hidden");
+  if ([ROLES.ADMIN, ROLES.ADVISOR, ROLES.MANAGER].includes(user.role)) {
+    adminSidebar?.classList.remove("hidden");  // hiện sidebar
+    openCreateModal?.classList.remove("hidden");
+    sidebarToggleBtn?.classList.remove("hidden");
+    adminProfileHeader?.classList.remove("hidden");
+    studentProfileHeader?.classList.add("hidden");
+
+    // Reset margin-left main-content cho admin/advisor/manager
+    const mainContent = document.getElementById("main-content");
+    mainContent.style.marginLeft = "16rem"; // width sidebar mặc định
+  }
+
 }
 
 /**
