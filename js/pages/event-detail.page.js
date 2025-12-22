@@ -2,14 +2,17 @@
  * ==========================================
  * EVENT DETAIL PAGE CONTROLLER
  * ==========================================
- * Compatible with existing HTML structure
- * - Uses localStorage "currentUser" key
- * - Works with 2-tab structure from old code
- * - Role-based rendering (Student vs Admin)
+ * Features:
+ * - 2 tabs: General Overview + My Ticket/Completion QR
+ * - Role-based content (Student vs Admin/Advisor/Manager)
+ * - Event data from URL parameter
  * ==========================================
  */
 
+import { requireAuth } from "../guards/auth.guard.js";
+import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
+import { Storage } from "../utils/storage.js";
 
 /**
  * =========================
@@ -17,25 +20,18 @@ import { EVENTS } from "../data/events.data.js";
  * =========================
  */
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Check authentication using OLD key
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const role = currentUser ? currentUser.role : null;
+  // 1. Check authentication
+  const user = requireAuth();
+  if (!user) return;
 
-  console.log("✅ Current user:", currentUser);
-  console.log("✅ Role:", role);
-
-  if (!role) {
-    alert("Please login first");
-    window.location.href = "login.html";
-    return;
-  }
+  console.log("User authenticated:", user.name, "| Role:", user.role);
 
   // 2. Get event ID from URL
-  const params = new URLSearchParams(window.location.search);
-  const eventId = params.get("id");
+  const urlParams = new URLSearchParams(window.location.search);
+  const eventId = urlParams.get("id");
 
   if (!eventId) {
-    console.error("❌ Event ID not found in URL");
+    console.error("Event ID not found in URL");
     alert("Event ID not found");
     window.location.href = "home.html";
     return;
@@ -45,19 +41,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const event = EVENTS.find(e => e.id === eventId);
 
   if (!event) {
-    console.error("❌ Event not found:", eventId);
+    console.error("Event not found:", eventId);
     alert("Event not found");
     window.location.href = "home.html";
     return;
   }
 
-  console.log("✅ Event loaded:", event.title);
+  console.log("Event loaded:", event.title);
 
   // 4. Render everything
-  renderNavigation(role);
+  renderNavigation(user);
   renderEventInfo(event);
-  renderTabContent(role, event, currentUser);
-  renderEventActions(role, event);
+  renderTabContent(user, event);
+  renderEventActions(user, event);
   setupSidebarToggle();
 });
 
@@ -66,44 +62,39 @@ document.addEventListener("DOMContentLoaded", () => {
  * RENDER NAVIGATION
  * =========================
  */
-function renderNavigation(role) {
+function renderNavigation(user) {
   const navMenu = document.getElementById("nav-menu");
   const adminSidebar = document.getElementById("admin-sidebar");
   const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
 
-  if (role === "student") {
+  if (user.role === ROLES.STUDENT) {
     // Student Navigation
-    if (navMenu) {
-      navMenu.classList.remove("hidden");
-      navMenu.innerHTML = `
-        <a class="text-sm font-medium hover:text-primary transition-colors" href="home.html">Home</a>
-        <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Events</a>
-        <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
-        <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
-      `;
-    }
-    
-    if (adminSidebar) adminSidebar.classList.add("hidden");
-    if (sidebarToggleBtn) sidebarToggleBtn.classList.add("hidden");
-    
+    navMenu.classList.remove("hidden");
+    navMenu.innerHTML = `
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="home.html">Home</a>
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Events</a>
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
+    `;
+    adminSidebar?.classList.add("hidden");
+    sidebarToggleBtn?.classList.add("hidden");
   } else {
     // Admin Navigation
-    if (navMenu) navMenu.classList.add("hidden");
-    if (adminSidebar) adminSidebar.classList.remove("hidden");
-    if (sidebarToggleBtn) sidebarToggleBtn.classList.remove("hidden");
+    navMenu.classList.add("hidden");
+    adminSidebar?.classList.remove("hidden");
+    sidebarToggleBtn?.classList.remove("hidden");
   }
 }
 
 /**
  * =========================
  * RENDER EVENT INFO
- * (Tab 1: General Overview)
  * =========================
  */
 function renderEventInfo(event) {
-  // Event Name/Title
-  const nameEl = document.getElementById("event-name");
-  if (nameEl) nameEl.textContent = event.title;
+  // Title
+  const titleEl = document.getElementById("event-name");
+  if (titleEl) titleEl.textContent = event.title;
 
   // Description
   const descEl = document.getElementById("event-description");
@@ -115,16 +106,14 @@ function renderEventInfo(event) {
   if (dateEl) dateEl.textContent = event.date;
   if (timeEl) timeEl.textContent = event.time;
 
-  // Category
+  // Category & Points
   const categoryEl = document.getElementById("event-category");
-  if (categoryEl) categoryEl.textContent = event.category;
-
-  const bannerCategoryEl = document.getElementById("banner-category");
-  if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
-
-  // Points
   const pointsEl = document.getElementById("event-points");
+  const bannerCategoryEl = document.getElementById("banner-category");
+  
+  if (categoryEl) categoryEl.textContent = event.category;
   if (pointsEl) pointsEl.textContent = `${event.points} DRL Points`;
+  if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
 
   // Location
   const locationEl = document.getElementById("event-location");
@@ -145,7 +134,6 @@ function renderEventInfo(event) {
   
   if (organizerEl) organizerEl.textContent = event.organizer;
   if (organizerDeptEl) organizerDeptEl.textContent = event.organizerDept || "";
-  
   if (organizerAvatarEl) {
     organizerAvatarEl.style.backgroundImage = `url(${event.organizerAvatar || 'images/organizers/default.png'})`;
   }
@@ -166,29 +154,29 @@ function renderEventInfo(event) {
 /**
  * =========================
  * RENDER TAB CONTENT
- * (Tab 2: My Ticket / Completion QR)
+ * (Student vs Admin)
  * =========================
  */
-function renderTabContent(role, event, currentUser) {
+function renderTabContent(user, event) {
   const tabQrLabel = document.getElementById("tab-qr-label");
   const tabQrContent = document.getElementById("tab-qr-content");
 
   if (!tabQrLabel || !tabQrContent) return;
 
-  if (role === "student") {
+  if (user.role === ROLES.STUDENT) {
     // ===== STUDENT: My Ticket =====
     tabQrLabel.innerHTML = `
       <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
       My Ticket
     `;
 
-    // Generate ticket ID
-    const uid = currentUser.studentId || currentUser.email || "USER";
+    // Generate student ticket ID
+    const uid = user.studentId || user.email || "USER";
     const ticketId = `TICKET-${event.id.toUpperCase()}-${uid}`;
 
     tabQrContent.innerHTML = `
       <div class="w-full h-full min-h-[500px] flex flex-col py-8 px-4 md:px-8 relative animate-in fade-in zoom-in duration-300">
-        <h2 id="ticket-header" class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+        <h2 class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
           My Ticket – ${event.title}
         </h2>
         <div class="flex-grow flex flex-col items-center justify-center gap-8 pb-10">
@@ -212,18 +200,23 @@ function renderTabContent(role, event, currentUser) {
           </div>
         </div>
         <div class="w-full flex flex-col items-center gap-6 mb-6 max-w-md mx-auto">
-          <button class="group flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-[#2fd16d] text-black font-bold text-base tracking-wide transition-all transform hover:scale-105 shadow-lg shadow-primary/25">
+          <button id="scan-qr-btn" class="group flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-[#2fd16d] text-black font-bold text-base tracking-wide transition-all transform hover:scale-105 shadow-lg shadow-primary/25">
             <span class="material-symbols-outlined text-[24px] group-hover:rotate-45 transition-transform">qr_code_scanner</span>
             Scan QR to Finish
           </button>
           <p class="text-sm text-gray-500 dark:text-gray-400">If camera not working, enter code manually</p>
           <div class="flex w-full gap-2">
-            <input type="text" placeholder="Enter code" class="flex-grow rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 p-3 text-sm focus:border-primary focus:ring-primary placeholder-gray-400">
-            <button class="px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">Submit</button>
+            <input id="manual-code-input" type="text" placeholder="Enter code" class="flex-grow rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 p-3 text-sm focus:border-primary focus:ring-primary placeholder-gray-400">
+            <button id="submit-code-btn" class="px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">
+              Submit
+            </button>
           </div>
         </div>
       </div>
     `;
+
+    // Event listeners for student actions
+    setupStudentTicketActions();
 
   } else {
     // ===== ADMIN: Completion QR =====
@@ -232,11 +225,11 @@ function renderTabContent(role, event, currentUser) {
       Completion QR
     `;
 
-    const completionQRCode = `EVT-${event.id.toUpperCase()}-8829`;
+    const completionQRCode = `EVT-${event.id.toUpperCase()}-COMPLETION`;
 
     tabQrContent.innerHTML = `
       <div class="w-full h-full min-h-[500px] flex flex-col py-8 px-4 md:px-8 relative animate-in fade-in zoom-in duration-300">
-        <h2 id="admin-qr-header" class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
+        <h2 class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
           Completion QR Management: ${event.title}
         </h2>
         <div class="flex-grow flex flex-col items-center justify-center gap-8 pb-10">
@@ -260,34 +253,45 @@ function renderTabContent(role, event, currentUser) {
         </div>
         <div class="w-full flex flex-col items-center gap-6 mb-6 max-w-md mx-auto">
           <div class="flex w-full gap-2">
-            <button class="flex-grow px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">Open QR</button>
-            <button class="flex-grow px-6 py-3 rounded-lg bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-all shadow-md">Close QR</button>
+            <button id="open-qr-btn" class="flex-grow px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">
+              Open QR
+            </button>
+            <button id="close-qr-btn" class="flex-grow px-6 py-3 rounded-lg bg-red-500 text-white font-bold text-sm hover:bg-red-600 transition-all shadow-md">
+              Close QR
+            </button>
           </div>
           <div class="flex w-full gap-2">
-            <input type="number" placeholder="Validity Time (minutes)" class="flex-grow rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 p-3 text-sm focus:border-primary focus:ring-primary placeholder-gray-400">
-            <button class="px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">Set Time</button>
+            <input id="validity-time-input" type="number" placeholder="Validity Time (minutes)" class="flex-grow rounded-lg border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 p-3 text-sm focus:border-primary focus:ring-primary placeholder-gray-400">
+            <button id="set-time-btn" class="px-6 py-3 rounded-lg bg-primary text-black font-bold text-sm hover:bg-[#2fd16d] transition-all shadow-md">
+              Set Time
+            </button>
           </div>
-          <button class="w-full px-6 py-3 rounded-lg bg-blue-500 text-white font-bold text-sm hover:bg-blue-600 transition-all shadow-md">Regenerate QR</button>
+          <button id="regenerate-qr-btn" class="w-full px-6 py-3 rounded-lg bg-blue-500 text-white font-bold text-sm hover:bg-blue-600 transition-all shadow-md">
+            Regenerate QR
+          </button>
         </div>
       </div>
     `;
+
+    // Event listeners for admin actions
+    setupAdminQRActions(event);
   }
 }
 
 /**
  * =========================
  * RENDER EVENT ACTIONS
- * (Sidebar actions)
+ * (Register button for Student / Edit/Delete for Admin)
  * =========================
  */
-function renderEventActions(role, event) {
+function renderEventActions(user, event) {
   const actionsContainer = document.getElementById("event-actions");
   if (!actionsContainer) return;
 
-  if (role === "student") {
+  if (user.role === ROLES.STUDENT) {
     // ===== STUDENT: Register Button =====
     actionsContainer.innerHTML = `
-      <button id="openRegisterBtn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
+      <button id="register-event-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
         Register for Event
         <span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
       </button>
@@ -296,22 +300,40 @@ function renderEventActions(role, event) {
       </p>
     `;
 
-    const registerBtn = document.getElementById("openRegisterBtn");
-    if (registerBtn) {
-      registerBtn.addEventListener("click", () => {
-        alert(`✅ Successfully registered for: ${event.title}\n\nYou will earn ${event.points} DRL points!`);
-      });
-    }
+    // Register event listener
+    const registerBtn = document.getElementById("register-event-btn");
+    registerBtn?.addEventListener("click", () => {
+      if (event.status === "closed") {
+        alert("This event is closed for registration");
+        return;
+      }
+      
+      if (event.seats && event.seats.left === 0) {
+        alert("No seats available");
+        return;
+      }
+
+      alert(`Successfully registered for: ${event.title}\n\nYou will earn ${event.points} DRL points after completing this event.`);
+      
+      // Change button state
+      registerBtn.innerHTML = `
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>Registered</span>
+      `;
+      registerBtn.disabled = true;
+      registerBtn.classList.remove("bg-primary", "hover:bg-[#2fd16d]");
+      registerBtn.classList.add("bg-green-600", "cursor-not-allowed");
+    });
 
   } else {
     // ===== ADMIN: Edit/Delete Buttons =====
     actionsContainer.innerHTML = `
       <div class="grid grid-cols-2 gap-2 mb-3">
-        <button class="h-12 bg-blue-500 hover:bg-blue-600 text-white font-bold text-base rounded-full shadow-lg shadow-blue-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
+        <button id="edit-event-btn" class="h-12 bg-blue-500 hover:bg-blue-600 text-white font-bold text-base rounded-full shadow-lg shadow-blue-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
           Edit
           <span class="material-symbols-outlined text-[20px]">edit</span>
         </button>
-        <button class="h-12 bg-red-500 hover:bg-red-600 text-white font-bold text-base rounded-full shadow-lg shadow-red-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
+        <button id="delete-event-btn" class="h-12 bg-red-500 hover:bg-red-600 text-white font-bold text-base rounded-full shadow-lg shadow-red-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
           Delete
           <span class="material-symbols-outlined text-[20px]">delete</span>
         </button>
@@ -320,7 +342,86 @@ function renderEventActions(role, event) {
         Event management available for administrators
       </p>
     `;
+
+    // Edit event listener
+    const editBtn = document.getElementById("edit-event-btn");
+    editBtn?.addEventListener("click", () => {
+      alert(`Opening event editor for: ${event.title}`);
+      // TODO: Redirect to edit page or open modal
+    });
+
+    // Delete event listener
+    const deleteBtn = document.getElementById("delete-event-btn");
+    deleteBtn?.addEventListener("click", () => {
+      if (confirm(`Are you sure you want to delete "${event.title}"?`)) {
+        alert(`Event deleted: ${event.title}`);
+        // TODO: Delete event from database
+        window.location.href = "home.html";
+      }
+    });
   }
+}
+
+/**
+ * =========================
+ * STUDENT TICKET ACTIONS
+ * =========================
+ */
+function setupStudentTicketActions() {
+  const scanBtn = document.getElementById("scan-qr-btn");
+  const submitBtn = document.getElementById("submit-code-btn");
+  const manualInput = document.getElementById("manual-code-input");
+
+  scanBtn?.addEventListener("click", () => {
+    alert("Opening camera to scan QR code...\n\n(Camera feature will be implemented later)");
+  });
+
+  submitBtn?.addEventListener("click", () => {
+    const code = manualInput?.value.trim();
+    if (!code) {
+      alert("Please enter a code");
+      return;
+    }
+    alert(`Code submitted: ${code}\n\nVerifying completion...`);
+    // TODO: Verify code with backend
+  });
+}
+
+/**
+ * =========================
+ * ADMIN QR ACTIONS
+ * =========================
+ */
+function setupAdminQRActions(event) {
+  const openBtn = document.getElementById("open-qr-btn");
+  const closeBtn = document.getElementById("close-qr-btn");
+  const setTimeBtn = document.getElementById("set-time-btn");
+  const regenerateBtn = document.getElementById("regenerate-qr-btn");
+  const validityInput = document.getElementById("validity-time-input");
+
+  openBtn?.addEventListener("click", () => {
+    alert(` QR Code OPENED for: ${event.title}\n\nStudents can now scan to complete the event.`);
+  });
+
+  closeBtn?.addEventListener("click", () => {
+    alert(` QR Code CLOSED for: ${event.title}\n\nNo more completions accepted.`);
+  });
+
+  setTimeBtn?.addEventListener("click", () => {
+    const minutes = validityInput?.value;
+    if (!minutes || minutes <= 0) {
+      alert(" Please enter a valid time in minutes");
+      return;
+    }
+    alert(`⏱ QR validity set to: ${minutes} minutes\n\nQR will auto-close after this time.`);
+  });
+
+  regenerateBtn?.addEventListener("click", () => {
+    if (confirm("Regenerate QR code?\n\nOld QR will be invalid.")) {
+      alert(`QR Code regenerated for: ${event.title}`);
+      // TODO: Generate new QR code
+    }
+  });
 }
 
 /**
