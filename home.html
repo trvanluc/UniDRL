@@ -1,542 +1,486 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Campus Connect - Home</title>
 
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>VNUK - Home</title>
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
 
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#36e27b",
-              "background-light": "#f6f8f7",
-              "background-dark": "#112117",
-              "card-dark": "#1c2620",
-              "surface-dark": "#2a3630",
-            },
-            fontFamily: {
-              display: ["Spline Sans", "sans-serif"],
-            },
-            borderRadius: {
-              DEFAULT: "1rem",
-              lg: "1.5rem",
-              xl: "2rem",
-              "2xl": "2.5rem",
-              full: "9999px",
-            },
-            boxShadow: {
-              glow: "0 0 20px -5px rgba(54, 226, 123, 0.3)",
-            },
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#36e27b",
+            "background-light": "#f6f8f7",
+            "background-dark": "#112117",
+            "card-dark": "#1c2620",
+            "surface-dark": "#2a3630",
+          },
+          fontFamily: {
+            display: ["Spline Sans", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
+            "2xl": "2.5rem",
+            full: "9999px",
+          },
+          boxShadow: {
+            glow: "0 0 20px -5px rgba(54, 226, 123, 0.3)",
           },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-    <style>
-      body {
-        font-family: "Spline Sans", sans-serif;
-      }
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #112117;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #2a3630;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #36e27b;
-      }
-      /* Sidebar style for admin */
+  <style>
+    body {
+      font-family: "Spline Sans", sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #112117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2a3630;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #36e27b;
+    }
+
+    /* Sidebar Layout */
+    #admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 64px;
+      height: calc(100vh - 64px);
+      width: 250px;
+      background-color: #05110a !important;
+      /* Màu đen xanh đậm cực sâu */
+      border-right: 1px solid #1a2e23;
+      display: none;
+      /* Mặc định ẩn trên mobile */
+      flex-direction: column;
+      padding: 20px 12px;
+      z-index: 45;
+    }
+
+    /* Hiện sidebar trên màn hình lớn */
+    @media (min-width: 1024px) {
       #admin-sidebar {
-        position: fixed;
-        left: 0;
-        top: 64px;
-        height: calc(100vh - 64px);
-        width: 250px;
-        background: #112117;
-        border-right: 1px solid #29382f;
-        overflow-y: auto;
-        transition: transform 0.3s;
-        z-index: 40;
+        display: flex;
       }
-      #admin-sidebar.open {
-        transform: translateX(0);
-      }
-      @media (min-width: 1024px) {
-        #admin-sidebar {
-          transform: translateX(0);
-        }
-      }
-      /* Dropdown for settings */
-      #settings-dropdown {
-        display: none;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: #1c2620;
-        border: 1px solid #29382f;
-        border-radius: 8px;
-        padding: 8px;
-      }
-    </style>
-  </head>
+    }
 
-  <!-- 
+    /* Các mục Menu - Sửa tên class cho khớp HTML của bạn */
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #94a3b8;
+      text-decoration: none !important;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+      margin-bottom: 4px;
+    }
+
+    /* Trạng thái Active - Nút Home màu xanh giống hình 1 */
+    .nav-item.active {
+      background-color: #163020 !important;
+      color: #34d399 !important;
+      font-weight: 700;
+    }
+
+    .nav-item:hover:not(.active) {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+    }
+
+    /* Phần System Status ở đáy Sidebar */
+    .system-status {
+      margin-top: auto;
+      /* Đẩy xuống đáy */
+      padding: 16px;
+      background: #0d1f14;
+      border-radius: 16px;
+      border: 1px solid #1a2e23;
+      margin-bottom: 10px;
+    }
+
+    #sidebar-toggle:checked~.layout-container aside {
+      width: 5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .layout-container main {
+        margin-left: 16rem;
+        transition: margin-left 0.3s ease-in-out;
+      }
+
+      #sidebar-toggle:checked~.layout-container main {
+        margin-left: 5rem;
+      }
+    }
+
+    #admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 5rem;
+      height: calc(100vh - 5rem);
+      background-color: #112117 !important;
+      border-right: 1px solid #1c2620;
+      z-index: 40;
+      transition: width 0.3s ease-in-out;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebar-toggle:checked~.layout-container aside .nav-label {
+      display: none;
+    }
+
+    /* Dropdown for settings */
+    #settings-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #1c2620;
+      border: 1px solid #29382f;
+      border-radius: 8px;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<!-- 
     Home Page
     - Authentication & role handled by auth.guard.js
     - UI rendering handled in home.page.js
   -->
 
-  <body
-    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300"
-  >
-    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-      <header
-        class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10"
-      >
-        <div class="flex items-center gap-4">
-          <div
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark"
-          >
-            <span class="material-symbols-outlined">school</span>
-          </div>
-          <h2
-            class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block"
-          >
-            VN-UK
-          </h2>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300">
+  <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <header
+      class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
+      <div class="flex items-center gap-4">
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+          <span class="material-symbols-outlined">school</span>
         </div>
+        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+          VN-UK
+        </h2>
+      </div>
 
-        <nav
-          id="nav-menu"
-          class="hidden md:flex items-center justify-center gap-8 flex-1"
-        >
-          <!-- JS render nav based on role (only for student) -->
-        </nav>
+      <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
+        <!-- JS render nav based on role (only for student) -->
+      </nav>
 
-        <div class="flex gap-3 relative">
-          <button
-            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white"
-          >
-            <span class="material-symbols-outlined text-[20px]"
-              >notifications</span
-            >
-          </button>
-          <button
-            id="settings-btn"
-            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white"
-          >
-            <span class="material-symbols-outlined text-[20px]">settings</span>
-          </button>
-          <div id="settings-dropdown" class="hidden">
-            <button
-              id="logout-btn"
-              class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10"
-            >
-              Logout
-            </button>
-          </div>
-          <button
-            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white"
-          >
-            <span class="material-symbols-outlined text-[20px]"
-              >light_mode</span
-            >
-          </button>
-          <button
-            id="sidebar-toggle-btn"
-            class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white"
-          >
-            <span class="material-symbols-outlined text-[20px]">menu</span>
+      <div class="flex gap-3 relative">
+        <button
+          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+        </button>
+        <button id="settings-btn"
+          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+          <span class="material-symbols-outlined text-[20px]">settings</span>
+        </button>
+        <div id="settings-dropdown" class="hidden">
+          <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
+            Logout
           </button>
         </div>
-      </header>
+        <button
+          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+          <span class="material-symbols-outlined text-[20px]">light_mode</span>
+        </button>
 
-      <!-- Admin Sidebar (nav fixed under header) -->
-      <aside id="admin-sidebar" class="flex-col hidden z-40">
-        <div class="p-4 space-y-2">
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden"
-            href="home.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >dashboard</span
-            >
-            <span class="nav-label whitespace-nowrap">Home</span>
-          </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/participants-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >groups</span
-            >
-            <span class="nav-label whitespace-nowrap"
-              >Participant Management</span
-            >
-          </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/check-in-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >fact_check</span
-            >
-            <span class="nav-label whitespace-nowrap">Check-in Management</span>
-          </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/completion-qr-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >qr_code_scanner</span
-            >
-            <span class="nav-label whitespace-nowrap"
-              >Completion QR Management</span
-            >
-          </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/report.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >analytics</span
-            >
-            <span class="nav-label whitespace-nowrap">Report</span>
-          </a>
-        </div>
-        <div
-          class="mt-auto p-6 border-t border-gray-200 dark:border-[#29382f] system-status"
-        >
-          <div class="bg-surface-dark/5 dark:bg-white/5 rounded-xl p-4">
-            <p
-              class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase"
-            >
-              System Status
+        <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+
+        <div id="admin-profile-header" class="flex items-center gap-3">
+          <div class="text-right hidden md:block">
+            <p id="admin-name" class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User
             </p>
-            <div class="flex items-center gap-2 mt-2">
-              <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
-              <p class="text-sm font-medium text-gray-900 dark:text-white">
-                Operational
-              </p>
-            </div>
+            <p id="admin-role-label" class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super
+              Admin</p>
+          </div>
+          <div id="admin-avatar" class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
+            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
           </div>
         </div>
-      </aside>
+        <div id="student-profile-header" class="hidden flex items-center gap-2">
+          <div
+            class="size-10 rounded-full bg-slate-300 dark:bg-[#384b40] flex items-center justify-center text-slate-700 dark:text-white font-bold">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+        </div>
+        <button id="sidebar-toggle-btn"
+          class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
+          <span class="material-symbols-outlined text-[20px]">menu</span>
+        </button>
+      </div>
+    </header>
 
-      <main class="flex-1 flex justify-center w-full px-4 md:px-8 py-6">
-        <div class="flex flex-col max-w-[1200px] w-full gap-8">
-          <div class="@container">
-            <div
-              class="relative flex flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center min-h-[400px] p-8 md:p-12 shadow-2xl"
-              style="
+    <aside id="admin-sidebar">
+      <div class="space-y-2">
+        <a href="home.html" class="nav-item active">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Home</span>
+        </a>
+
+        <a href="admin/participants-management.html" class="nav-item">
+          <span class="material-symbols-outlined">groups</span>
+          <span>Participant</span>
+        </a>
+        <a href="admin/check-in-management.html" class="nav-item">
+          <span class="material-symbols-outlined">fact_check</span>
+          <span>Check-in</span>
+        </a>
+        <a href="admin/completion-qr-management.html" class="nav-item">
+          <span class="material-symbols-outlined">qr_code_scanner</span>
+          <span>Completion QR</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="material-symbols-outlined">analytics</span>
+          <span>Report</span>
+        </a>
+      </div>
+
+      <div class="system-status">
+        <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">System Status</p>
+        <div class="flex items-center gap-2 mt-2">
+          <div class="size-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></div>
+          <p class="text-sm font-medium text-white">Operational</p>
+        </div>
+      </div>
+    </aside>
+    <main id="main-content" class="flex-1 transition-all duration-300 lg:ml-[250px] p-6">
+      <div class="max-w-[1200px] mx-auto w-full flex flex-col gap-8">
+        <div class="@container">
+          <div
+            class="relative flex flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center min-h-[400px] p-8 md:p-12 shadow-2xl"
+            style="
                 background-image: linear-gradient(
                     180deg,
                     rgba(17, 33, 23, 0) 0%,
                     rgba(17, 33, 23, 0.9) 100%
                   ),
                   url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPxLQp92aSOGUIgxoO8m_NmGxdx8kpS3JnbnUPgCpAci7EyiYsVjh8qrJgkjONLubshfxhUWfDEnhsVNVbU84sn6qhV_Mt-KUjup26NQw3MKqdTd4l86ZR-o33Efwq-Ey3Bm6EKPJw0JiXXB7LQfy86smYpLaG2qTt5LIA5U8eC4n2TD8WcVKfNYeo2D2IbGW0tnggxkweF6a51AktkAJPZeR73pE023Y-1i2l-aF4ZJg-abyzYCUMHrZ4og_e5HWYqqx_nSYDQB4');
-              "
-            >
-              <div class="relative z-10 flex flex-col gap-4 max-w-2xl">
-                <h1
-                  id="welcome-title"
-                  class="text-4xl md:text-6xl font-black leading-tight tracking-tight text-white"
-                >
-                  Welcome back, Alex.
-                </h1>
-                <p
-                  class="text-base md:text-lg text-slate-200 font-medium max-w-lg"
-                >
-                  Don't miss out on the Annual Hackathon. Registration closes in
-                  24 hours!
-                </p>
-                <div class="flex gap-4 pt-2">
-                  <button
-                    class="h-12 px-6 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark font-bold text-base tracking-wide transition-all transform hover:scale-105"
-                  >
-                    Register Now
-                  </button>
-                  <button
-                    class="h-12 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-base tracking-wide border border-white/20 transition-all"
-                  >
-                    Learn More
-                  </button>
-                </div>
+              ">
+            <div class="relative z-10 flex flex-col gap-4 max-w-2xl">
+              <h1 id="welcome-title" class="text-4xl md:text-6xl font-black leading-tight tracking-tight text-white">
+                Welcome back, Alex.
+              </h1>
+              <p class="text-base md:text-lg text-slate-200 font-medium max-w-lg">
+                Don't miss out on the Annual Hackathon. Registration closes in
+                24 hours!
+              </p>
+              <div class="flex gap-4 pt-2">
+                <button
+                  class="h-12 px-6 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark font-bold text-base tracking-wide transition-all transform hover:scale-105">
+                  Register Now
+                </button>
+                <button
+                  class="h-12 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-base tracking-wide border border-white/20 transition-all">
+                  Learn More
+                </button>
               </div>
             </div>
           </div>
+        </div>
 
-          <div
-            class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between"
-          >
-            <label
-              class="flex items-center h-14 w-full lg:w-[400px] bg-white dark:bg-[#29382f] rounded-xl px-4 shadow-sm border border-slate-100 dark:border-transparent focus-within:ring-2 focus-within:ring-primary/50 transition-all"
-            >
-              <span
-                class="material-symbols-outlined text-slate-400 dark:text-[#9eb7a8]"
-                >search</span
-              >
-              <input
-                class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#9eb7a8] focus:ring-0 ml-3 text-base"
-                placeholder="Search for events, clubs, or points..."
-              />
-            </label>
+        <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+          <label
+            class="flex items-center h-14 w-full lg:w-[400px] bg-white dark:bg-[#29382f] rounded-xl px-4 shadow-sm border border-slate-100 dark:border-transparent focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+            <span class="material-symbols-outlined text-slate-400 dark:text-[#9eb7a8]">search</span>
+            <input
+              class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#9eb7a8] focus:ring-0 ml-3 text-base"
+              placeholder="Search for events, clubs, or points..." />
+          </label>
 
-            <div
-              class="flex gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide"
-            >
-              <button
-                data-filter="All"
-                class="whitespace-nowrap h-10 px-6 rounded-full bg-primary text-background-dark font-bold text-sm shadow-glow"
-              >
-                All Events
-              </button>
-              <button
-                data-filter="Academic"
-                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent"
-              >
-                Academic
-              </button>
-              <button
-                data-filter="Social"
-                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent"
-              >
-                Social
-              </button>
-              <button
-                data-filter="Sports"
-                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent"
-              >
-                Sports
-              </button>
-              <button
-                data-filter="Workshop"
-                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent"
-              >
-                Workshops
-              </button>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between pt-4">
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
-              Upcoming Events
-            </h2>
-            
-              class="text-sm font-bold text-primary hover:underline flex items-center gap-1"
-              href="#"
-            >
-              View all
-              <span class="material-symbols-outlined text-[18px]"
-                >arrow_forward</span
-              >
-            </a>
-          </div>
-
-          <div
-            id="events-grid"
-            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12"
-          >
-            <!-- JS render events -->
-          </div>
-
-          <div class="flex items-center justify-center gap-2 py-8">
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all"
-            >
-              <span class="material-symbols-outlined text-[20px]"
-                >chevron_left</span
-              >
+          <div class="flex gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
+            <button data-filter="All"
+              class="whitespace-nowrap h-10 px-6 rounded-full bg-primary text-background-dark font-bold text-sm shadow-glow">
+              All Events
             </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-background-dark font-bold shadow-glow"
-            >
-              1
+            <button data-filter="Academic"
+              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+              Academic
             </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400"
-            >
-              2
+            <button data-filter="Social"
+              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+              Social
             </button>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400"
-            >
-              3
+            <button data-filter="Sports"
+              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+              Sports
             </button>
-            <span class="px-2 text-slate-400">...</span>
-            <button
-              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all"
-            >
-              <span class="material-symbols-outlined text-[20px]"
-                >chevron_right</span
-              >
-            </button>
-          </div>
-
-          <div class="fixed bottom-8 right-8 hidden lg:flex z-40">
-            <button
-              class="h-14 w-14 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark shadow-xl hover:shadow-glow transition-all flex items-center justify-center"
-            >
-              <span class="material-symbols-outlined text-3xl"
-                >chat_bubble</span
-              >
+            <button data-filter="Workshop"
+              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+              Workshops
             </button>
           </div>
         </div>
-      </main>
-    </div>
 
-    <!-- Admin Create Modal -->
-    <button
-      id="open-create-modal"
-      class="hidden fixed bottom-8 right-8 z-40 flex items-center gap-2 px-5 py-4 bg-primary hover:bg-[#2ec569] text-background-dark font-bold rounded-full shadow-lg shadow-primary/30 transition-all transform hover:scale-105 active:scale-95"
-    >
-      <span class="material-symbols-outlined text-[24px]">add</span>
-      <span class="hidden sm:inline">Create Event</span>
-    </button>
+        <div class="flex items-center justify-between pt-4">
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+            Upcoming Events
+          </h2>
+        </div>
 
-    <div
-      id="create-modal"
-      class="hidden fixed inset-0 z-[60] items-center justify-center p-4 sm:p-6"
-      role="dialog"
-    >
-      <div
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-        id="close-modal-backdrop"
-      ></div>
-      <div
-        class="relative w-full max-w-2xl bg-white dark:bg-[#1c2621] rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 flex flex-col max-h-[90vh]"
-      >
-        <div
-          class="px-6 py-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between shrink-0"
-        >
-          <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-            Create New Event
-          </h3>
+        <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+          <!-- JS render events -->
+        </div>
+
+        <div class="flex items-center justify-center gap-2 py-8">
           <button
-            id="close-create-modal"
-            class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5"
-          >
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        <div class="p-6 overflow-y-auto space-y-6">
-          <div class="space-y-4">
-            <div class="space-y-1.5">
-              <label
-                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                >Event Title</label
-              >
-              <input
-                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                placeholder="e.g. Annual Tech Symposium"
-                type="text"
-              />
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label
-                  class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                  >Date & Time</label
-                >
-                <input
-                  class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                  type="datetime-local"
-                />
-              </div>
-              <div class="space-y-1.5">
-                <label
-                  class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                  >Venue</label
-                >
-                <input
-                  class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                  placeholder="Room or Location"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div class="space-y-1.5">
-                <label
-                  class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                  >DRL Points</label
-                >
-                <input
-                  class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                  placeholder="0"
-                  type="number"
-                />
-              </div>
-              <div class="space-y-1.5">
-                <label
-                  class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                  >Status</label
-                >
-                <select
-                  class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                >
-                  <option>Upcoming</option>
-                  <option>Ongoing</option>
-                  <option>Closed</option>
-                </select>
-              </div>
-            </div>
-            <div class="space-y-1.5">
-              <label
-                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide"
-                >Description</label
-              >
-              <textarea
-                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
-                placeholder="Event details..."
-                rows="4"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-        <div
-          class="px-6 py-5 bg-gray-50 dark:bg-black/20 flex items-center justify-end gap-3 border-t border-gray-100 dark:border-white/5 shrink-0 rounded-b-3xl"
-        >
-          <button
-            id="cancel-create-modal"
-            class="px-6 py-2.5 rounded-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
-          >
-            Cancel
+            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
+            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
           </button>
           <button
-            class="px-6 py-2.5 rounded-full text-sm font-bold bg-primary text-black hover:bg-[#2ec569] shadow-lg shadow-primary/20 transition-all"
-          >
-            Create Event
+            class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-background-dark font-bold shadow-glow">
+            1
+          </button>
+          <button
+            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
+            2
+          </button>
+          <button
+            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
+            3
+          </button>
+          <span class="px-2 text-slate-400">...</span>
+          <button
+            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
+            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+          </button>
+        </div>
+
+        <div class="fixed bottom-8 right-8 hidden lg:flex z-40">
+          <button
+            class="h-14 w-14 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark shadow-xl hover:shadow-glow transition-all flex items-center justify-center">
+            <span class="material-symbols-outlined text-3xl">chat_bubble</span>
           </button>
         </div>
       </div>
-    </div>
+    </main>
+  </div>
 
-    
-    <script type="module" src="./js/pages/home.page.js"></script>
-  </body>
+  <!-- Admin Create Modal -->
+  <button id="open-create-modal"
+    class="hidden fixed bottom-8 right-8 z-40 flex items-center gap-2 px-5 py-4 bg-primary hover:bg-[#2ec569] text-background-dark font-bold rounded-full shadow-lg shadow-primary/30 transition-all transform hover:scale-105 active:scale-95">
+    <span class="material-symbols-outlined text-[24px]">add</span>
+    <span class="hidden sm:inline">Create Event</span>
+  </button>
+
+  <div id="create-modal" class="hidden fixed inset-0 z-[60] items-center justify-center p-4 sm:p-6" role="dialog">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" id="close-modal-backdrop"></div>
+    <div
+      class="relative w-full max-w-2xl bg-white dark:bg-[#1c2621] rounded-3xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 flex flex-col max-h-[90vh]">
+      <div class="px-6 py-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between shrink-0">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+          Create New Event
+        </h3>
+        <button id="close-create-modal"
+          class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="p-6 overflow-y-auto space-y-6">
+        <div class="space-y-4">
+          <div class="space-y-1.5">
+            <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Event
+              Title</label>
+            <input
+              class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
+              placeholder="e.g. Annual Tech Symposium" type="text" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Date &
+                Time</label>
+              <input
+                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
+                type="datetime-local" />
+            </div>
+            <div class="space-y-1.5">
+              <label
+                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Venue</label>
+              <input
+                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
+                placeholder="Room or Location" type="text" />
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">DRL
+                Points</label>
+              <input
+                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
+                placeholder="0" type="number" />
+            </div>
+            <div class="space-y-1.5">
+              <label
+                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Status</label>
+              <select
+                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1">
+                <option>Upcoming</option>
+                <option>Ongoing</option>
+                <option>Closed</option>
+              </select>
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            <label
+              class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Description</label>
+            <textarea
+              class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white px-4 py-3 focus:border-primary focus:ring-primary focus:ring-1"
+              placeholder="Event details..." rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+      <div
+        class="px-6 py-5 bg-gray-50 dark:bg-black/20 flex items-center justify-end gap-3 border-t border-gray-100 dark:border-white/5 shrink-0 rounded-b-3xl">
+        <button id="cancel-create-modal"
+          class="px-6 py-2.5 rounded-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+          Cancel
+        </button>
+        <button
+          class="px-6 py-2.5 rounded-full text-sm font-bold bg-primary text-black hover:bg-[#2ec569] shadow-lg shadow-primary/20 transition-all">
+          Create Event
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="module" src="./js/pages/home.page.js"></script>
+</body>
+
 </html>
