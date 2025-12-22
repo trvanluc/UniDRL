@@ -74,12 +74,16 @@ export function studentGuard() {
  * Cho phép manager, advisor truy cập
  */
 export function adminGuard() {
-  const user = requireRole([ROLES.MANAGER, ROLES.ADVISOR]);
-  
+  const user = requireRole([
+    ROLES.ADMIN,
+    ROLES.MANAGER,
+    ROLES.ADVISOR
+  ]);
+
   if (!user) {
     console.log("❌ Access denied: Not an admin");
   }
-  
+
   return user;
 }
 
