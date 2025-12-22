@@ -35,6 +35,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
 
+  const tab = urlParams.get("tab");
+
+  if (tab === "qr") {
+    const qrTabRadio = document.getElementById("tab-qr");
+    if (qrTabRadio) {
+      qrTabRadio.checked = true;
+    }
+  }
+
+
   if (!eventId) {
     console.error("Event ID not found in URL");
     alert("Event ID not found");
