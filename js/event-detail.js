@@ -415,3 +415,23 @@ function handleRegistrationSubmit(eventId) {
 }
 // Giả sử HTML có modal registerModal với form, successMessage, submitBtn
 // document.getElementById('registerForm').addEventListener('submit', (e) => { e.preventDefault(); handleRegistrationSubmit(eaventId); });
+
+export function createCompletionQR(eventId) {
+    const qrData = {
+      eventId,
+      code: `COMPLETION-${eventId}-${Date.now()}`,
+      createdAt: Date.now()
+    };
+  
+    localStorage.setItem(
+      `completionQR_${eventId}`,
+      JSON.stringify(qrData)
+    );
+  
+    return qrData.code;
+}
+  
+export function regenerateCompletionQR(eventId) {
+    return createCompletionQR(eventId);
+}
+  
