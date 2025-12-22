@@ -127,5 +127,26 @@ export const EVENTS = [
     organizer: "Student Affairs",
     organizerDept: "University Administration",
     organizerAvatar: "https://ui-avatars.com/api/?name=Leadership&background=ef4444&color=fff"
+  },
+  
+  {
+     id: "blockchain-workshop",
+    title: "Blockchain & Web3 Workshop",
+    category: "Workshop",
+    status: "upcoming",
+    points: 35,
+    date: "May 15, 2024",
+    time: "1:00 PM – 5:00 PM",
+    location: "Tech Hub",
+    room: "Innovation Lab",
+    seats: { total: 35, left: 18 },
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
+    description: `
+      <p>Explore the fundamentals of blockchain technology and Web3 development.</p>
+      <p>Learn about smart contracts, decentralized applications, and the future of the internet.</p>
+    `,
+    organizer: "Blockchain Club",
+    organizerDept: "Faculty of Computer Science",
+    organizerAvatar: "https://ui-avatars.com/api/?name=Blockchain+Club&background=6366f1&color=fff"
   }
 ];
