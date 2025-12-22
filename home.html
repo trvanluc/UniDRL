@@ -175,58 +175,51 @@
       </header>
 
       <!-- Admin Sidebar (nav fixed under header) -->
-      <aside id="admin-sidebar" class="flex-col hidden z-40">
-        <div class="p-4 space-y-2">
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden"
-            href="home.html"
-          >
+      <aside
+  id="admin-sidebar"
+  class="fixed left-0 top-0 h-screen w-72 flex flex-col hidden z-40 bg-white dark:bg-[#0f1a14] border-r border-gray-200 dark:border-[#29382f]"
+>
+        <nav class="p-4 space-y-2">
+          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden"
+            href="home.html">
+
             <span class="material-symbols-outlined text-[24px] shrink-0"
-              >dashboard</span
-            >
+              aria-hidden="true">
+              dashboard
+            </span>
+
             <span class="nav-label whitespace-nowrap">Home</span>
           </a>
-          
+          <a
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/participants-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >groups</span
-            >
+            href="admin/participants-management.html">
+
+            <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
             <span class="nav-label whitespace-nowrap"
-              >Participant Management</span
-            >
+              >Participant Management</span>
           </a>
-          
+          <a
             class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/check-in-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >fact_check</span
-            >
+            href="admin/check-in-management.html">
+
+            <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
             <span class="nav-label whitespace-nowrap">Check-in Management</span>
           </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-            href="admin/completion-qr-management.html"
-          >
-            <span class="material-symbols-outlined text-[24px] shrink-0"
-              >qr_code_scanner</span
-            >
+          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+            href="admin/completion-qr-management.html">
+
+            <span class="material-symbols-outlined text-[24px] shrink-0">qr_code_scanner</span>
             <span class="nav-label whitespace-nowrap"
-              >Completion QR Management</span
-            >
+              >Completion QR Management</span>
           </a>
-          
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
             href="admin/report.html"
           >
             <span class="material-symbols-outlined text-[24px] shrink-0"
-              >analytics</span
-            >
+              >analytics</span>
             <span class="nav-label whitespace-nowrap">Report</span>
           </a>
-        </div>
+        </nav>
         <div
           class="mt-auto p-6 border-t border-gray-200 dark:border-[#29382f] system-status"
         >
@@ -274,16 +267,8 @@
                   24 hours!
                 </p>
                 <div class="flex gap-4 pt-2">
-                  <button
-                    class="h-12 px-6 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark font-bold text-base tracking-wide transition-all transform hover:scale-105"
-                  >
-                    Register Now
-                  </button>
-                  <button
-                    class="h-12 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-base tracking-wide border border-white/20 transition-all"
-                  >
-                    Learn More
-                  </button>
+                  
+                
                 </div>
               </div>
             </div>
@@ -345,14 +330,8 @@
             <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
               Upcoming Events
             </h2>
-            
-              class="text-sm font-bold text-primary hover:underline flex items-center gap-1"
-              href="#"
-            >
-              View all
-              <span class="material-symbols-outlined text-[18px]"
-                >arrow_forward</span
-              >
+
+              
             </a>
           </div>
 
@@ -396,14 +375,7 @@
             </button>
           </div>
 
-          <div class="fixed bottom-8 right-8 hidden lg:flex z-40">
-            <button
-              class="h-14 w-14 rounded-full bg-primary hover:bg-[#2ec569] text-background-dark shadow-xl hover:shadow-glow transition-all flex items-center justify-center"
-            >
-              <span class="material-symbols-outlined text-3xl"
-                >chat_bubble</span
-              >
-            </button>
+          
           </div>
         </div>
       </main>
