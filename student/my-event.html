@@ -71,67 +71,6 @@
       background: #36e27b;
     }
 
-    /* Sidebar Layout - giữ nguyên để tương lai dùng nếu cần */
-    #admin-sidebar {
-      position: fixed;
-      left: 0;
-      top: 5rem;
-      height: calc(100vh - 5rem);
-      width: 250px;
-      background-color: #112117 !important;
-      border-right: 1px solid #1c2620;
-      display: flex;
-      flex-direction: column;
-      padding: 20px 12px;
-      z-index: 40;
-      transition: width 0.3s ease-in-out;
-    }
-
-    #admin-sidebar.hidden {
-      display: none !important;
-    }
-
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 16px;
-      color: #94a3b8;
-      text-decoration: none !important;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.2s;
-      margin-bottom: 4px;
-    }
-
-    .nav-item.active {
-      background-color: #163020 !important;
-      color: #34d399 !important;
-      font-weight: 700;
-    }
-
-    .nav-item:hover:not(.active) {
-      background-color: rgba(255, 255, 255, 0.05);
-      color: #fff;
-    }
-
-    .system-status {
-      margin-top: auto;
-      padding: 16px;
-      background: #0d1f14;
-      border-radius: 16px;
-      border: 1px solid #1a2e23;
-      margin-bottom: 10px;
-    }
-
-    @media (min-width: 1024px) {
-      .layout-container main {
-        margin-left: 16rem;
-        transition: margin-left 0.3s ease-in-out;
-      }
-    }
-
     /* Dropdown for settings */
     #settings-dropdown {
       display: none;
@@ -146,12 +85,9 @@
   </style>
 </head>
 
-  <body
-    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-x-hidden"
-  >
-    <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-      <header
-      class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased overflow-x-hidden">
+  <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+    <header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
       <div class="flex items-center gap-4">
         <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
           <span class="material-symbols-outlined">school</span>
@@ -171,12 +107,10 @@
       </nav>
 
       <div class="flex gap-3 relative">
-        <button
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
           <span class="material-symbols-outlined text-[20px]">notifications</span>
         </button>
-        <button id="settings-btn"
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
           <span class="material-symbols-outlined text-[20px]">settings</span>
         </button>
         <div id="settings-dropdown" class="hidden">
@@ -184,449 +118,174 @@
             Logout
           </button>
         </div>
-        <button
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
           <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
         </button>
 
         <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
 
-<!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
-<div class="flex items-center justify-center">
-  <div id="user-avatar-initial" 
-       class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
-    A
-  </div>
-  <button id="sidebar-toggle-btn"
-            class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
+        <div class="flex items-center justify-center">
+          <div id="user-avatar-initial" class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
+            A
+          </div>
+          <button id="sidebar-toggle-btn" class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
             <span class="material-symbols-outlined text-[20px]">menu</span>
           </button>
-</div>
-
-        <!-- Admin profile giữ nguyên cấu trúc nhưng ẩn đi vì đây là trang student -->
-        <div id="admin-profile-header" class="hidden flex items-center gap-3">
-          <div class="text-right hidden md:block">
-            <p id="admin-name" class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User</p>
-            <p id="admin-role-label" class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super Admin</p>
-          </div>
-          <div id="admin-avatar" class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
-            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
-          </div>
         </div>
-
-        <!-- Không có sidebar toggle vì đây là student portal, không có sidebar admin -->
       </div>
     </header>
 
-      <main class="flex-1 flex justify-center py-10 px-4 md:px-10">
-        <div class="w-full max-w-[1200px] flex flex-col gap-8">
-          <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h1
-                class="text-slate-900 dark:text-white tracking-tight text-[32px] font-bold leading-tight"
-              >
-                Active Tickets
-              </h1>
-              <p class="text-gray-400 text-sm mt-1">
-                Manage your upcoming events and attendance.
-              </p>
-            </div>
-            <div class="flex gap-3">
-              <button
-                class="flex items-center justify-center gap-2 rounded-full h-10 px-5 bg-[#29382f] hover:bg-[#34463c] text-white text-sm font-medium transition-colors"
-              >
-                <span class="material-symbols-outlined text-[18px]">sort</span>
-                <span>Sort by Date</span>
-              </button>
-              <button
-                class="flex items-center justify-center gap-2 rounded-full h-10 px-5 bg-primary hover:bg-[#2fd16f] text-background-dark text-sm font-bold transition-colors"
-              >
-                <span class="material-symbols-outlined text-[18px]"
-                  >qr_code_scanner</span
-                >
-                <span>Scan Code</span>
-              </button>
-            </div>
+    <!-- MAIN CONTENT MỚI -->
+    <main class="flex-1 flex justify-center py-10 px-4 md:px-10">
+      <div class="w-full max-w-[1200px] flex flex-col gap-8">
+        
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 class="text-slate-900 dark:text-white tracking-tight text-[32px] font-bold leading-tight">Your Tickets</h1>
+            <p class="text-gray-400 text-sm mt-1">Manage your upcoming events and attendance.</p>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div
-              class="bg-card-dark rounded-[2rem] overflow-hidden flex flex-col group border border-[#29382f] hover:border-primary/50 transition-colors duration-300"
-            >
-              <div
-                class="relative h-40 bg-cover bg-center"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFMHZbWenbxzUmlcKYkcBouqomB8qSwVXLFEi9YtLp3ZigcuHxpI3s7uPz0i_6oJxRpqRv2iu_vf_jqUmyKk3oVHsgCrhFgXiBTvz_m4rRNHEd4veWzvs46vpTaPAHmw6lT76xInumvQP_NCwufR_bB8xmW8WTPFEoLBZQIIETesDjt8TR1FMNAGbxzgRLl4DDmuJ_4A1N-UgYPGH1yEkZu3b9alk2H7l4GFdfm3p83y4MnrzcrmblPRTSaiOyBRd_5gXjpVAtUY0');
-                "
-              >
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent"
-                ></div>
-                <div class="absolute top-4 left-4">
-                  <span
-                    class="bg-black/60 backdrop-blur text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/20"
-                    >+15 DRL Points</span
-                  >
-                </div>
-                <div class="absolute bottom-4 left-4 right-4">
-                  <p
-                    class="text-primary text-xs font-bold uppercase tracking-wider mb-1"
-                  >
-                    Workshop
-                  </p>
-                  <h3
-                    class="text-white text-xl font-bold leading-tight line-clamp-2"
-                  >
-                    AI in Modern Engineering
-                  </h3>
-                </div>
-              </div>
-              <div class="p-6 flex flex-col flex-1 gap-6">
-                <div
-                  class="flex justify-between items-start text-sm text-gray-300"
-                >
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >calendar_today</span
-                    >
-                    <span>Oct 24, 2:00 PM</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >location_on</span
-                    >
-                    <span>Hall B</span>
-                  </div>
-                </div>
-                <div
-                  class="flex flex-col items-center bg-[#111714] rounded-2xl p-4 border border-dashed border-[#29382f] relative group-hover:border-primary/30 transition-colors"
-                >
-                  <div
-                    class="absolute -left-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <div
-                    class="absolute -right-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <p
-                    class="text-[10px] uppercase tracking-widest text-gray-500 mb-3 font-bold"
-                  >
-                    Entry Ticket
-                  </p>
-                  <div
-                    class="bg-white p-2 rounded-lg mb-3 shadow-[0_0_15px_rgba(54,226,123,0.15)]"
-                  >
-                    <img
-                      alt="QR Code for Ticket A1-99X"
-                      class="size-32 mix-blend-multiply"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8d308EeWXd_96DI3GUlIwJBaIzBzaR68ZWR-6xqruCfCDDM8BbB5YuI6oX8zW6o-UwCYfd-ZTqNJWCurGloy5fjSUhZDKYDwxbV3QWSB6ahnX9IfC5o9BfffWbdQtze5ju5p1RAOriLqLNiYuIITCBm1d-ndfZ4OLjjKDaz_6U2sdByiO5Ur5lzZsTWTyYppdlSH7oPHL3s42BaVootc8tZgvRjbTovaqr_IDHaopw2aFOVGES1Wm2jSj14EM-XZEd3tiV3o3e7A"
-                    />
-                  </div>
-                  <div class="text-center">
-                    <p class="text-gray-400 text-xs">Backup Code</p>
-                    <p
-                      class="text-white font-mono text-lg font-bold tracking-widest select-all"
-                    >
-                      A1-99X
-                    </p>
-                  </div>
-                </div>
-                <div class="mt-auto space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-medium text-gray-400"
-                      >Status</span
-                    >
-                    <span
-                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20"
-                    >
-                      <span class="size-1.5 rounded-full bg-yellow-500"></span>
-                      Registered
-                    </span>
-                  </div>
-                  <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-400 ml-1"
-                      >Complete Attendance</label
-                    >
-                    <div class="flex gap-2">
-                      <input
-                        class="w-full bg-input-dark border-none rounded-full px-4 text-sm text-white placeholder-gray-500 focus:ring-1 focus:ring-primary h-10"
-                        placeholder="Code"
-                        type="text"
-                      />
-                      <button
-                        class="bg-[#29382f] hover:bg-primary hover:text-background-dark text-white rounded-full size-10 flex items-center justify-center transition-colors"
-                      >
-                        <span class="material-symbols-outlined text-[20px]"
-                          >check</span
-                        >
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-card-dark rounded-[2rem] overflow-hidden flex flex-col group border border-primary/30 shadow-[0_0_20px_rgba(54,226,123,0.05)] transition-colors duration-300"
-            >
-              <div
-                class="relative h-40 bg-cover bg-center"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOCN1m7s0FHW140JX_oyC9L98y57UwaGnycRCcu2gOvu_EOx7O0U0nMTaHYLYQcSXkkhrLGkFpBnFFh9MbOtsioyXxZdvbbl_qI4FNCF48aDyjj04FB_gWS1zhYzOYjGWizwnzDobn6C45ZTpTBnO6SZgYWcH9G5-YBQYEqAFDL32MqO8yZyK-qnuDUYp3u0ZnVFWUA8TUjGy496F-AW9uj543tHMWoggs9IRR0Iixff34NvkfyV0eaDWhYoKCvstcTMbuGf4dmmE');
-                "
-              >
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent"
-                ></div>
-                <div class="absolute top-4 left-4">
-                  <span
-                    class="bg-black/60 backdrop-blur text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/20"
-                    >+20 DRL Points</span
-                  >
-                </div>
-                <div class="absolute bottom-4 left-4 right-4">
-                  <p
-                    class="text-primary text-xs font-bold uppercase tracking-wider mb-1"
-                  >
-                    Volunteering
-                  </p>
-                  <h3 class="text-white text-xl font-bold leading-tight">
-                    Campus Sustainability Walk
-                  </h3>
-                </div>
-              </div>
-              <div class="p-6 flex flex-col flex-1 gap-6">
-                <div
-                  class="flex justify-between items-start text-sm text-gray-300"
-                >
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >calendar_today</span
-                    >
-                    <span>Oct 25, 10:00 AM</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >location_on</span
-                    >
-                    <span>Main Green</span>
-                  </div>
-                </div>
-                <div
-                  class="flex flex-col items-center bg-[#111714] rounded-2xl p-4 border border-dashed border-[#29382f] relative opacity-60"
-                >
-                  <div
-                    class="absolute -left-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <div
-                    class="absolute -right-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <p
-                    class="text-[10px] uppercase tracking-widest text-gray-500 mb-3 font-bold"
-                  >
-                    Entry Ticket
-                  </p>
-                  <div class="bg-white/10 p-2 rounded-lg mb-3">
-                    <img
-                      alt="QR Code for Ticket CSW-22"
-                      class="size-32 opacity-20"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfKcA4QWljT1oW4KFVyHl9IpGB5cXaK1FoIZJCQRuhNKP3GtAACCLdw84j1-hM8dKsPgFFVA06qA4VYf9FhHgFCFeL7xMj-B1Czpxnl4-nAO_KWihYSwRuFwmyKbVYBN7EJ7v0eZt0uLmTwnASTt0Etg5eLHa0avkhkV-ZyI1-jbS6pVaDsGCGa_hsQOgdzQgIK1wjPnRn3B2fQ8W6wf2BJO_uqKa6-9zgdgec0WSIVKWEz2VWlf-rashu9i1D6AN6Uyis9gC66vM"
-                    />
-                  </div>
-                  <div class="text-center">
-                    <p class="text-gray-400 text-xs">Ticket Used</p>
-                    <p
-                      class="text-gray-500 font-mono text-lg font-bold tracking-widest line-through"
-                    >
-                      CSW-22
-                    </p>
-                  </div>
-                  <div
-                    class="absolute inset-0 flex items-center justify-center"
-                  >
-                    <div
-                      class="bg-green-500/20 rounded-full p-2 backdrop-blur-sm"
-                    >
-                      <span
-                        class="material-symbols-outlined text-green-500 text-4xl"
-                        >check_circle</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="mt-auto space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-medium text-gray-400"
-                      >Status</span
-                    >
-                    <span
-                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20"
-                    >
-                      <span
-                        class="size-1.5 rounded-full bg-green-500 animate-pulse"
-                      ></span>
-                      Checked In
-                    </span>
-                  </div>
-                  <div
-                    class="space-y-2 p-3 bg-primary/5 rounded-2xl border border-primary/20"
-                  >
-                    <label class="text-xs font-bold text-primary ml-1"
-                      >Event in progress</label
-                    >
-                    <div class="flex gap-2">
-                      <input
-                        class="w-full bg-background-dark border-none rounded-full px-4 text-sm text-white placeholder-gray-500 focus:ring-1 focus:ring-primary h-10"
-                        placeholder="Enter End Code"
-                        type="text"
-                      />
-                      <button
-                        class="bg-primary hover:bg-[#2fd16f] text-background-dark rounded-full size-10 flex items-center justify-center transition-colors shadow-[0_0_10px_rgba(54,226,123,0.3)]"
-                      >
-                        <span
-                          class="material-symbols-outlined text-[20px] font-bold"
-                          >arrow_forward</span
-                        >
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-card-dark rounded-[2rem] overflow-hidden flex flex-col group border border-[#29382f] hover:border-primary/50 transition-colors duration-300"
-            >
-              <div
-                class="relative h-40 bg-cover bg-center"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJ0HPOglTYKpNnZ_DDfsBSpibj_0Dnc38f46sokMLkEs1o7igoBokm4rFUDAPp2gdgA9Nz50NXk-nvKUnHOft7AIhRoup9vCKYLnEKlHdufFoNqrFWh4KsWaOz8MEYg4Tie_1uMj3LOOamuW7kKXqUGSJjTrQRx--r2DyOjfejPcZbLGZA6tYy0-To9qXx4ZekrE-dflYfRa2vdMnepOzFxNaUZJHCKu1odi8h_jUF9uEXmstOLIR9ga_9lwURCFFBBE14m-47ocY');
-                "
-              >
-                <div
-                  class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent"
-                ></div>
-                <div class="absolute top-4 left-4">
-                  <span
-                    class="bg-black/60 backdrop-blur text-primary text-xs font-bold px-3 py-1.5 rounded-full border border-primary/20"
-                    >+10 DRL Points</span
-                  >
-                </div>
-                <div class="absolute bottom-4 left-4 right-4">
-                  <p
-                    class="text-primary text-xs font-bold uppercase tracking-wider mb-1"
-                  >
-                    Seminar
-                  </p>
-                  <h3 class="text-white text-xl font-bold leading-tight">
-                    Cybersecurity Basics
-                  </h3>
-                </div>
-              </div>
-              <div class="p-6 flex flex-col flex-1 gap-6">
-                <div
-                  class="flex justify-between items-start text-sm text-gray-300"
-                >
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >calendar_today</span
-                    >
-                    <span>Oct 28, 4:00 PM</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <span
-                      class="material-symbols-outlined text-[18px] text-primary"
-                      >location_on</span
-                    >
-                    <span>Online</span>
-                  </div>
-                </div>
-                <div
-                  class="flex flex-col items-center bg-[#111714] rounded-2xl p-4 border border-dashed border-[#29382f] relative group-hover:border-primary/30 transition-colors"
-                >
-                  <div
-                    class="absolute -left-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <div
-                    class="absolute -right-3 top-1/2 -translate-y-1/2 size-6 rounded-full bg-card-dark"
-                  ></div>
-                  <p
-                    class="text-[10px] uppercase tracking-widest text-gray-500 mb-3 font-bold"
-                  >
-                    Entry Ticket
-                  </p>
-                  <div
-                    class="bg-white p-2 rounded-lg mb-3 shadow-[0_0_15px_rgba(54,226,123,0.15)]"
-                  >
-                    <img
-                      alt="QR Code for Ticket SEC-44"
-                      class="size-32 mix-blend-multiply"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-cDQJGr-3BTtwh73FVlEtShw2ejKV2WILzLSE4k10razygxOgN6WsNUAZ_IojD_ATHvbgUiWyzmQhTQ9Lxp-w_wotPhGBAS0VSUtIQC3vcfQr1-ubq4z9EaFzsKoP99h2QmT2m96EmR9nHxbJRdmm36V9Ei9siuSYk2hgYZDk-ee4zmrSpSzhbAJKOGoX77LlEVPZSmML-v11vcB7jEXyLLUSmcDW9V8IKorvo9Da-ZY9FhQa0EEI8ZCbu4WQQZlkeAQ_wtGxEuM"
-                    />
-                  </div>
-                  <div class="text-center">
-                    <p class="text-gray-400 text-xs">Backup Code</p>
-                    <p
-                      class="text-white font-mono text-lg font-bold tracking-widest select-all"
-                    >
-                      SEC-44
-                    </p>
-                  </div>
-                </div>
-                <div class="mt-auto space-y-4">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-medium text-gray-400"
-                      >Status</span
-                    >
-                    <span
-                      class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-500 text-xs font-bold border border-yellow-500/20"
-                    >
-                      <span class="size-1.5 rounded-full bg-yellow-500"></span>
-                      Registered
-                    </span>
-                  </div>
-                  <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-400 ml-1"
-                      >Complete Attendance</label
-                    >
-                    <div class="flex gap-2">
-                      <input
-                        class="w-full bg-input-dark border-none rounded-full px-4 text-sm text-white placeholder-gray-500 focus:ring-1 focus:ring-primary h-10"
-                        placeholder="Code"
-                        type="text"
-                      />
-                      <button
-                        class="bg-[#29382f] hover:bg-primary hover:text-background-dark text-white rounded-full size-10 flex items-center justify-center transition-colors"
-                      >
-                        <span class="material-symbols-outlined text-[20px]"
-                          >check</span
-                        >
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="w-full flex justify-center pt-8 pb-20">
-            <button
-              class="text-gray-500 hover:text-white font-medium text-sm flex items-center gap-2 transition-colors"
-            >
-              <span>Looking for more events?</span>
-              <span class="text-primary font-bold">Browse Catalog</span>
-              <span class="material-symbols-outlined text-[16px] text-primary"
-                >arrow_forward</span
-              >
+          <div class="flex gap-3">
+            <button class="flex items-center justify-center gap-2 rounded-full h-10 px-5 bg-[#29382f] hover:bg-[#34463c] text-white text-sm font-medium transition-colors">
+              <span class="material-symbols-outlined text-[18px]">sort</span>
+              <span>Sort by Date</span>
+            </button>
+            <button class="flex items-center justify-center gap-2 rounded-full h-10 px-5 bg-primary hover:bg-[#2fd16f] text-background-dark text-sm font-bold transition-colors">
+              <span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+              <span>Scan Code</span>
             </button>
           </div>
         </div>
-      </main>
-    </div>
-    <script type="module" src="../js/pages/student-base.page.js"></script>
-  </body>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
+            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2940&auto=format&fit=crop');">
+              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+15 DRL</span>
+              </div>
+              <div class="absolute bottom-3 left-4 right-4">
+                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Workshop</p>
+                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">AI in Modern Engineering</h3>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex flex-col gap-1">
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                    Oct 24 • 2:00 PM
+                  </span>
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+                    Hall B
+                  </span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">
+                  Registered
+                </span>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-[#29382f]">
+                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-[#29382f] hover:bg-primary hover:text-background-dark text-white text-sm font-bold transition-all shadow-lg hover:shadow-primary/25">
+                  <span>Open Ticket</span>
+                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-green-500/30 transition-colors group">
+            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2940&auto=format&fit=crop');">
+              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+20 DRL</span>
+              </div>
+              <div class="absolute bottom-3 left-4 right-4">
+                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Volunteering</p>
+                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">Campus Clean Up</h3>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex flex-col gap-1">
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                    Oct 25 • 10:00 AM
+                  </span>
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+                    Main Green
+                  </span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
+                  Completed
+                </span>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-[#29382f]">
+                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl border border-[#29382f] text-gray-400 hover:text-white hover:bg-[#29382f] text-sm font-medium transition-all">
+                  <span>View History</span>
+                  <span class="material-symbols-outlined text-[18px]">history</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
+            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2940&auto=format&fit=crop');">
+              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
+              <div class="absolute top-3 left-3">
+                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+10 DRL</span>
+              </div>
+              <div class="absolute bottom-3 left-4 right-4">
+                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Seminar</p>
+                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">Cybersecurity Basics</h3>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex flex-col gap-1">
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
+                    Oct 28 • 4:00 PM
+                  </span>
+                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
+                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+                    Online (Zoom)
+                  </span>
+                </div>
+                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">
+                  Registered
+                </span>
+              </div>
+
+              <div class="mt-auto pt-4 border-t border-[#29382f]">
+                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-[#29382f] hover:bg-primary hover:text-background-dark text-white text-sm font-bold transition-all shadow-lg hover:shadow-primary/25">
+                  <span>Open Ticket</span>
+                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="w-full flex justify-center pt-8 pb-20">
+          <button class="text-gray-500 hover:text-white font-medium text-sm flex items-center gap-2 transition-colors">
+            <span>Looking for more events?</span>
+            <span class="text-primary font-bold">Browse Catalog</span>
+            <span class="material-symbols-outlined text-[16px] text-primary">arrow_forward</span>
+          </button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../js/pages/student-base.page.js"></script>
+</body>
 </html>
