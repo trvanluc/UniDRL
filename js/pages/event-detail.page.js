@@ -14,6 +14,11 @@ import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Storage } from "../utils/storage.js";
 import { Theme } from "../utils/theme.js";
+// import {
+//   createCompletionQR,
+//   regenerateCompletionQR
+// } from "./event-detail.js";
+
 
 /**
  * =========================
@@ -35,6 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
 
+  const tab = urlParams.get("tab");
+
+  if (tab === "qr") {
+    const qrTabRadio = document.getElementById("tab-qr");
+    if (qrTabRadio) {
+      qrTabRadio.checked = true;
+    }
+  }
+
+
   if (!eventId) {
     console.error("Event ID not found in URL");
     alert("Event ID not found");
@@ -43,7 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 3. Find event in data
-  const event = EVENTS.find(e => e.id === eventId);
+  // Load events from localStorage first
+  let storedEvents = JSON.parse(localStorage.getItem("events"));
+
+  // Seed events nếu chưa có
+  if (!storedEvents) {
+    storedEvents = EVENTS;
+    localStorage.setItem("events", JSON.stringify(EVENTS));
+  }
+
+  // Find current event
+  const event = storedEvents.find(e => e.id === eventId);
+
 
   if (!event) {
     console.error("Event not found:", eventId);
@@ -341,7 +367,10 @@ function renderTabContent(user, event) {
       Completion QR
     `;
 
-    const completionQRCode = `EVT-${event.id.toUpperCase()}-COMPLETION`;
+    const storedQRs = JSON.parse(localStorage.getItem("completionQRs")) || {};
+    const completionQRCode =
+    storedQRs[event.id] || generateCompletionQR(event.id);
+
 
     tabQrContent.innerHTML = `
       <div class="w-full h-full min-h-[500px] flex flex-col py-8 px-4 md:px-8 relative animate-in fade-in zoom-in duration-300">
@@ -350,10 +379,13 @@ function renderTabContent(user, event) {
         </h2>
         <div class="flex-grow flex flex-col items-center justify-center gap-8 pb-10">
           <div class="bg-white dark:bg-[#1c2621] p-8 rounded-3xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active max-w-md w-full">
-            <svg class="w-full h-auto max-w-[300px] max-h-[300px] mx-auto" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <rect fill="white" height="100" width="100" x="0" y="0"></rect>
-              <path fill="currentColor" d="M10 10h20v20h-20zM70 10h20v20h-20zM10 70h20v20h-20zM35 10h5v5h-5zM45 10h5v5h-5zM55 10h5v5h-5zM35 20h5v5h-5zM45 20h5v5h-5zM55 20h5v5h-5zM10 35h5v5h-5zM20 35h5v5h-5zM35 35h30v30h-30zM70 35h5v5h-5zM80 35h5v5h-5zM70 45h5v5h-5zM80 45h5v5h-5zM35 70h5v5h-5zM45 70h5v5h-5zM55 70h5v5h-5zM70 70h20v20h-20z"/>
-            </svg>
+            <div class="w-[260px] h-[260px] flex items-center justify-center bg-white rounded-xl mx-auto">
+              <img
+                id="completion-qr-img"
+                class="w-full h-full object-contain hidden"
+                alt="Completion QR Code"
+              />
+            </div>
             <div class="relative mt-4">
               <input 
                 class="w-full text-center text-xl font-mono text-gray-900 dark:text-white placeholder-gray-400 bg-gray-100 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-default" 
@@ -388,6 +420,8 @@ function renderTabContent(user, event) {
         </div>
       </div>
     `;
+    const openBtn = document.getElementById("open-qr-btn");
+    const regenerateBtn = document.getElementById("regenerate-qr-btn");
 
     // Event listeners for admin actions
     setupAdminQRActions(event);
@@ -461,9 +495,23 @@ function renderEventActions(user, event) {
     // Edit event listener
     const editBtn = document.getElementById("edit-event-btn");
     editBtn?.addEventListener("click", () => {
-      alert(`Opening event editor for: ${event.title}`);
-      // TODO: Redirect to edit page or open modal
+      const newDesc = prompt("Edit event description:", event.description);
+      if (!newDesc) return;
+
+      event.description = newDesc;
+
+      // Lưu mock vào localStorage
+      let events = JSON.parse(localStorage.getItem("events")) || [];
+      const index = events.findIndex(e => e.id === event.id);
+      if (index !== -1) {
+        events[index].description = newDesc;
+        localStorage.setItem("events", JSON.stringify(events));
+      }
+
+      alert("Description updated (mock)");
+      location.reload();
     });
+
 
     // Delete event listener
     const deleteBtn = document.getElementById("delete-event-btn");
@@ -515,12 +563,34 @@ function setupAdminQRActions(event) {
   const validityInput = document.getElementById("validity-time-input");
 
   openBtn?.addEventListener("click", () => {
-    alert(` QR Code OPENED for: ${event.title}\n\nStudents can now scan to complete the event.`);
+    const qrText = generateCompletionQR(event.id); // ✅ BẮT BUỘC
+  
+    const qrImg = document.getElementById("completion-qr-img");
+    if (!qrImg) return;
+  
+    qrImg.src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrText)}`;
+  
+    qrImg.classList.remove("hidden"); // ✅ QUAN TRỌNG
+
+    saveQRStatus(event.id, {
+      active: true,
+      code: qrText,
+      expiresAt: null
+    });
+  
+    alert("Completion QR opened (mock)");
   });
+  
 
   closeBtn?.addEventListener("click", () => {
-    alert(` QR Code CLOSED for: ${event.title}\n\nNo more completions accepted.`);
+    saveQRStatus(event.id, {
+      active: false
+    });
+  
+    alert("QR has been CLOSED");
   });
+  
 
   setTimeBtn?.addEventListener("click", () => {
     const minutes = validityInput?.value;
@@ -532,11 +602,39 @@ function setupAdminQRActions(event) {
   });
 
   regenerateBtn?.addEventListener("click", () => {
-    if (confirm("Regenerate QR code?\n\nOld QR will be invalid.")) {
-      alert(`QR Code regenerated for: ${event.title}`);
-      // TODO: Generate new QR code
-    }
+    const newQR = generateCompletionQR(event.id);
+
+    saveQRStatus(event.id, {
+      active: true,
+      code: newQR,
+      expiresAt: null
+    });
+  
+    const qrs = JSON.parse(localStorage.getItem("completionQRs")) || {};
+    qrs[event.id] = newQR;
+    localStorage.setItem("completionQRs", JSON.stringify(qrs));
+  
+    const qrImg = document.getElementById("completion-qr-img");
+    if (!qrImg) return;
+  
+    qrImg.src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(newQR)}`;
+  
+    qrImg.classList.remove("hidden"); // ✅ BẮT BUỘC
+  
+    alert("QR regenerated successfully");
   });
+  function saveQRStatus(eventId, data) {
+    const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
+    store[eventId] = {
+      ...store[eventId],
+      ...data
+    };
+    localStorage.setItem("completionQRStatus", JSON.stringify(store));
+  }
+  
+  
+  
 }
 
 /**

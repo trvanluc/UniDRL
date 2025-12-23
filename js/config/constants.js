@@ -12,5 +12,6 @@ export const STORAGE_KEYS = {
 export const ROLES = {
   STUDENT: "student",
   ADVISOR: "advisor",
-  MANAGER: "manager"
+  MANAGER: "manager",
+  ADMIN: "admin"
 };
