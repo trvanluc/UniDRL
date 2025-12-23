@@ -4,21 +4,8 @@ let currentStudentId = null;
 document.addEventListener("DOMContentLoaded", () => {
   currentEventId = new URLSearchParams(window.location.search).get("id");
 
-  const store = JSON.parse(localStorage.getItem("participants")) || {};
-
-  // ✅ RE-SEED MOCK STUDENT NẾU CHƯA CÓ HOẶC BỊ XÓA
-  if (!store[currentEventId] || store[currentEventId].length === 0) {
-    store[currentEventId] = [
-      {
-        id: "20230592",
-        name: "Alex Johnson",
-        status: "registered"
-      }
-    ];
-    localStorage.setItem("participants", JSON.stringify(store));
-  }
-
-  renderTable(store[currentEventId]);
+  const list = loadParticipants(currentEventId);
+  renderTable(list);
 
   document
     .getElementById("export-csv-btn")
@@ -30,8 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
 function renderTable(list) {
-  const tbody = document.querySelector("tbody");
+  const tbody = document.getElementById("participants-body");
   tbody.innerHTML = "";
 
   list.forEach(student => {
@@ -42,7 +30,7 @@ function renderTable(list) {
         </td>
 
         <td class="py-4 px-6 text-sm text-gray-600 dark:text-gray-300 font-mono">
-          ${student.id}
+          ${student.mssv}
         </td>
 
         <td class="py-4 px-6">
@@ -52,14 +40,14 @@ function renderTable(list) {
         <td class="py-4 px-6 text-right">
           <div class="flex items-center justify-end gap-2">
             <button
-              class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-gray-500 dark:text-gray-400"
-              onclick="openEditModal('${student.id}')">
+              class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10"
+              onclick="openEditModal('${student.mssv}')">
               <span class="material-symbols-outlined text-[20px]">edit</span>
             </button>
 
             <button
               class="p-2 rounded-lg hover:bg-red-500/10 text-red-500"
-              onclick="removeParticipant('${student.id}')">
+              onclick="removeParticipant('${student.mssv}')">
               <span class="material-symbols-outlined text-[20px]">delete</span>
             </button>
           </div>
@@ -67,12 +55,10 @@ function renderTable(list) {
       </tr>
     `;
   });
-  tbody.querySelectorAll("button").forEach(btn => {
-    btn.style.pointerEvents = "auto";
-    btn.style.position = "relative";
-    btn.style.zIndex = "10";
-  });
+
+  updateTotalParticipants(list.length);
 }
+
 
 
 
@@ -97,8 +83,10 @@ function renderStatusBadge(status) {
 function openEditModal(studentId) {
   currentStudentId = studentId;
 
-  const store = JSON.parse(localStorage.getItem("participants")) || {};
-  const student = store[currentEventId].find(s => s.id === studentId);
+  const all = JSON.parse(localStorage.getItem("event_registrations")) || [];
+  const student = all.find(
+    s => s.eventId === currentEventId && s.mssv === studentId
+  );
 
   if (student) {
     document.getElementById("edit-status").value = student.status;
@@ -107,45 +95,55 @@ function openEditModal(studentId) {
   document.getElementById("edit-modal").classList.remove("hidden");
 }
 
+
 function saveStatus() {
   const newStatus = document.getElementById("edit-status").value;
+  const all = JSON.parse(localStorage.getItem("event_registrations")) || [];
 
-  const store = JSON.parse(localStorage.getItem("participants")) || {};
-  const list = store[currentEventId];
+  const student = all.find(
+    s => s.eventId === currentEventId && s.mssv === currentStudentId
+  );
 
-  const student = list.find(s => s.id === currentStudentId);
   if (student) {
     student.status = newStatus;
-    localStorage.setItem("participants", JSON.stringify(store));
-    renderTable(list);
+
+    if (newStatus === "checked-in") {
+      student.checkInTime = new Date().toISOString();
+    }
+
+    localStorage.setItem("event_registrations", JSON.stringify(all));
+    renderTable(loadParticipants(currentEventId));
   }
 
   closeModal("edit-modal");
   showToast("Status updated successfully");
 }
 
+
 function removeParticipant(studentId) {
-  const store = JSON.parse(localStorage.getItem("participants")) || {};
-  const student = store[currentEventId]?.find(s => s.id === studentId);
+  const confirmed = confirm("Remove this participant?");
+  if (!confirmed) return;
 
-  if (!student) return;
+  let all = JSON.parse(localStorage.getItem("event_registrations")) || [];
 
-  alert(
-    `🧪 MOCK DELETE\n\n` +
-    `Student: ${student.name}\n` +
-    `ID: ${student.id}\n\n` +
-    `This action is disabled in mock mode.`
+  all = all.filter(
+    s => !(s.eventId === currentEventId && s.mssv === studentId)
   );
+
+  localStorage.setItem("event_registrations", JSON.stringify(all));
+  renderTable(loadParticipants(currentEventId));
+  showToast("Participant removed");
 }
 
 
-function exportCSV() {
-  const store = JSON.parse(localStorage.getItem("participants")) || {};
-  const list = store[currentEventId] || [];
 
-  let csv = "Student Name,Student ID,Status\n";
+
+function exportCSV() {
+  const list = loadParticipants(currentEventId);
+
+  let csv = "Student Name,Student ID,Status,Check-in Time\n";
   list.forEach(s => {
-    csv += `${s.name},${s.id},${s.status}\n`;
+    csv += `${s.name},${s.mssv},${s.status},${s.checkInTime || ""}\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
@@ -159,6 +157,41 @@ function exportCSV() {
   URL.revokeObjectURL(url);
 }
 
+
+
+function updateTotalParticipants(count) {
+  const el = document.getElementById("total-participants");
+  if (el) el.textContent = count;
+}
+
+
 window.openEditModal = openEditModal;
 window.removeParticipant = removeParticipant;
+
+
+function loadParticipants(adminEventId) {
+  const all = JSON.parse(localStorage.getItem("event_registrations")) || [];
+  return all.filter(r => r.adminEventId === adminEventId);
+}
+
+
+window.addEventListener("storage", (event) => {
+  if (event.key === "event_registrations") {
+    renderTable(loadParticipants(currentEventId));
+  }
+});
+
+function openParticipants(adminEventId) {
+  window.location.href =
+    `participants-management.html?id=${adminEventId}`;
+}
+
+window.openParticipants = function (adminEventId) {
+  currentEventId = adminEventId;
+
+  const list = loadParticipants(adminEventId);
+  renderTable(list);
+
+  toggleView('participant-table-view');
+};
 

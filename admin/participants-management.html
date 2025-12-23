@@ -319,7 +319,7 @@
                             </div>
                             <button
                                 class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors flex items-center justify-center gap-2"
-                                onclick="toggleView('participant-table-view')">
+                                onclick="openParticipants('ADMIN_EVENT_1')">
                                 View Participants
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </button>
@@ -348,7 +348,7 @@
                             </div>
                             <button
                                 class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors flex items-center justify-center gap-2"
-                                onclick="toggleView('participant-table-view')">
+                                onclick="openParticipants('ADMIN_EVENT_2')">
                                 View Participants
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </button>
@@ -388,7 +388,7 @@
                                     <div class="flex gap-4 shrink-0 overflow-x-auto pb-2 xl:pb-0">
                                         <div
                                             class="min-w-[120px] bg-gray-50 dark:bg-white/5 rounded-xl p-4 border border-gray-100 dark:border-white/5 flex flex-col items-center justify-center text-center">
-                                            <div class="text-2xl font-bold text-gray-900 dark:text-white">25</div>
+                                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-participants">0</div>
                                             <div
                                                 class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-wide">
                                                 Total Students</div>
@@ -415,7 +415,7 @@
                                 id="export-csv-btn"
                                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors border border-gray-200 dark:border-white/10 whitespace-nowrap shadow-sm">
                                 <span class="material-symbols-outlined text-[18px]">download</span>
-                                Export List
+                                Export CSV
                             </button>
                         </div>
                     </div>

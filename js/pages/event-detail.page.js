@@ -804,6 +804,33 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Lưu vào localStorage
   saveRegistration(registration);
+  // ===== ADD TO PARTICIPANTS (ADMIN VIEW) =====
+  const participantsStore =
+    JSON.parse(localStorage.getItem("participants")) || {};
+
+  participantsStore[event.id] ||= [];
+
+  const alreadyInParticipants = participantsStore[event.id]
+    .some(p => p.id === mssv);
+
+  if (!alreadyInParticipants) {
+    participantsStore[event.id].push({
+      id: mssv,            // MSSV: 20230592
+      name: name,          // Alex Johnson
+      email: email,
+      class: classValue,
+      status: "registered",
+      registeredAt: Date.now()
+    });
+
+    localStorage.setItem(
+      "participants",
+      JSON.stringify(participantsStore)
+    );
+
+    console.log("Đã thêm vào participants:", mssv);
+  }
+
   console.log("Đã lưu đăng ký:", registration);
 
   // Đóng popup
