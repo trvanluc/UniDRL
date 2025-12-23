@@ -16,6 +16,28 @@
         rel="stylesheet" />
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Thư viện quét QR Code - Load với fallback -->
+    <script>
+        // Load html5-qrcode library với nhiều CDN fallback
+        (function() {
+            const loadScript = (src, onError) => {
+                const script = document.createElement("script");
+                script.src = src;
+                script.onload = () => console.log("html5-qrcode loaded from:", src);
+                script.onerror = onError;
+                document.head.appendChild(script);
+            };
+
+            // Thử CDN đầu tiên
+            loadScript("https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js", () => {
+                console.warn("Failed to load from unpkg, trying jsdelivr...");
+                // Thử CDN thứ 2
+                loadScript("https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js", () => {
+                    console.error("Failed to load html5-qrcode from all CDNs. Camera scanning may not work.");
+                });
+            });
+        })();
+    </script>
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -263,15 +285,16 @@
                             class="block w-full appearance-none rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 sm:text-base py-3 px-4 pr-10 transition-all cursor-pointer"
                             id="event-select">
                             <option disabled="" selected="" value="">Choose an event to manage...</option>
-                            <option value="1">Introduction to AI & Ethics Workshop (Today)</option>
-                            <option value="2">Annual Spring Gala 2023</option>
-                            <option value="3">Career Talk: Tech Giants</option>
+                            <!-- Options sẽ được load động bằng JavaScript -->
                         </select>
                         <div
                             class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500">
                             <span class="material-symbols-outlined">expand_more</span>
                         </div>
                     </div>
+                    <p id="selected-event-info" class="mt-3 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        <span class="font-bold">Event đã chọn:</span> <span id="selected-event-name">-</span>
+                    </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -295,43 +318,34 @@
 
                             <div id="content-qr"
                                 class="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[400px]">
-                                <div
-                                    class="relative w-full max-w-sm aspect-square bg-black rounded-3xl overflow-hidden shadow-2xl ring-4 ring-gray-100 dark:ring-white/5 mb-6 group">
-                                    <div class="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAMxT6-74EG8BDXQ8DCA4oxoTMn_mZG3zSpx6o3TwNctat7KeB2H0VIZ0sH_JaRJieWKs34GrGqGn24uuqCz5FLkndINMi2bKO29ix0VIdhLWkKNNrt4QVXT65eVIWlRQMLf70rguO37p68UbAqN2UWaUWu0w7AqULJvMKaNeauZYywKIY7wy6pJ5J4yDSRmG_XP-6YouEpH3ujxQG6epd6P8p5-ig5UkTrjFV3zu3C_VlrlhM9lN5PXuTbR7FRDP4huRsXwfW2UyI'); filter: grayscale(100%);">
+                                <!-- Container để hiển thị camera quét QR -->
+                                <div id="qr-reader" class="w-full max-w-sm mb-6 min-h-[300px] bg-black rounded-2xl overflow-hidden flex items-center justify-center">
+                                    <p class="text-white text-sm text-center px-4">Camera sẽ hiển thị ở đây sau khi click "Bắt Đầu Quét"</p>
                                     </div>
 
-                                    <div class="absolute inset-0 flex items-center justify-center">
-                                        <div class="w-64 h-64 border-2 border-primary/50 rounded-2xl relative">
-                                            <div
-                                                class="absolute top-0 left-0 w-6 h-6 border-t-4 border-l-4 border-primary -mt-1 -ml-1 rounded-tl-lg">
-                                            </div>
-                                            <div
-                                                class="absolute top-0 right-0 w-6 h-6 border-t-4 border-r-4 border-primary -mt-1 -mr-1 rounded-tr-lg">
-                                            </div>
-                                            <div
-                                                class="absolute bottom-0 left-0 w-6 h-6 border-b-4 border-l-4 border-primary -mb-1 -ml-1 rounded-bl-lg">
-                                            </div>
-                                            <div
-                                                class="absolute bottom-0 right-0 w-6 h-6 border-b-4 border-r-4 border-primary -mb-1 -mr-1 rounded-br-lg">
-                                            </div>
-                                            <div
-                                                class="absolute left-2 right-2 h-0.5 bg-primary/80 shadow-[0_0_10px_rgba(54,226,123,0.8)] scan-line rounded-full">
-                                            </div>
-                                        </div>
+                                <!-- Nút Start/Stop Scanner -->
+                                <div class="flex gap-3 mb-4">
+                                    <button id="start-scanner-btn" 
+                                        class="px-6 py-2 rounded-xl bg-primary hover:bg-primary-hover text-black font-bold transition-all shadow-lg flex items-center gap-2">
+                                        <span class="material-symbols-outlined">camera</span>
+                                        Bắt Đầu Quét
+                                    </button>
+                                    <button id="stop-scanner-btn" 
+                                        class="px-6 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-all shadow-lg hidden flex items-center gap-2">
+                                        <span class="material-symbols-outlined">stop</span>
+                                        Dừng Quét
+                                    </button>
                                     </div>
 
-                                    <div class="absolute bottom-4 left-0 right-0 text-center">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm text-white text-xs font-medium border border-white/10">
-                                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                                            Camera Active
-                                        </span>
-                                    </div>
+                                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 max-w-md">
+                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Hướng dẫn quét:</p>
+                                    <ul class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
+                                        <li>Đưa QR Code vào khung camera</li>
+                                        <li>Giữ khoảng cách 20-30cm từ camera</li>
+                                        <li>Đảm bảo ánh sáng đủ</li>
+                                        <li>Hoặc dùng <strong>Manual Input Mode</strong> để nhập mã</li>
+                                    </ul>
                                 </div>
-                                <p class="text-center text-gray-500 dark:text-gray-400 max-w-xs">
-                                    Scan student entry ticket QR to confirm attendance.
-                                </p>
                             </div>
 
                             <div id="content-manual"
@@ -361,9 +375,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button
+                                        <button id="manual-checkin-btn"
                                             class="w-full py-3.5 px-6 rounded-xl bg-primary hover:bg-primary-hover text-surface-dark font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group">
-                                            <span>Confirm Check-in</span>
+                                            <span>Xác Nhận Check-in</span>
                                             <span
                                                 class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                         </button>
@@ -376,132 +390,36 @@
 
                     <div class="lg:col-span-5 flex flex-col gap-6">
 
-                        <div
-                            class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border border-primary/30 relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1.5 h-full bg-primary"></div>
-                            <div
-                                class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500/20">
-                                <span class="material-symbols-outlined text-[16px]">check_circle</span>
-                                Check-in successful
-                            </div>
-                            <div class="flex items-start gap-4 mb-6">
-                                <div
-                                    class="size-16 rounded-2xl bg-gray-200 dark:bg-white/10 overflow-hidden shrink-0 border border-gray-100 dark:border-white/10">
-                                    <div class="w-full h-full bg-cover bg-center"
-                                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDrr6rBkz1E0BDOWMwVLhOhrdjFKE6VdAZ2VpJ1SYnf-pHNiRz5R4hsrWL0fvIyoJMnjKkSh_HXvIg1jHj6fEwKKWX5hsYET-73k1nQeNAHNePVqRLO6Pv4877sIww9Kt0toBSaUzkAkBNKPDojBKd0rbS4SSHhnXuCIVkbOLM6-iG7FIzzs1k7BewkVEP18i-uZOdwkjR18O8R-Wkmes5ulpfk6RshFIQO5BLr2O0MALOJkrDLN3r3ZOArDTTdtTX5pHOkjEv-GVU');">
-                                    </div>
+                        <!-- Card hiển thị thông tin sinh viên sau khi check-in -->
+                        <div id="student-info-card" class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border border-gray-200 dark:border-white/5">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-4xl text-gray-400">qr_code_scanner</span>
                                 </div>
-                                <div>
-                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white leading-tight">Alex
-                                        Johnson</h3>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 font-mono">ID: 20230592</p>
-                                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Class: CS-2023-A</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-surface-dark/5 dark:bg-white/5 rounded-xl p-3">
-                                    <p class="text-xs text-gray-500 uppercase font-bold mb-1">Status</p>
-                                    <p class="text-green-600 dark:text-primary font-bold flex items-center gap-1">
-                                        <span class="size-2 rounded-full bg-green-500"></span>
-                                        Checked-in
-                                    </p>
-                                </div>
-                                <div class="bg-surface-dark/5 dark:bg-white/5 rounded-xl p-3">
-                                    <p class="text-xs text-gray-500 uppercase font-bold mb-1">Time</p>
-                                    <p class="text-gray-900 dark:text-white font-bold">14:02:45</p>
-                                </div>
+                                <p class="text-gray-500 dark:text-gray-400">Quét QR Code để xem thông tin sinh viên</p>
                             </div>
                         </div>
 
                         <div
                             class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-white/5 flex-1 flex flex-col">
                             <h3 class="font-bold text-lg mb-4 flex items-center justify-between">
-                                Recent Check-ins
+                                Check-in Gần Đây
                                 <span
-                                    class="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-lg">Last
-                                    5</span>
+                                    class="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-lg">5
+                                    mới nhất</span>
                             </h3>
                             <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
+                                <table id="recent-checkins-table" class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="text-xs text-gray-400 border-b border-gray-100 dark:border-white/5">
-                                            <th class="font-medium py-3 pl-2">Student ID</th>
-                                            <th class="font-medium py-3">Name</th>
-                                            <th class="font-medium py-3">Time</th>
-                                            <th class="font-medium py-3 pr-2 text-right">Status</th>
+                                            <th class="font-medium py-3 pl-2">MSSV</th>
+                                            <th class="font-medium py-3">Tên</th>
+                                            <th class="font-medium py-3">Thời gian</th>
+                                            <th class="font-medium py-3 pr-2 text-right">Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-sm">
-                                        <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <td
-                                                class="py-3 pl-2 border-b border-gray-100 dark:border-white/5 font-mono text-gray-500 dark:text-gray-400">
-                                                20230592</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 font-medium">
-                                                Alex Johnson</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 text-gray-500">
-                                                14:02</td>
-                                            <td
-                                                class="py-3 pr-2 border-b border-gray-100 dark:border-white/5 text-right">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <td
-                                                class="py-3 pl-2 border-b border-gray-100 dark:border-white/5 font-mono text-gray-500 dark:text-gray-400">
-                                                20230114</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 font-medium">
-                                                Sarah Lee</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 text-gray-500">
-                                                14:01</td>
-                                            <td
-                                                class="py-3 pr-2 border-b border-gray-100 dark:border-white/5 text-right">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <td
-                                                class="py-3 pl-2 border-b border-gray-100 dark:border-white/5 font-mono text-gray-500 dark:text-gray-400">
-                                                20230882</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 font-medium">
-                                                Mike Chen</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 text-gray-500">
-                                                13:58</td>
-                                            <td
-                                                class="py-3 pr-2 border-b border-gray-100 dark:border-white/5 text-right">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <td
-                                                class="py-3 pl-2 border-b border-gray-100 dark:border-white/5 font-mono text-gray-500 dark:text-gray-400">
-                                                20230441</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 font-medium">
-                                                Emily Davis</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 text-gray-500">
-                                                13:55</td>
-                                            <td
-                                                class="py-3 pr-2 border-b border-gray-100 dark:border-white/5 text-right">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">Invalid</span>
-                                            </td>
-                                        </tr>
-                                        <tr class="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                                            <td
-                                                class="py-3 pl-2 border-b border-gray-100 dark:border-white/5 font-mono text-gray-500 dark:text-gray-400">
-                                                20230919</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 font-medium">
-                                                James Wilson</td>
-                                            <td class="py-3 border-b border-gray-100 dark:border-white/5 text-gray-500">
-                                                13:52</td>
-                                            <td
-                                                class="py-3 pr-2 border-b border-gray-100 dark:border-white/5 text-right">
-                                                <span
-                                                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">Success</span>
-                                            </td>
-                                        </tr>
+                                        <!-- Danh sách check-ins sẽ được render tự động bằng JavaScript -->
                                     </tbody>
                                 </table>
                             </div>
@@ -514,57 +432,12 @@
         </main>
     </div>
 
+    <!-- Container để hiển thị thông báo (sẽ được thêm động bằng JavaScript) -->
     <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
-        <div
-            class="bg-surface-light dark:bg-surface-dark border-l-4 border-primary text-gray-900 dark:text-white px-4 py-3 rounded shadow-lg flex items-center gap-3 transform transition-all translate-y-0 opacity-100">
-            <span class="material-symbols-outlined text-green-500">check_circle</span>
-            <div>
-                <p class="font-bold text-sm">Check-in Successful</p>
-                <p class="text-xs text-gray-500">Alex Johnson verified.</p>
-            </div>
-        </div>
     </div>
 
-    <script>
-        function switchMode(mode) {
-            // Lấy các phần tử
-            const tabQr = document.getElementById('tab-qr');
-            const tabManual = document.getElementById('tab-manual');
-            const contentQr = document.getElementById('content-qr');
-            const contentManual = document.getElementById('content-manual');
-
-            // Class style cho tab Active
-            const activeClasses = ['text-primary', 'border-b-2', 'border-primary', 'bg-primary/5'];
-            // Class style cho tab Inactive
-            const inactiveClasses = ['text-gray-500', 'dark:text-gray-400', 'hover:text-gray-900', 'dark:hover:text-white', 'hover:bg-gray-50', 'dark:hover:bg-white/5'];
-
-            if (mode === 'qr') {
-                // Hiển thị nội dung QR, ẩn Manual
-                contentQr.classList.remove('hidden');
-                contentManual.classList.add('hidden');
-
-                // Update Style Tab QR (Active)
-                tabQr.classList.add(...activeClasses);
-                tabQr.classList.remove(...inactiveClasses);
-
-                // Update Style Tab Manual (Inactive)
-                tabManual.classList.remove(...activeClasses);
-                tabManual.classList.add(...inactiveClasses);
-            } else if (mode === 'manual') {
-                // Hiển thị nội dung Manual, ẩn QR
-                contentManual.classList.remove('hidden');
-                contentQr.classList.add('hidden');
-
-                // Update Style Tab Manual (Active)
-                tabManual.classList.add(...activeClasses);
-                tabManual.classList.remove(...inactiveClasses);
-
-                // Update Style Tab QR (Inactive)
-                tabQr.classList.remove(...activeClasses);
-                tabQr.classList.add(...inactiveClasses);
-            }
-        }
-    </script>
+    <!-- Load JavaScript logic -->
+    <script src="../js/pages/check-in-management.page.js"></script>
 
 </body>
 
