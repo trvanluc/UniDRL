@@ -2,6 +2,11 @@ import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { Theme } from "../utils/theme.js";
 import { Storage } from "../utils/storage.js";  // Import Storage để clear session
+import {
+  getStudentProfile,
+  updateStudentProfile
+} from "../services/auth.service.js";
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
@@ -16,6 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   Theme.init();
   setupSettingsDropdown();  // Xử lý toggle dropdown
   setupLogout();  // Xử lý logout
+  loadStudentProfile();
+  setupProfileSave();
+
 });
 
 document.querySelectorAll(".theme-toggle-icon").forEach(icon => {
@@ -67,5 +75,35 @@ function setupLogout() {
       Storage.clearSession();  // Xóa session từ localStorage
       window.location.href = "/login.html";  // Redirect về login (điều chỉnh path nếu cần)
     }
+  });
+}
+
+
+function loadStudentProfile() {
+  const profile = getStudentProfile();
+  if (!profile) return;
+
+  document.getElementById("email").value = profile.email || "";
+  document.getElementById("phone").value = profile.phone || "";
+  document.getElementById("department").value = profile.department || "";
+  document.getElementById("year").value = profile.year || "";
+  document.getElementById("bio").value = profile.bio || "";
+}
+
+function setupProfileSave() {
+  const btn = document.getElementById("save-profile-btn");
+  if (!btn) return;
+
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    updateStudentProfile({
+      phone: document.getElementById("phone").value.trim(),
+      department: document.getElementById("department").value.trim(),
+      year: document.getElementById("year").value.trim(),
+      bio: document.getElementById("bio").value.trim()
+    });
+
+    alert("Profile updated successfully");
   });
 }

@@ -58,3 +58,26 @@ export function signup({ name, email, password, role }) {
 
   return newUser;
 }
+
+/**
+ * =========================
+ * STUDENT PROFILE SERVICE
+ * =========================
+ */
+
+export function getStudentProfile() {
+  const user = Storage.getCurrentUser();
+  if (!user || user.role !== ROLES.STUDENT) return null;
+
+  return {
+    name: user.name,
+    email: user.email,
+    studentId: user.studentId,
+    ...user.profile
+  };
+}
+
+export function updateStudentProfile(profileData) {
+  return Storage.updateCurrentUserProfile(profileData);
+}
+
