@@ -40,16 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
 
-  const tab = urlParams.get("tab");
-
-  if (tab === "qr") {
-    const qrTabRadio = document.getElementById("tab-qr");
-    if (qrTabRadio) {
-      qrTabRadio.checked = true;
-    }
-  }
-
-
   if (!eventId) {
     console.error("Event ID not found in URL");
     alert("Event ID not found");
@@ -83,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. Render everything
   renderNavigation(user);
   renderEventInfo(event);
-  renderTabContent(user, event);
   renderEventActions(user, event);
   setupSidebarToggle();
   
@@ -263,98 +252,24 @@ function renderTabContent(user, event) {
         openRegisterModal(event);
       });
     } else {
-      // Đã đăng ký - hiển thị QR Code
-      const qrCodeString = userRegistration.qrCode;
-      const statusText = userRegistration.status === "checked-in" ? "Đã Check-in" : "Chưa Check-in";
-      const statusColor = userRegistration.status === "checked-in" ? "text-green-500" : "text-yellow-500";
-
+      // Đã đăng ký - hiển thị ticket giống vé thật
       tabQrContent.innerHTML = `
         <div class="w-full h-full min-h-[500px] flex flex-col py-8 px-4 md:px-8 relative animate-in fade-in zoom-in duration-300">
           <h2 class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
             My Ticket – ${event.title}
           </h2>
           <div class="flex-grow flex flex-col items-center justify-center gap-8 pb-10">
-            <div class="bg-white dark:bg-[#1c2621] p-8 rounded-3xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active max-w-md w-full">
-              <!-- Container để hiển thị QR Code -->
-              <div id="qr-code-container" class="w-full flex items-center justify-center mb-4">
-                <!-- QR Code sẽ được render vào đây bằng JavaScript -->
-              </div>
-              <div class="relative mt-4">
-                <input 
-                  id="student-ticket-id" 
-                  class="w-full text-center text-xl font-mono text-gray-900 dark:text-white placeholder-gray-400 bg-gray-100 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent cursor-default" 
-                  readonly 
-                  type="text"
-                  value="${qrCodeString}"
-                />
-              </div>
-              <p class="text-center text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest mt-3">
-                Mã QR Code
-              </p>
-              <div class="mt-4 text-center">
-                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${statusColor} bg-gray-100 dark:bg-white/10">
-                  <span class="w-2 h-2 rounded-full ${userRegistration.status === "checked-in" ? "bg-green-500" : "bg-yellow-500"}"></span>
-                  ${statusText}
-                </span>
-              </div>
+            <div id="ticket-container-myticket">
+              <!-- Ticket sẽ được render vào đây bằng hàm renderTicketDesign -->
             </div>
           </div>
         </div>
       `;
 
-      // Render QR Code sau khi DOM đã được tạo - với retry logic
-      let retryCount = 0;
-      const maxRetries = 5;
-      
-      const tryRenderQR = () => {
-        const qrCodeContainer = document.getElementById("qr-code-container");
-        if (!qrCodeContainer) {
-          retryCount++;
-          if (retryCount < maxRetries) {
-            setTimeout(tryRenderQR, 200);
-            return;
-          }
-          console.error("Không tìm thấy container QR Code sau nhiều lần thử");
-          return;
-        }
-
-        // Kiểm tra xem thư viện QRCode đã load chưa
-        if (typeof QRCode === "undefined") {
-          retryCount++;
-          if (retryCount < maxRetries) {
-            console.log(`Đang chờ thư viện QRCode load... (lần thử ${retryCount}/${maxRetries})`);
-            setTimeout(tryRenderQR, 300);
-            return;
-          }
-          console.error("Thư viện QRCode không load được sau nhiều lần thử");
-          // Fallback: sử dụng API online
-          const registrations = getEventRegistrations(event.id);
-          const userReg = registrations.find(reg => {
-            return reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email;
-          });
-          if (userReg) {
-            renderQRCodeFallback(userReg.qrCode, qrCodeContainer);
-          }
-          return;
-        }
-
-        // Render QR Code
-        const qrCodeResult = renderQRCode(event, user);
-        if (!qrCodeResult) {
-          console.warn("Không thể render QR Code. Kiểm tra lại đăng ký.");
-          // Thử fallback nếu không render được
-          const registrations = getEventRegistrations(event.id);
-          const userReg = registrations.find(reg => {
-            return reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email;
-          });
-          if (userReg && qrCodeContainer) {
-            renderQRCodeFallback(userReg.qrCode, qrCodeContainer);
-          }
-        }
-      };
-
-      // Bắt đầu thử render sau 100ms
-      setTimeout(tryRenderQR, 100);
+      // Render ticket design sau khi DOM đã được tạo
+      setTimeout(() => {
+        renderTicketDesign(event, userRegistration, "ticket-container-myticket");
+      }, 100);
     }
 
     // Event listeners for student actions
@@ -442,19 +357,27 @@ function renderEventActions(user, event) {
     // ===== STUDENT: Register Button =====
     // Kiểm tra xem sinh viên đã đăng ký chưa
     const registrations = getEventRegistrations(event.id);
-    const isRegistered = registrations.some(reg => reg.mssv === (user.studentId || user.email));
+    const isRegistered = registrations.some(reg => {
+      return reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email;
+    });
     
     if (isRegistered) {
-      // Đã đăng ký rồi
+      // Đã đăng ký rồi - hiển thị nút "Show My QR"
       actionsContainer.innerHTML = `
-        <button disabled class="w-full h-12 bg-green-600 cursor-not-allowed text-white font-bold text-base rounded-full shadow-lg flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">check_circle</span>
-          <span>Đã Đăng Ký</span>
+        <button id="show-my-qr-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
+          <span class="material-symbols-outlined">qr_code_2</span>
+          <span>Show My QR</span>
         </button>
         <p class="text-center text-xs text-gray-400 mt-3">
-          Bạn đã đăng ký sự kiện này
+          Xem mã QR Code của bạn
         </p>
       `;
+      
+      // Event listener cho nút "Show My QR"
+      const showQRBtn = document.getElementById("show-my-qr-btn");
+      showQRBtn?.addEventListener("click", () => {
+        openQRCodeModal(user, event);
+      });
     } else {
       // Chưa đăng ký
       actionsContainer.innerHTML = `
@@ -864,24 +787,12 @@ function handleRegisterSubmit(event, formEvent) {
     // Hiển thị thông báo thành công
     alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
     
-    // Render lại tab content và chuyển sang tab "My Ticket"
+    // Render lại tab content và button actions (để cập nhật nút thành "Show My QR")
     // Đợi một chút để đảm bảo localStorage đã được cập nhật
     setTimeout(() => {
       renderTabContent(user, event);
       renderEventActions(user, event);
-      
-      // Tự động chuyển sang tab "My Ticket" sau khi render xong
-      setTimeout(() => {
-        const tabQrRadio = document.getElementById("tab-qr");
-        if (tabQrRadio) {
-          tabQrRadio.checked = true;
-          // Trigger click event trên label để đảm bảo CSS được áp dụng
-          const tabQrLabel = document.getElementById("tab-qr-label");
-          if (tabQrLabel) {
-            tabQrLabel.click();
-          }
-        }
-      }, 500);
+      // Không tự động chuyển sang tab "My Ticket" nữa, để user có thể click "Show My QR" ngay tại đây
     }, 100);
   } else {
     // Nếu không có user, reload trang
@@ -1071,6 +982,379 @@ function renderQRCodeFallback(qrCodeString, container) {
       <p class="text-xs text-gray-500 dark:text-gray-400 font-mono break-all mt-2">${qrCodeString}</p>
     </div>
   `;
+}
+
+/**
+ * =========================
+ * RENDER TICKET DESIGN FOR MODAL
+ * Tạo ticket giống vé thật với kích thước nhỏ hơn cho modal popup
+ * =========================
+ */
+function renderTicketDesignForModal(event, userRegistration, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const qrCodeString = userRegistration.qrCode;
+  const statusText = userRegistration.status === "checked-in" ? "Đã Check-in" : "Chưa Check-in";
+  const statusColor = userRegistration.status === "checked-in" ? "bg-green-500" : "bg-yellow-500";
+  const statusTextColor = userRegistration.status === "checked-in" ? "text-green-600 dark:text-green-400" : "text-yellow-600 dark:text-yellow-400";
+
+  // Format ngày đăng ký
+  const registrationDate = new Date(userRegistration.registrationDate);
+  const formattedRegDate = registrationDate.toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  const formattedRegTime = registrationDate.toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  container.innerHTML = `
+    <div class="bg-white dark:bg-[#1c2621] rounded-2xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active w-full origin-center animate-scale-in-modal">
+      <!-- Header với logo VN-UK -->
+      <div class="bg-gradient-to-r from-primary to-[#2fd16d] p-3 text-center">
+        <div class="flex items-center justify-center gap-2 mb-0.5">
+          <div class="w-8 h-8 rounded-full bg-background-dark flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-lg">school</span>
+          </div>
+          <h2 class="text-lg font-black text-background-dark">VN-UK</h2>
+        </div>
+        <p class="text-[10px] font-bold text-background-dark/80">EVENT TICKET</p>
+      </div>
+
+      <!-- Thông tin sự kiện -->
+      <div class="p-3 space-y-2 border-b-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="text-center">
+          <h3 class="text-base font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">${event.title}</h3>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/30">
+            ${event.category}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <div class="flex items-start gap-1.5">
+            <span class="material-symbols-outlined text-primary text-base mt-0.5">calendar_month</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Ngày & Giờ</p>
+              <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.date}</p>
+              <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.time}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-1.5">
+            <span class="material-symbols-outlined text-primary text-base mt-0.5">location_on</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Địa điểm</p>
+              <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.location}</p>
+              <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.room || 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thông tin người tham gia - Compact -->
+      <div class="px-3 py-2 border-b-2 border-dashed border-gray-200 dark:border-gray-600 bg-gray-50/50 dark:bg-black/20">
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Họ tên</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white truncate">${userRegistration.name}</p>
+          </div>
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">MSSV</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white font-mono">${userRegistration.mssv}</p>
+          </div>
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Lớp</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white">${userRegistration.class}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Code Section -->
+      <div class="p-3">
+        <div id="${containerId}-qr-code" class="w-full flex items-center justify-center mb-2 bg-white p-2 rounded-xl">
+          <!-- QR Code sẽ được render vào đây -->
+        </div>
+        <div class="text-center mb-1.5">
+          <input 
+            class="w-full text-center text-[10px] font-mono text-gray-900 dark:text-white bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 rounded-lg p-1 shadow-sm focus:outline-none cursor-default" 
+            readonly 
+            type="text"
+            value="${qrCodeString}"
+          />
+          <p class="text-[9px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest mt-1">
+            Ticket ID
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer với thông tin bổ sung -->
+      <div class="px-3 py-2 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-black/30 dark:to-black/40 border-t-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full ${statusColor}"></span>
+            <span class="text-[10px] font-bold ${statusTextColor}">${statusText}</span>
+          </div>
+          <div class="text-right">
+            <p class="text-[9px] text-gray-500 dark:text-gray-400">DRL Points</p>
+            <p class="text-sm font-black text-primary">${event.points}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render QR Code vào container với kích thước nhỏ hơn cho modal
+  const qrCodeContainer = document.getElementById(`${containerId}-qr-code`);
+  if (qrCodeContainer) {
+    // Sử dụng API online để render QR code với kích thước nhỏ hơn (180x180)
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrCodeString)}&bgcolor=ffffff&color=000000&margin=1`;
+    qrCodeContainer.innerHTML = `
+      <img 
+        src="${qrCodeUrl}" 
+        alt="QR Code" 
+        class="w-full max-w-[180px] h-auto"
+        loading="eager"
+      />
+    `;
+  }
+}
+
+/**
+ * =========================
+ * RENDER TICKET DESIGN
+ * Tạo ticket giống vé thật với đầy đủ thông tin (cho tab My Ticket)
+ * =========================
+ */
+function renderTicketDesign(event, userRegistration, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const qrCodeString = userRegistration.qrCode;
+  const statusText = userRegistration.status === "checked-in" ? "Đã Check-in" : "Chưa Check-in";
+  const statusColor = userRegistration.status === "checked-in" ? "bg-green-500" : "bg-yellow-500";
+  const statusTextColor = userRegistration.status === "checked-in" ? "text-green-600 dark:text-green-400" : "text-yellow-600 dark:text-yellow-400";
+
+  // Format ngày đăng ký
+  const registrationDate = new Date(userRegistration.registrationDate);
+  const formattedRegDate = registrationDate.toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  const formattedRegTime = registrationDate.toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  container.innerHTML = `
+    <div class="bg-white dark:bg-[#1c2621] rounded-2xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active max-w-md w-full overflow-hidden animate-scale-in">
+      <!-- Header với logo VN-UK -->
+      <div class="bg-gradient-to-r from-primary to-[#2fd16d] p-4 text-center">
+        <div class="flex items-center justify-center gap-2 mb-1">
+          <div class="w-10 h-10 rounded-full bg-background-dark flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-xl">school</span>
+          </div>
+          <h2 class="text-xl font-black text-background-dark">VN-UK</h2>
+        </div>
+        <p class="text-xs font-bold text-background-dark/80">EVENT TICKET</p>
+      </div>
+
+      <!-- Thông tin sự kiện -->
+      <div class="p-4 space-y-2.5 border-b-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="text-center">
+          <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1.5">${event.title}</h3>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold border border-primary/30">
+            ${event.category}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 mt-2.5">
+          <div class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-primary text-lg mt-0.5">calendar_month</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold mb-0.5">Ngày & Giờ</p>
+              <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${event.date}</p>
+              <p class="text-xs text-gray-600 dark:text-gray-300">${event.time}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-2">
+            <span class="material-symbols-outlined text-primary text-lg mt-0.5">location_on</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold mb-0.5">Địa điểm</p>
+              <p class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${event.location}</p>
+              <p class="text-xs text-gray-600 dark:text-gray-300">${event.room || 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thông tin người tham gia - Compact -->
+      <div class="px-4 py-2.5 border-b-2 border-dashed border-gray-200 dark:border-gray-600 bg-gray-50/50 dark:bg-black/20">
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Họ tên</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white truncate">${userRegistration.name}</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">MSSV</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white font-mono">${userRegistration.mssv}</p>
+          </div>
+          <div>
+            <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Lớp</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white">${userRegistration.class}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Code Section -->
+      <div class="p-4">
+        <div id="${containerId}-qr-code" class="w-full flex items-center justify-center mb-3 bg-white p-3 rounded-xl">
+          <!-- QR Code sẽ được render vào đây -->
+        </div>
+        <div class="text-center mb-2">
+          <input 
+            class="w-full text-center text-xs font-mono text-gray-900 dark:text-white bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 rounded-lg p-1.5 shadow-sm focus:outline-none cursor-default" 
+            readonly 
+            type="text"
+            value="${qrCodeString}"
+          />
+          <p class="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest mt-1.5">
+            Ticket ID
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer với thông tin bổ sung -->
+      <div class="px-4 py-2.5 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-black/30 dark:to-black/40 border-t-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full ${statusColor}"></span>
+            <span class="text-xs font-bold ${statusTextColor}">${statusText}</span>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-gray-500 dark:text-gray-400">DRL Points</p>
+            <p class="text-base font-black text-primary">${event.points}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render QR Code vào container
+  const qrCodeContainer = document.getElementById(`${containerId}-qr-code`);
+  if (qrCodeContainer) {
+    // Sử dụng API online để render QR code với kích thước nhỏ hơn
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(qrCodeString)}&bgcolor=ffffff&color=000000&margin=1`;
+    qrCodeContainer.innerHTML = `
+      <img 
+        src="${qrCodeUrl}" 
+        alt="QR Code" 
+        class="w-full max-w-[240px] h-auto"
+        loading="eager"
+      />
+    `;
+  }
+}
+
+/**
+ * =========================
+ * OPEN QR CODE MODAL
+ * Mở popup hiển thị Ticket QR Code khi click "Show My QR"
+ * =========================
+ */
+function openQRCodeModal(user, event) {
+  const modal = document.getElementById("qr-ticket-modal");
+  if (!modal) return;
+
+  // Tìm đăng ký của user
+  const registrations = getEventRegistrations(event.id);
+  const userRegistration = registrations.find(reg => {
+    return reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email;
+  });
+
+  if (!userRegistration) {
+    alert("Không tìm thấy thông tin đăng ký");
+    return;
+  }
+
+  // Hiển thị modal
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+
+  // Render ticket vào modal với scale nhỏ hơn
+  const modalContent = document.getElementById("qr-ticket-modal-content");
+  if (modalContent) {
+    modalContent.innerHTML = `<div id="modal-ticket-container"></div>`;
+    
+    // Render ticket design với scale nhỏ hơn cho modal
+    setTimeout(() => {
+      renderTicketDesignForModal(event, userRegistration, "modal-ticket-container");
+    }, 50);
+  }
+
+  // Setup event listeners cho modal (chỉ setup một lần)
+  setupQRCodeModal();
+}
+
+/**
+ * =========================
+ * CLOSE QR CODE MODAL
+ * Đóng popup QR Code Ticket
+ * =========================
+ */
+function closeQRCodeModal() {
+  const modal = document.getElementById("qr-ticket-modal");
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    
+    // Clear content
+    const modalContent = document.getElementById("qr-ticket-modal-content");
+    if (modalContent) {
+      modalContent.innerHTML = "";
+    }
+  }
+}
+
+// Biến để đảm bảo chỉ setup modal một lần
+let qrCodeModalSetup = false;
+
+/**
+ * =========================
+ * SETUP QR CODE MODAL
+ * Thiết lập event listeners cho modal QR Code (chỉ setup một lần)
+ * =========================
+ */
+function setupQRCodeModal() {
+  if (qrCodeModalSetup) return; // Đã setup rồi thì không setup lại
+
+  const modal = document.getElementById("qr-ticket-modal");
+  const closeBtn = document.getElementById("close-qr-ticket-modal-btn");
+  const overlay = document.getElementById("qr-ticket-modal-overlay");
+
+  if (!modal) return;
+
+  // Đóng khi click nút X
+  closeBtn?.addEventListener("click", closeQRCodeModal);
+
+  // Đóng khi click overlay
+  overlay?.addEventListener("click", closeQRCodeModal);
+
+  // Đóng khi nhấn phím ESC (chỉ thêm listener một lần)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const modal = document.getElementById("qr-ticket-modal");
+      if (modal && !modal.classList.contains("hidden")) {
+        closeQRCodeModal();
+      }
+    }
+  });
+
+  qrCodeModalSetup = true; // Đánh dấu đã setup
 }
 
 /**
