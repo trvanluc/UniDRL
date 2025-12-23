@@ -13,6 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Lấy eventId từ URL
     const urlParams = new URLSearchParams(window.location.search);
     const eventId = urlParams.get('eventId') || '1'; // Mock eventId
+
+// Registration storage constants and functions
+const STORAGE_KEY_REGISTRATIONS = "event_registrations";
+
+function getAllRegistrations() {
+    try {
+        const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
+        if (!data) return [];
+        
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn('Invalid registrations data in localStorage, resetting to empty array');
+        return [];
+    }
+}
+
+function findRegistration(mssv, eventId) {
+    const allRegistrations = getAllRegistrations();
+    return allRegistrations.find(reg => reg.mssv === mssv && reg.eventId === eventId);
+}
     // 3. Render UI dựa trên Role
     if (user.role === 'admin') {
         renderAdminLayout(user, eventId);
@@ -240,7 +261,7 @@ function renderNavigation(user) {
     } else {
         linksHTML = `
             <a class="text-sm font-medium hover:text-primary transition-colors" href="home.html">Home</a>
-            <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Events</a>
+            <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Tickets</a>
             <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
             <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
         `;
@@ -282,8 +303,7 @@ function renderSidebarAction(user, eventId) {
             }
         });
     } else {
-        let registeredEvents = JSON.parse(localStorage.getItem('registeredEvents')) || [];
-        const isRegistered = registeredEvents.includes(eventId);
+        const isRegistered = findRegistration(user.studentId || user.email, eventId);
         if (isRegistered) {
             actionButtons.innerHTML = `
                 <div class="w-full py-4 bg-primary/10 border border-primary/20 rounded-2xl text-center">
@@ -405,10 +425,6 @@ function handleRegistrationSubmit(eventId) {
         document.getElementById('registerFormContent').classList.add('hidden');
         document.getElementById('successMessage').classList.remove('hidden');
         submitBtn.classList.add('hidden');
-        // Update localStorage registered
-        let registeredEvents = JSON.parse(localStorage.getItem('registeredEvents')) || [];
-        registeredEvents.push(eventId);
-        localStorage.setItem('registeredEvents', JSON.stringify(registeredEvents));
         // Update sidebar UI
         renderSidebarAction(JSON.parse(localStorage.getItem('currentUser')), eventId);
     }, 1000);

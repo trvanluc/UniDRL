@@ -97,7 +97,7 @@ function renderNavigation(user) {
     navMenu.classList.remove("hidden");
     navMenu.innerHTML = `
       <a class="text-sm font-medium hover:text-primary transition-colors" href="home.html">Home</a>
-      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Events</a>
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Tickets</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
     `;
@@ -362,18 +362,18 @@ function renderEventActions(user, event) {
     });
     
     if (isRegistered) {
-      // Đã đăng ký rồi - hiển thị nút "Show My QR"
+      // Đã đăng ký rồi - hiển thị nút "Show My Ticket"
       actionsContainer.innerHTML = `
         <button id="show-my-qr-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
           <span class="material-symbols-outlined">qr_code_2</span>
-          <span>Show My QR</span>
+          <span>Show My Ticket</span>
         </button>
         <p class="text-center text-xs text-gray-400 mt-3">
           Xem mã QR Code của bạn
         </p>
       `;
       
-      // Event listener cho nút "Show My QR"
+      // Event listener cho nút "Show My Ticket"
       const showQRBtn = document.getElementById("show-my-qr-btn");
       showQRBtn?.addEventListener("click", () => {
         openQRCodeModal(user, event);
@@ -592,8 +592,16 @@ const STORAGE_KEY_REGISTRATIONS = "event_registrations";
  * Lấy danh sách tất cả đăng ký từ localStorage
  */
 function getAllRegistrations() {
-  const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
+    if (!data) return [];
+    
+    const parsed = JSON.parse(data);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.warn('Invalid registrations data in localStorage, resetting to empty array');
+    return [];
+  }
 }
 
 /**
@@ -608,8 +616,26 @@ function getEventRegistrations(eventId) {
  * Lưu đăng ký mới vào localStorage
  */
 function saveRegistration(registration) {
-  const allRegistrations = getAllRegistrations();
-  allRegistrations.push(registration);
+  let allRegistrations = getAllRegistrations();
+  
+  // Ensure allRegistrations is always an array
+  if (!Array.isArray(allRegistrations)) {
+    allRegistrations = [];
+  }
+  
+  // Prevent duplicate registrations for the same mssv and eventId
+  const existingIndex = allRegistrations.findIndex(reg => 
+    reg.mssv === registration.mssv && reg.eventId === registration.eventId
+  );
+  
+  if (existingIndex !== -1) {
+    // Update existing registration
+    allRegistrations[existingIndex] = { ...allRegistrations[existingIndex], ...registration };
+  } else {
+    // Add new registration
+    allRegistrations.push(registration);
+  }
+  
   localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(allRegistrations));
 }
 
@@ -617,7 +643,13 @@ function saveRegistration(registration) {
  * Cập nhật đăng ký trong localStorage (dùng để check-in)
  */
 function updateRegistration(mssv, eventId, updates) {
-  const allRegistrations = getAllRegistrations();
+  let allRegistrations = getAllRegistrations();
+  
+  // Ensure allRegistrations is always an array
+  if (!Array.isArray(allRegistrations)) {
+    allRegistrations = [];
+  }
+  
   const index = allRegistrations.findIndex(reg => reg.mssv === mssv && reg.eventId === eventId);
   
   if (index !== -1) {
@@ -787,12 +819,12 @@ function handleRegisterSubmit(event, formEvent) {
     // Hiển thị thông báo thành công
     alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
     
-    // Render lại tab content và button actions (để cập nhật nút thành "Show My QR")
+    // Render lại tab content và button actions (để cập nhật nút thành "Show My Ticket")
     // Đợi một chút để đảm bảo localStorage đã được cập nhật
     setTimeout(() => {
       renderTabContent(user, event);
       renderEventActions(user, event);
-      // Không tự động chuyển sang tab "My Ticket" nữa, để user có thể click "Show My QR" ngay tại đây
+      // Không tự động chuyển sang tab "My Ticket" nữa, để user có thể click "Show My Ticket" ngay tại đây
     }, 100);
   } else {
     // Nếu không có user, reload trang
@@ -1263,7 +1295,7 @@ function renderTicketDesign(event, userRegistration, containerId) {
 /**
  * =========================
  * OPEN QR CODE MODAL
- * Mở popup hiển thị Ticket QR Code khi click "Show My QR"
+ * Mở popup hiển thị Ticket QR Code khi click "Show My Ticket"
  * =========================
  */
 function openQRCodeModal(user, event) {

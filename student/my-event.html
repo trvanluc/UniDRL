@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>My Events - Student Portal</title>
+  <title>My Tickets - Student Portal</title>
 
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -82,6 +82,21 @@
       border-radius: 8px;
       padding: 8px;
     }
+
+    @keyframes scaleInModal {
+      from {
+        opacity: 0;
+        transform: scale(0.85);
+      }
+      to {
+        opacity: 1;
+        transform: scale(0.95);
+      }
+    }
+
+    .animate-scale-in-modal {
+      animation: scaleInModal 0.3s ease-out forwards;
+    }
   </style>
 </head>
 
@@ -100,7 +115,7 @@
       <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
         <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
         <a href="my-event.html" class="text-primary font-bold relative">
-          My Events
+          My Tickets
         </a>
         <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
         <a href="profile.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Profile</a>
@@ -156,122 +171,8 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          
-          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
-            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2940&auto=format&fit=crop');">
-              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
-              <div class="absolute top-3 left-3">
-                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+15 DRL</span>
-              </div>
-              <div class="absolute bottom-3 left-4 right-4">
-                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Workshop</p>
-                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">AI in Modern Engineering</h3>
-              </div>
-            </div>
-
-            <div class="p-5 flex flex-col flex-1">
-              <div class="flex justify-between items-start mb-4">
-                <div class="flex flex-col gap-1">
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
-                    Oct 24 • 2:00 PM
-                  </span>
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
-                    Hall B
-                  </span>
-                </div>
-                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">
-                  Registered
-                </span>
-              </div>
-
-              <div class="mt-auto pt-4 border-t border-[#29382f]">
-                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-[#29382f] hover:bg-primary hover:text-background-dark text-white text-sm font-bold transition-all shadow-lg hover:shadow-primary/25">
-                  <span>Open Ticket</span>
-                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-green-500/30 transition-colors group">
-            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2940&auto=format&fit=crop');">
-              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
-              <div class="absolute top-3 left-3">
-                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+20 DRL</span>
-              </div>
-              <div class="absolute bottom-3 left-4 right-4">
-                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Volunteering</p>
-                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">Campus Clean Up</h3>
-              </div>
-            </div>
-
-            <div class="p-5 flex flex-col flex-1">
-              <div class="flex justify-between items-start mb-4">
-                <div class="flex flex-col gap-1">
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
-                    Oct 25 • 10:00 AM
-                  </span>
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
-                    Main Green
-                  </span>
-                </div>
-                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-green-500 bg-green-500/10 px-2 py-0.5 rounded-full border border-green-500/20">
-                  Completed
-                </span>
-              </div>
-
-              <div class="mt-auto pt-4 border-t border-[#29382f]">
-                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl border border-[#29382f] text-gray-400 hover:text-white hover:bg-[#29382f] text-sm font-medium transition-all">
-                  <span>View History</span>
-                  <span class="material-symbols-outlined text-[18px]">history</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
-            <div class="h-36 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2940&auto=format&fit=crop');">
-              <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
-              <div class="absolute top-3 left-3">
-                <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+10 DRL</span>
-              </div>
-              <div class="absolute bottom-3 left-4 right-4">
-                <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Seminar</p>
-                <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">Cybersecurity Basics</h3>
-              </div>
-            </div>
-
-            <div class="p-5 flex flex-col flex-1">
-              <div class="flex justify-between items-start mb-4">
-                <div class="flex flex-col gap-1">
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">calendar_today</span>
-                    Oct 28 • 4:00 PM
-                  </span>
-                  <span class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
-                    Online (Zoom)
-                  </span>
-                </div>
-                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">
-                  Registered
-                </span>
-              </div>
-
-              <div class="mt-auto pt-4 border-t border-[#29382f]">
-                <a href="event-detail.html" class="flex items-center justify-center gap-2 w-full h-10 rounded-xl bg-[#29382f] hover:bg-primary hover:text-background-dark text-white text-sm font-bold transition-all shadow-lg hover:shadow-primary/25">
-                  <span>Open Ticket</span>
-                  <span class="material-symbols-outlined text-[18px]">confirmation_number</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="tickets-grid">
+          <!-- Tickets will be loaded dynamically -->
         </div>
 
         <div class="w-full flex justify-center pt-8 pb-20">
@@ -286,6 +187,28 @@
     </main>
   </div>
 
-  <script type="module" src="../js/pages/student-base.page.js"></script>
+  <script type="module" src="../js/pages/my-event.page.js"></script>
+
+  <!-- QR CODE TICKET MODAL - Popup hiển thị Ticket QR Code -->
+  <div id="qr-ticket-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <!-- Overlay - Click để đóng popup -->
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="qr-ticket-modal-overlay"></div>
+
+    <!-- Modal box -->
+    <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-8">
+      <div class="bg-transparent w-full max-w-md relative">
+        <!-- Close button -->
+        <button id="close-qr-ticket-modal-btn" class="absolute -top-12 right-0 text-white hover:text-gray-200 transition-colors">
+          <span class="material-symbols-outlined text-[32px]">close</span>
+        </button>
+        
+        <!-- Ticket container -->
+        <div id="qr-ticket-modal-content">
+          <!-- Ticket sẽ được render vào đây -->
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

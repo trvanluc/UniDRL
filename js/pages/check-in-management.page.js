@@ -29,8 +29,16 @@ const EVENTS = [
  * Lấy danh sách tất cả đăng ký từ localStorage
  */
 function getAllRegistrations() {
-    const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
-    return data ? JSON.parse(data) : [];
+    try {
+        const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
+        if (!data) return [];
+        
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        console.warn('Invalid registrations data in localStorage, resetting to empty array');
+        return [];
+    }
 }
 
 /**
@@ -68,7 +76,13 @@ function findRegistrationByQRCode(qrCodeString) {
  * Cập nhật đăng ký trong localStorage (check-in)
  */
 function updateRegistrationStatus(qrCodeString, updates) {
-    const allRegistrations = getAllRegistrations();
+    let allRegistrations = getAllRegistrations();
+    
+    // Ensure allRegistrations is always an array
+    if (!Array.isArray(allRegistrations)) {
+        allRegistrations = [];
+    }
+    
     const index = allRegistrations.findIndex(reg => reg.qrCode === qrCodeString);
     
     if (index !== -1) {
