@@ -1,9 +1,62 @@
+const EVENTS = {
+  "hackathon-2024": {
+    title: "Annual Hackathon 2024",
+    code: "hackathon-2024",
+    status: "Upcoming",
+    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+  },
+  "career-fair": {
+    title: "Career Fair Prep Workshop",
+    code: "career-fair",
+    status: "Upcoming",
+    statusClass: "bg-blue-500/10 text-blue-600 border-blue-500/20"
+  },
+  "jazz-night": {
+    title: "Campus Jazz Night",
+    code: "jazz-night",
+    status: "Closed",
+    statusClass: "bg-purple-500/10 text-purple-600 border-purple-500/20"
+  },
+  "robotics": {
+    title: "Intro to Robotics",
+    code: "robotics",
+    status: "Upcoming",
+    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+  },
+  "yoga-week": {
+    title: "Wellness Week: Yoga",
+    code: "yoga-week",
+    status: "Upcoming",
+    statusClass: "bg-blue-500/10 text-blue-600 border-blue-500/20"
+  },
+  "leadership-summit": {
+    title: "Student Leadership Summit",
+    code: "leadership-summit",
+    status: "Upcoming",
+    statusClass: "bg-purple-500/10 text-purple-600 border-purple-500/20"
+  },
+  "blockchain-workshop": {
+    title: "Blockchain & Web3 Workshop",
+    code: "blockchain-workshop",
+    status: "Upcoming",
+    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+  }
+};
+
+
+
 let currentEventId = null;
 let currentStudentId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   currentEventId = new URLSearchParams(window.location.search).get("id");
+  
+  const event = EVENTS.find(e => e.id === currentEventId);
+  const titleEl = document.getElementById("event-title");
 
+  if (event && titleEl) {
+    titleEl.textContent = event.title;
+  }
   const list = loadParticipants(currentEventId);
   renderTable(list);
 
@@ -169,10 +222,11 @@ window.openEditModal = openEditModal;
 window.removeParticipant = removeParticipant;
 
 
-function loadParticipants(adminEventId) {
+function loadParticipants(eventId) {
   const all = JSON.parse(localStorage.getItem("event_registrations")) || [];
-  return all.filter(r => r.adminEventId === adminEventId);
+  return all.filter(r => r.eventId === eventId);
 }
+
 
 
 window.addEventListener("storage", (event) => {
@@ -181,17 +235,39 @@ window.addEventListener("storage", (event) => {
   }
 });
 
-function openParticipants(adminEventId) {
-  window.location.href =
-    `participants-management.html?id=${adminEventId}`;
-}
 
-window.openParticipants = function (adminEventId) {
-  currentEventId = adminEventId;
 
-  const list = loadParticipants(adminEventId);
+window.openParticipants = function (eventId) {
+  currentEventId = eventId;
+
+  const event = EVENTS[eventId];
+  if (!event) return;
+
+  // Update title
+  document.getElementById("event-title").textContent = event.title;
+
+  // Update event code
+  document.querySelector(
+    "#participant-table-view .font-mono"
+  ).textContent = event.code;
+
+  // Update status badge
+  const badge = document.querySelector(
+    "#participant-table-view .rounded-full"
+  );
+  badge.textContent = event.status;
+  badge.className = `px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide border ${event.statusClass}`;
+
+  // Load participants
+  const list = loadParticipants(eventId);
   renderTable(list);
 
-  toggleView('participant-table-view');
+  toggleView("participant-table-view");
 };
+
+
+function getAdminEventIdFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+}
 

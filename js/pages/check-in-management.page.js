@@ -28,29 +28,7 @@ const EVENTS = [
 // ================================
 // ADMIN EVENT MAPPING (FIX CỨNG)
 // ================================
-const ADMIN_EVENT_MAP = {
-    "ADMIN_EVENT_1": [
-      "hackathon-2024",
-      "career-fair",
-      "jazz-night"
-    ],
-    "ADMIN_EVENT_2": [
-      "blockchain-workshop",
-      "robotics",
-      "yoga-week",
-      "leadership-summit"
-    ]
-  };
-  
-  function resolveAdminEventId(eventId) {
-    for (const adminId in ADMIN_EVENT_MAP) {
-      if (ADMIN_EVENT_MAP[adminId].includes(eventId)) {
-        return adminId;
-      }
-    }
-    return null;
-  }
-  
+
 
 /**
  * Lấy danh sách tất cả đăng ký từ localStorage
@@ -176,25 +154,16 @@ function handleQRCodeScanned(decodedText) {
         return;
     }
 
-    // Chưa check-in - thực hiện check-in
-    const checkInTime = new Date().toISOString();
+    
+    
     const qrCodeToUpdate = registration.qrCode;
 
-    const adminEventId = resolveAdminEventId(registration.eventId);
+    // Chưa check-in → thực hiện check-in
+    const checkInTime = new Date().toISOString();
 
-    if (!adminEventId) {
-    showNotification(
-        "Event chưa được gán admin",
-        "Event này chưa thuộc danh sách quản lý của admin",
-        "error"
-    );
-    return;
-    }
-
-    const updatedRegistration = updateRegistrationStatus(qrCodeToUpdate, {
-    status: "checked-in",
-    checkInTime: checkInTime,
-    adminEventId
+    const updatedRegistration = updateRegistrationStatus(registration.qrCode, {
+        status: "checked-in",
+        checkInTime
     });
 
     if (updatedRegistration) {
