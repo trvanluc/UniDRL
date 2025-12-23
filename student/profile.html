@@ -260,7 +260,11 @@
               <h3 class="text-text-main dark:text-white text-lg font-bold">
                 Personal Details
               </h3>
-              <button class="text-primary text-sm font-bold hover:underline">
+              <button
+                id="save-profile-btn"
+                type="button"
+                class="text-primary text-sm font-bold hover:underline"
+              >
                 Save Changes
               </button>
             </div>
@@ -281,10 +285,11 @@
                     >
                   </div>
                   <input
-                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
+                    id="email"
                     type="email"
-                    value="alex.r@university.edu"
+                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
                   />
+
                   <div
                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
                   >
@@ -311,9 +316,9 @@
                     >
                   </div>
                   <input
-                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
+                    id="phone"
                     type="text"
-                    value="+1 555-0199"
+                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
                   />
                   <div
                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
@@ -341,9 +346,9 @@
                     >
                   </div>
                   <input
-                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
+                    id="department"
                     type="text"
-                    value="School of Computing"
+                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
                   />
                   <div
                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
@@ -371,10 +376,11 @@
                     >
                   </div>
                   <input
-                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
+                    id="year"
                     type="text"
-                    value="Sophomore (Year 2)"
+                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
                   />
+
                   <div
                     class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
                   >
@@ -393,11 +399,11 @@
                 >
                 <div class="relative group">
                   <textarea
-                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 px-4 resize-none transition-all"
+                    id="bio"
                     rows="3"
-                  >
-Passionate about AI and Student Government. Always looking for new hackathons to join!</textarea
-                  >
+                    class="w-full bg-background-light dark:bg-input-dark text-text-main dark:text-white text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 px-4 resize-none transition-all"
+                  ></textarea>
+
                   <div
                     class="absolute top-3 right-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
                   >
