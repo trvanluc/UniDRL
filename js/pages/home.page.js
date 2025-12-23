@@ -125,7 +125,7 @@ function renderLayoutByRole(user) {
   if (user.role === ROLES.STUDENT) {
     navMenu.innerHTML = `
       <a class="text-sm font-bold text-primary" href="home.html">Home</a>
-      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Events</a>
+      <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Tickets</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-journey.html">My Journey</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
     `;
