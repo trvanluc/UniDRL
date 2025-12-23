@@ -495,22 +495,9 @@ function renderEventActions(user, event) {
     // Edit event listener
     const editBtn = document.getElementById("edit-event-btn");
     editBtn?.addEventListener("click", () => {
-      const newDesc = prompt("Edit event description:", event.description);
-      if (!newDesc) return;
-
-      event.description = newDesc;
-
-      // Lưu mock vào localStorage
-      let events = JSON.parse(localStorage.getItem("events")) || [];
-      const index = events.findIndex(e => e.id === event.id);
-      if (index !== -1) {
-        events[index].description = newDesc;
-        localStorage.setItem("events", JSON.stringify(events));
-      }
-
-      alert("Description updated (mock)");
-      location.reload();
+      enableInlineEdit(event);
     });
+    
 
 
     // Delete event listener
@@ -563,33 +550,51 @@ function setupAdminQRActions(event) {
   const validityInput = document.getElementById("validity-time-input");
 
   openBtn?.addEventListener("click", () => {
-    const qrText = generateCompletionQR(event.id); // ✅ BẮT BUỘC
+    const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
+    const qrData = store[event.id];
+  
+    if (!qrData?.code) {
+      alert("Chưa có QR. Vui lòng Regenerate trước.");
+      return;
+    }
   
     const qrImg = document.getElementById("completion-qr-img");
     if (!qrImg) return;
   
     qrImg.src =
-      `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrText)}`;
+      `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrData.code)}`;
   
-    qrImg.classList.remove("hidden"); // ✅ QUAN TRỌNG
-
+    qrImg.classList.remove("hidden", "qr-closed");
+  
     saveQRStatus(event.id, {
-      active: true,
-      code: qrText,
-      expiresAt: null
+      active: true
     });
   
-    alert("Completion QR opened (mock)");
-  });
+    alert("QR opened");
+  });  
+  
   
 
   closeBtn?.addEventListener("click", () => {
+    const qrImg = document.getElementById("completion-qr-img");
+    if (!qrImg) {
+      console.log("❌ QR IMG NOT FOUND");
+      return;
+    }
+  
+    // ✅ đảm bảo ảnh đang hiển thị
+    qrImg.classList.remove("hidden");
+  
+    // ✅ THÊM class làm mờ
+    qrImg.classList.add("qr-closed");
+  
     saveQRStatus(event.id, {
       active: false
     });
   
     alert("QR has been CLOSED");
   });
+  
   
 
   setTimeBtn?.addEventListener("click", () => {
@@ -602,17 +607,7 @@ function setupAdminQRActions(event) {
   });
 
   regenerateBtn?.addEventListener("click", () => {
-    const newQR = generateCompletionQR(event.id);
-
-    saveQRStatus(event.id, {
-      active: true,
-      code: newQR,
-      expiresAt: null
-    });
-  
-    const qrs = JSON.parse(localStorage.getItem("completionQRs")) || {};
-    qrs[event.id] = newQR;
-    localStorage.setItem("completionQRs", JSON.stringify(qrs));
+    const newQR = `COMPLETION_${event.id}_${Date.now()}`;
   
     const qrImg = document.getElementById("completion-qr-img");
     if (!qrImg) return;
@@ -620,10 +615,17 @@ function setupAdminQRActions(event) {
     qrImg.src =
       `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(newQR)}`;
   
-    qrImg.classList.remove("hidden"); // ✅ BẮT BUỘC
+    qrImg.classList.remove("hidden", "qr-closed");
   
-    alert("QR regenerated successfully");
+    saveQRStatus(event.id, {
+      active: true,
+      code: newQR
+    });
+  
+    alert("QR regenerated");
   });
+  
+  
   function saveQRStatus(eventId, data) {
     const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
     store[eventId] = {
@@ -1070,3 +1072,123 @@ function renderQRCodeFallback(qrCodeString, container) {
     </div>
   `;
 }
+
+/**
+ * =========================
+ * GENERATE COMPLETION QR
+ * =========================
+ */
+function generateCompletionQR(eventId) {
+  const qrs = JSON.parse(localStorage.getItem("completionQRs")) || {};
+
+  // Nếu đã tồn tại thì dùng lại
+  if (qrs[eventId]) {
+    return qrs[eventId];
+  }
+
+  // Tạo QR mới
+  const newQR = `COMPLETION_${eventId}_${Date.now()}`;
+
+  qrs[eventId] = newQR;
+  localStorage.setItem("completionQRs", JSON.stringify(qrs));
+
+  return newQR;
+}
+
+function enableInlineEdit(event) {
+  const nameEl = document.getElementById("event-name");
+  const descEl = document.getElementById("event-description");
+  const organizerEl = document.getElementById("event-organizer");
+  const actionsContainer = document.getElementById("event-actions");
+
+  if (!nameEl || !descEl || !organizerEl) return;
+
+  const original = {
+    name: nameEl.textContent,
+    description: descEl.innerHTML,
+    organizer: organizerEl.textContent
+  };
+
+  nameEl.innerHTML = `
+    <input id="edit-name"
+      class="w-full text-3xl font-bold p-3 rounded-xl 
+             bg-gray-900 text-white 
+             border border-gray-600 
+             focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+      value="${original.name}">
+  `;
+
+  descEl.innerHTML = `
+    <textarea id="edit-description"
+      class="w-full min-h-[180px] p-4 rounded-xl 
+             bg-gray-900 text-white 
+             border border-gray-600 
+             focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">${original.description}</textarea>
+  `;
+
+  organizerEl.innerHTML = `
+    <input id="edit-organizer"
+      class="w-full p-3 rounded-xl 
+             bg-gray-900 text-white 
+             border border-gray-600 
+             focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+      value="${original.organizer}">
+  `;
+
+  actionsContainer.innerHTML = `
+    <div class="grid grid-cols-2 gap-3">
+      <button id="save-event-btn"
+        class="h-12 bg-primary text-black font-bold rounded-full hover:bg-[#2fd16d] transition-all">
+        Save
+      </button>
+      <button id="cancel-event-btn"
+        class="h-12 bg-gray-700 hover:bg-gray-600 text-white font-bold rounded-full transition-all">
+        Cancel
+      </button>
+    </div>
+  `;
+
+  document
+    .getElementById("save-event-btn")
+    ?.addEventListener("click", () => saveEventEdit(event));
+
+  document
+    .getElementById("cancel-event-btn")
+    ?.addEventListener("click", () => cancelEventEdit(original));
+}
+
+
+function saveEventEdit(event) {
+  const newName = document.getElementById("edit-name")?.value.trim();
+  const newDesc = document.getElementById("edit-description")?.value.trim();
+  const newOrganizer = document.getElementById("edit-organizer")?.value.trim();
+
+  if (!newName || !newDesc || !newOrganizer) {
+    alert("Không được để trống thông tin");
+    return;
+  }
+
+  event.title = newName;
+  event.description = newDesc;
+  event.organizer = newOrganizer;
+
+  let events = JSON.parse(localStorage.getItem("events")) || [];
+  const index = events.findIndex(e => e.id === event.id);
+
+  if (index !== -1) {
+    events[index] = event;
+    localStorage.setItem("events", JSON.stringify(events));
+  }
+
+  alert("Event updated successfully");
+  location.reload();
+}
+
+function cancelEventEdit(original) {
+  document.getElementById("event-name").textContent = original.name;
+  document.getElementById("event-description").innerHTML = original.description;
+  document.getElementById("event-organizer").textContent = original.organizer;
+
+  location.reload();
+}
+
