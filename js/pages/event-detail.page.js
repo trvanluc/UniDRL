@@ -36,18 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("User authenticated:", user.name, "| Role:", user.role);
 
-  // 🔥 1.5 TOGGLE LAYOUT THEO ROLE (QUAN TRỌNG)
-  const studentLayout = document.getElementById("student-layout");
-  const adminLayout = document.getElementById("admin-layout");
-
-  if (user.role === ROLES.STUDENT) {
-    studentLayout?.classList.remove("hidden");
-    adminLayout?.classList.add("hidden");
-  } else {
-    adminLayout?.classList.remove("hidden");
-    studentLayout?.classList.add("hidden");
-  }
-
   // 2. Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
@@ -59,15 +47,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 3. Load events
+  // 3. Find event in data
+  // Load events from localStorage first
   let storedEvents = JSON.parse(localStorage.getItem("events"));
 
+  // Seed events nếu chưa có
   if (!storedEvents) {
     storedEvents = EVENTS;
     localStorage.setItem("events", JSON.stringify(EVENTS));
   }
 
+  // Find current event
   const event = storedEvents.find(e => e.id === eventId);
+
 
   if (!event) {
     console.error("Event not found:", eventId);
@@ -78,16 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Event loaded:", event.title);
 
-  // 4. Render chung
+  // 4. Render everything
   renderNavigation(user);
   renderEventInfo(event);
-
-  // 5. Render action THEO ROLE (SAU KHI ĐÃ TOGGLE LAYOUT)
   renderEventActions(user, event);
-
   setupSidebarToggle();
-
-  // 6. Setup register modal (student only)
+  
+  // 5. Setup register modal (chỉ cho student)
   if (user.role === ROLES.STUDENT) {
     setupRegisterModal(event);
   }
@@ -815,33 +804,6 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Lưu vào localStorage
   saveRegistration(registration);
-  // ===== ADD TO PARTICIPANTS (ADMIN VIEW) =====
-  const participantsStore =
-    JSON.parse(localStorage.getItem("participants")) || {};
-
-  participantsStore[event.id] ||= [];
-
-  const alreadyInParticipants = participantsStore[event.id]
-    .some(p => p.id === mssv);
-
-  if (!alreadyInParticipants) {
-    participantsStore[event.id].push({
-      id: mssv,            // MSSV: 20230592
-      name: name,          // Alex Johnson
-      email: email,
-      class: classValue,
-      status: "registered",
-      registeredAt: Date.now()
-    });
-
-    localStorage.setItem(
-      "participants",
-      JSON.stringify(participantsStore)
-    );
-
-    console.log("Đã thêm vào participants:", mssv);
-  }
-
   console.log("Đã lưu đăng ký:", registration);
 
   // Đóng popup

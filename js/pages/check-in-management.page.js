@@ -25,11 +25,6 @@ const EVENTS = [
     { id: "blockchain-workshop", title: "Blockchain & Web3 Workshop" }
 ];
 
-// ================================
-// ADMIN EVENT MAPPING (FIX CỨNG)
-// ================================
-
-
 /**
  * Lấy danh sách tất cả đăng ký từ localStorage
  */
@@ -88,10 +83,7 @@ function updateRegistrationStatus(qrCodeString, updates) {
         allRegistrations = [];
     }
     
-    const index = allRegistrations.findIndex(reg =>
-        reg.qrCode === qrCodeString ||
-        reg.qrCode.toLowerCase() === qrCodeString.toLowerCase()
-      );
+    const index = allRegistrations.findIndex(reg => reg.qrCode === qrCodeString);
     
     if (index !== -1) {
         allRegistrations[index] = { ...allRegistrations[index], ...updates };
@@ -154,16 +146,12 @@ function handleQRCodeScanned(decodedText) {
         return;
     }
 
-    
-    
-    const qrCodeToUpdate = registration.qrCode;
-
-    // Chưa check-in → thực hiện check-in
+    // Chưa check-in - thực hiện check-in
     const checkInTime = new Date().toISOString();
-
-    const updatedRegistration = updateRegistrationStatus(registration.qrCode, {
+    const qrCodeToUpdate = registration.qrCode;
+    const updatedRegistration = updateRegistrationStatus(qrCodeToUpdate, {
         status: "checked-in",
-        checkInTime
+        checkInTime: checkInTime
     });
 
     if (updatedRegistration) {
