@@ -48,6 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
     studentLayout?.classList.add("hidden");
   }
 
+  const studentHeader = document.getElementById("student-header");
+
+  if (user.role !== ROLES.STUDENT) {
+    studentHeader?.classList.add("hidden");
+  } else {
+    studentHeader?.classList.remove("hidden");
+  }
+
+
   // 2. Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
@@ -81,6 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. Render chung
   renderNavigation(user);
   renderEventInfo(event);
+
+  renderTabContent(user, event);
 
   // 5. Render action THEO ROLE (SAU KHI ĐÃ TOGGLE LAYOUT)
   renderEventActions(user, event);
