@@ -271,3 +271,81 @@ function getAdminEventIdFromURL() {
   return params.get("id");
 }
 
+// ===== View Toggle =====
+function toggleView(viewId) {
+  const selectionView = document.getElementById('event-selection-view');
+  const tableView = document.getElementById('participant-table-view');
+
+  if (!selectionView || !tableView) return;
+
+  if (viewId === 'participant-table-view') {
+    selectionView.classList.add('hidden');
+    tableView.classList.remove('hidden');
+  } else {
+    tableView.classList.add('hidden');
+    selectionView.classList.remove('hidden');
+  }
+}
+
+// ===== Modal Logic =====
+function openModal(modalId) {
+  document.getElementById(modalId)?.classList.remove('hidden');
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId)?.classList.add('hidden');
+}
+
+// ===== Toast Notification =====
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+
+  let icon = 'check_circle';
+  let iconColor = 'text-primary dark:text-green-600';
+
+  if (type === 'error') {
+    icon = 'error';
+    iconColor = 'text-red-500';
+  }
+
+  toast.className = `
+    bg-surface-dark dark:bg-surface-light
+    text-white dark:text-black
+    px-4 py-3 rounded-xl shadow-2xl
+    flex items-center gap-3
+    animate-[slideIn_0.3s_ease-out]
+    pointer-events-auto min-w-[300px]
+  `;
+
+  toast.innerHTML = `
+    <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+    <div class="flex-1">
+      <p class="font-bold text-sm">Action Successful</p>
+      <p class="text-xs opacity-80">${message}</p>
+    </div>
+    <button class="ml-2 hover:bg-white/10 dark:hover:bg-black/10 rounded-full p-1">
+      <span class="material-symbols-outlined text-[16px]">close</span>
+    </button>
+  `;
+
+  toast.querySelector('button').onclick = () => toast.remove();
+
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+    toast.style.transition = 'all 0.3s ease-out';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Expose functions for HTML onclick
+window.toggleView = toggleView;
+window.openModal = openModal;
+window.closeModal = closeModal;
+window.showToast = showToast;
+

@@ -36,6 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("User authenticated:", user.name, "| Role:", user.role);
 
+  // 🔥 1.5 TOGGLE LAYOUT THEO ROLE (QUAN TRỌNG)
+  const studentLayout = document.getElementById("student-layout");
+  const adminLayout = document.getElementById("admin-layout");
+
+  if (user.role === ROLES.STUDENT) {
+    studentLayout?.classList.remove("hidden");
+    adminLayout?.classList.add("hidden");
+  } else {
+    adminLayout?.classList.remove("hidden");
+    studentLayout?.classList.add("hidden");
+  }
+
   // 2. Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
@@ -47,19 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 3. Find event in data
-  // Load events from localStorage first
+  // 3. Load events
   let storedEvents = JSON.parse(localStorage.getItem("events"));
 
-  // Seed events nếu chưa có
   if (!storedEvents) {
     storedEvents = EVENTS;
     localStorage.setItem("events", JSON.stringify(EVENTS));
   }
 
-  // Find current event
   const event = storedEvents.find(e => e.id === eventId);
-
 
   if (!event) {
     console.error("Event not found:", eventId);
@@ -70,17 +78,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Event loaded:", event.title);
 
-  // 4. Render everything
+  // 4. Render chung
   renderNavigation(user);
   renderEventInfo(event);
+
+  // 5. Render action THEO ROLE (SAU KHI ĐÃ TOGGLE LAYOUT)
   renderEventActions(user, event);
+
   setupSidebarToggle();
-  
-  // 5. Setup register modal (chỉ cho student)
+
+  // 6. Setup register modal (student only)
   if (user.role === ROLES.STUDENT) {
     setupRegisterModal(event);
   }
 });
+
 
 /**
  * =========================
