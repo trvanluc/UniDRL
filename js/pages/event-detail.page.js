@@ -1044,7 +1044,7 @@ function renderTicketDesignForModal(event, userRegistration, containerId) {
   });
 
   container.innerHTML = `
-    <div class="bg-white dark:bg-[#1c2621] rounded-2xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active w-full origin-center animate-scale-in-modal">
+    <div class="bg-white dark:bg-[#1c2621] rounded-2xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active w-full origin-center animate-scale-in-modal" style="padding: 16px;">
       <!-- Header với logo VN-UK -->
       <div class="bg-gradient-to-r from-primary to-[#2fd16d] p-3 text-center">
         <div class="flex items-center justify-center gap-2 mb-0.5">
