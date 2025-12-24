@@ -228,7 +228,7 @@ function renderTabContent(user, event) {
       My Ticket
     `;
 
-    // Kiểm tra xem sinh viên đã đăng ký chưa
+    // Kiểm tra xem sinh viên đã đăng ký chư a 
     // Tìm đăng ký bằng MSSV (user.studentId) hoặc email
     const registrations = getEventRegistrations(event.id);
     const userRegistration = registrations.find(reg => {
