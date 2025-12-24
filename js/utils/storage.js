@@ -9,6 +9,35 @@ import { STORAGE_KEYS } from "../config/constants.js";
 
 export const Storage = {
   /* =====================
+   * GENERIC HANDLERS (DÙNG CHUNG CHO BADGE, EVENT, ETC.)
+   * ===================== */
+  get(key) {
+    try {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : null;
+    } catch (e) {
+      console.error("Storage.get error:", e);
+      return null;
+    }
+  },
+
+  set(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error("Storage.set error:", e);
+    }
+  },
+
+  remove(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.error("Storage.remove error:", e);
+    }
+  },
+
+  /* =====================
    * USERS (DATABASE)
    * ===================== */
   getUsers() {
@@ -52,7 +81,7 @@ export const Storage = {
   },
 
   /* =====================
-   * PROFILE UPDATE (FIX CHÍNH)
+   * PROFILE UPDATE
    * ===================== */
   updateCurrentUserProfile(profileData) {
     const user = this.getCurrentUser();
@@ -79,5 +108,5 @@ export const Storage = {
     }
 
     return true;
-  }
+  },
 };
