@@ -36,6 +36,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("User authenticated:", user.name, "| Role:", user.role);
 
+  // 🔥 1.5 TOGGLE LAYOUT THEO ROLE (QUAN TRỌNG)
+  const studentLayout = document.getElementById("student-layout");
+  const adminLayout = document.getElementById("admin-layout");
+
+  if (user.role === ROLES.STUDENT) {
+    studentLayout?.classList.remove("hidden");
+    adminLayout?.classList.add("hidden");
+  } else {
+    adminLayout?.classList.remove("hidden");
+    studentLayout?.classList.add("hidden");
+  }
+
+  const studentHeader = document.getElementById("student-header");
+
+  if (user.role !== ROLES.STUDENT) {
+    studentHeader?.classList.add("hidden");
+  } else {
+    studentHeader?.classList.remove("hidden");
+  }
+
+
   // 2. Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("id");
@@ -73,6 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. Render everything
   renderNavigation(user);
   renderEventInfo(event);
+
+  renderTabContent(user, event);
+
+  // 5. Render action THEO ROLE (SAU KHI ĐÃ TOGGLE LAYOUT)
   renderEventActions(user, event);
   setupSidebarToggle();
   
@@ -217,7 +242,7 @@ function renderTabContent(user, event) {
       My Ticket
     `;
 
-    // Kiểm tra xem sinh viên đã đăng ký chưa
+    // Kiểm tra xem sinh viên đã đăng ký chư a 
     // Tìm đăng ký bằng MSSV (user.studentId) hoặc email
     const registrations = getEventRegistrations(event.id);
     const userRegistration = registrations.find(reg => {
