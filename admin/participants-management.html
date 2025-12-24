@@ -305,65 +305,196 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-                        <div
-                            class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                        <!-- Hackathon -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
                             <div class="flex items-start justify-between mb-4">
-                                <span
-                                    class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 text-xs font-bold uppercase tracking-wide">Ongoing</span>
-                                <span class="text-xs font-mono text-gray-400">EVT-2023-001</span>
+                                <span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">hackathon-2024</span>
                             </div>
-                            <h3
-                                class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
-                                Intro to AI & Ethics Workshop</h3>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Annual Hackathon 2024
+                            </h3>
                             <div class="space-y-3 mb-6 flex-1">
                                 <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                    <span
-                                        class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
-                                    <span>Oct 15, 2023 • 09:00 AM</span>
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Mar 10, 2024 • 08:00 AM</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                     <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
-                                    <span>Innovation Hall, Room 304</span>
+                                    <span>Main Innovation Hall</span>
                                 </div>
                             </div>
-                            <button
-                                class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors flex items-center justify-center gap-2"
-                                onclick="toggleView('participant-table-view')">
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('hackathon-2024')">
                                 View Participants
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </button>
                         </div>
-
-                        <div
-                            class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                    
+                        <!-- Career Fair -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
                             <div class="flex items-start justify-between mb-4">
-                                <span
-                                    class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 text-xs font-bold uppercase tracking-wide">Upcoming</span>
-                                <span class="text-xs font-mono text-gray-400">EVT-2023-045</span>
+                                <span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 border border-blue-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">career-fair</span>
                             </div>
-                            <h3
-                                class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
-                                Digital Marketing Masterclass</h3>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Career Fair Prep Workshop
+                            </h3>
                             <div class="space-y-3 mb-6 flex-1">
                                 <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                    <span
-                                        class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
-                                    <span>Oct 22, 2023 • 02:00 PM</span>
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Mar 18, 2024 • 01:30 PM</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                                     <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
                                     <span>Auditorium B</span>
                                 </div>
                             </div>
-                            <button
-                                class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors flex items-center justify-center gap-2"
-                                onclick="toggleView('participant-table-view')">
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('career-fair')">
                                 View Participants
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </button>
                         </div>
-
+                    
+                        <!-- Jazz Night -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 border border-purple-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Closed
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">jazz-night</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Campus Jazz Night
+                            </h3>
+                            <div class="space-y-3 mb-6 flex-1">
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Mar 25, 2024 • 07:00 PM</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+                                    <span>Open Campus Stage</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('jazz-night')">
+                                View Participants
+                            </button>
+                        </div>
+                    
+                        <!-- Robotics -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">robotics</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Intro to Robotics
+                            </h3>
+                            <div class="space-y-3 mb-6 flex-1">
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Apr 02, 2024 • 09:00 AM</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+                                    <span>Engineering Lab 2</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('robotics')">
+                                View Participants
+                            </button>
+                        </div>
+                    
+                        <!-- Yoga -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 border border-blue-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">yoga-week</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Wellness Week: Yoga
+                            </h3>
+                            <div class="space-y-3 mb-6 flex-1">
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Apr 08, 2024 • 06:30 AM</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+                                    <span>Sports Center</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('yoga-week')">
+                                View Participants
+                            </button>
+                        </div>
+                    
+                        <!-- Leadership -->
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-600 border border-purple-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">leadership-summit</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Student Leadership Summit
+                            </h3>
+                            <div class="space-y-3 mb-6 flex-1">
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Apr 15, 2024 • 08:30 AM</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+                                    <span>Conference Hall A</span>
+                                </div>
+                            </div>
+                            <button class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors"
+                                onclick="openParticipants('leadership-summit')">
+                                View Participants
+                            </button>
+                        </div>
+                        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-gray-200 dark:border-white/5 shadow-sm hover:shadow-md transition-all group flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-4">
+                                <span class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 border border-green-500/20 text-xs font-bold uppercase tracking-wide">
+                                    Upcoming
+                                </span>
+                                <span class="text-xs font-mono text-gray-400">blockchain-workshop</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
+                                Blockchain & Web3 Workshop
+                            </h3>
+                            <div class="space-y-3 mb-6 flex-1">
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">calendar_today</span>
+                                    <span>Apr 20, 2024 • 09:00 AM</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="material-symbols-outlined text-[18px] text-primary">location_on</span>
+                                    <span>Tech Hub – Room 501</span>
+                                </div>
+                            </div>
+                            <button
+                                class="w-full py-3 rounded-xl bg-primary/10 text-primary font-bold text-sm hover:bg-primary hover:text-black transition-colors flex items-center justify-center gap-2"
+                                onclick="openParticipants('blockchain-workshop')">
+                                View Participants
+                            </button>
+                        </div>
+                    
                     </div>
+                    
                 </div>
 
                 <div class="hidden animate-[slideIn_0.3s_ease-out]" id="participant-table-view">
@@ -391,13 +522,13 @@
                                                 class="px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20 text-xs font-bold uppercase tracking-wide">Ongoing</span>
                                             <span class="text-xs font-mono text-gray-400">EVT-2023-001</span>
                                         </div>
-                                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                                        <h2  id="event-title" class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                                             Intro to AI & Ethics Workshop</h2>
                                     </div>
                                     <div class="flex gap-4 shrink-0 overflow-x-auto pb-2 xl:pb-0">
                                         <div
                                             class="min-w-[120px] bg-gray-50 dark:bg-white/5 rounded-xl p-4 border border-gray-100 dark:border-white/5 flex flex-col items-center justify-center text-center">
-                                            <div class="text-2xl font-bold text-gray-900 dark:text-white">25</div>
+                                            <div class="text-2xl font-bold text-gray-900 dark:text-white" id="total-participants">0</div>
                                             <div
                                                 class="text-xs font-medium text-gray-500 dark:text-gray-400 mt-1 uppercase tracking-wide">
                                                 Total Students</div>
@@ -407,6 +538,7 @@
                             </div>
                         </div>
                     </div>
+                    
 
                     <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 mb-6">
                         <div class="flex flex-col sm:flex-row gap-4 w-full xl:w-auto">
@@ -424,7 +556,7 @@
                                 id="export-csv-btn"
                                 class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-300 font-medium text-sm hover:bg-gray-50 dark:hover:bg-surface-hover transition-colors border border-gray-200 dark:border-white/10 whitespace-nowrap shadow-sm">
                                 <span class="material-symbols-outlined text-[18px]">download</span>
-                                Export List
+                                Export CSV
                             </button>
                         </div>
                     </div>
