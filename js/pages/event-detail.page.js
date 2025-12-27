@@ -39,21 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔥 1.5 TOGGLE LAYOUT THEO ROLE (QUAN TRỌNG)
   const studentLayout = document.getElementById("student-layout");
   const adminLayout = document.getElementById("admin-layout");
+  const studentHeader = document.getElementById("student-header");
+  const adminHeader = document.getElementById("admin-header");
 
   if (user.role === ROLES.STUDENT) {
     studentLayout?.classList.remove("hidden");
     adminLayout?.classList.add("hidden");
+    document.body.classList.remove("is-admin");
+    studentHeader?.classList.remove("hidden");
+    adminHeader?.classList.add("hidden");
   } else {
     adminLayout?.classList.remove("hidden");
     studentLayout?.classList.add("hidden");
-  }
-
-  const studentHeader = document.getElementById("student-header");
-
-  if (user.role !== ROLES.STUDENT) {
+    adminHeader?.classList.remove("hidden");
     studentHeader?.classList.add("hidden");
-  } else {
-    studentHeader?.classList.remove("hidden");
+    document.body.classList.add("is-admin");
   }
 
 
@@ -158,11 +158,9 @@ function renderEventInfo(event) {
 
   // Category & Points
   const categoryEl = document.getElementById("event-category");
-  const pointsEl = document.getElementById("event-points");
   const bannerCategoryEl = document.getElementById("banner-category");
   
   if (categoryEl) categoryEl.textContent = event.category;
-  if (pointsEl) pointsEl.textContent = `${event.points} DRL Points`;
   if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
 
   // Location
@@ -195,9 +193,9 @@ function renderEventInfo(event) {
   }
 
   // Journey points
-  const journeyPointsEl = document.getElementById("journey-points");
-  if (journeyPointsEl) {
-    journeyPointsEl.textContent = `${event.points} DRL points added to your profile automatically.`;
+  const journeyBadgesEl = document.getElementById("journey-badges");
+  if (journeyBadgesEl) {
+    journeyBadgesEl.textContent = `Event badge added to your profile automatically.`;
   }
 }
 
@@ -842,7 +840,7 @@ function handleRegisterSubmit(event, formEvent) {
     console.log("Đã cập nhật user.studentId:", mssv);
     
     // Hiển thị thông báo thành công
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
+    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được huy chương sau khi hoàn thành sự kiện.`);
     
     // Render lại tab content và button actions (để cập nhật nút thành "Show My Ticket")
     // Đợi một chút để đảm bảo localStorage đã được cập nhật
@@ -853,7 +851,7 @@ function handleRegisterSubmit(event, formEvent) {
     }, 100);
   } else {
     // Nếu không có user, reload trang
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
+    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được huy chương sau khi hoàn thành sự kiện.`);
     window.location.reload();
   }
 }
@@ -1154,10 +1152,6 @@ function renderTicketDesignForModal(event, userRegistration, containerId) {
             <span class="w-2 h-2 rounded-full ${statusColor}"></span>
             <span class="text-[10px] font-bold ${statusTextColor}">${statusText}</span>
           </div>
-          <div class="text-right">
-            <p class="text-[9px] text-gray-500 dark:text-gray-400">DRL Points</p>
-            <p class="text-sm font-black text-primary">${event.points}</p>
-          </div>
         </div>
       </div>
     </div>
@@ -1291,10 +1285,6 @@ function renderTicketDesign(event, userRegistration, containerId) {
           <div class="flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded-full ${statusColor}"></span>
             <span class="text-xs font-bold ${statusTextColor}">${statusText}</span>
-          </div>
-          <div class="text-right">
-            <p class="text-xs text-gray-500 dark:text-gray-400">DRL Points</p>
-            <p class="text-base font-black text-primary">${event.points}</p>
           </div>
         </div>
       </div>

@@ -114,9 +114,6 @@ function createTicketCard(event) {
     <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
       <div class="h-36 bg-cover bg-center relative" style="background-image: url('${event.image}');">
         <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
-        <div class="absolute top-3 left-3">
-          <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+${event.points} DRL</span>
-        </div>
         <div class="absolute bottom-3 left-4 right-4">
           <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">${event.category}</p>
           <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">${event.title}</h3>
@@ -439,10 +436,6 @@ function renderTicketForModal(event, userRegistration) {
           <div class="flex items-center gap-1">
             <span class="w-2 h-2 rounded-full ${statusColor}"></span>
             <span class="text-[10px] font-bold ${statusTextColor}">${statusText}</span>
-          </div>
-          <div class="text-right">
-            <p class="text-[9px] text-gray-500 dark:text-gray-400">DRL Points</p>
-            <p class="text-sm font-black text-primary">${event.points}</p>
           </div>
         </div>
       </div>
