@@ -21,7 +21,7 @@
                     colors: {
                         "primary": "#36e27b",
                         "background-light": "#f6f8f7",
-                        "background-dark": "#0d131a", // Đã đồng bộ với Landing Page
+                        "background-dark": "#0d131a", 
                         "card-dark": "#16202b", // Tông surface/card hơi sáng hơn nền chính
                         "input-bg": "#0a1016", // Tông nền input đậm hơn
                         "border-color": "#1f2a37" // Tông border đậm
@@ -49,8 +49,24 @@
             border: 1px solid rgba(255, 255, 255, 0.08); /* white/5 */
         }
     </style>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9YNFP8F87K');
+</script>
 </head>
 
+<!-- 
+  Login Page
+  - UI only
+  - Authentication logic handled in js/pages/login.page.js
+-->
+
+<script type="module" src="./js/pages/login.page.js"></script>
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-background-dark">
     
     <div class="relative flex min-h-screen w-full flex-col overflow-hidden">
@@ -115,7 +131,7 @@
                             </label>
                         </div>
 
-                        <form class="flex flex-col gap-5">
+                        <form id="loginForm" class="flex flex-col gap-5">
                             <div class="flex flex-col gap-2">
                                 <label class="text-sm font-medium text-gray-300 ml-1" for="email">Email / Student ID</label>
                                 <div class="relative">
@@ -166,18 +182,6 @@
 
         </div>
     </div>
-    <!-- AUTH LOGIC -->
-<script src="js/auth.js"></script>
-<script>
-  // Gắn logic sau khi DOM load xong
-  document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("form");
-    if (form) {
-      form.addEventListener("submit", handleLogin);
-    }
-  });
-</script>
 
 </body>
-
 </html>

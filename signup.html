@@ -48,8 +48,25 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9YNFP8F87K');
+</script>
 </head>
 
+<!-- 
+  Signup Page
+  - UI only
+  - Business logic handled in js/pages/signup.page.js
+-->
+
+
+<script type="module" src="./js/pages/signup.page.js"></script>
 <body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-background-dark">
     
     <div class="relative flex min-h-screen w-full flex-col overflow-hidden">
@@ -97,7 +114,8 @@
 
                     <div class="glass-card p-6 sm:p-8 rounded-xl shadow-2xl shadow-black/20">
                         
-                        <form class="flex flex-col gap-5 signup-form">
+                        <form id="signupForm" class="flex flex-col gap-5 signup-form">
+
                             
                             <div class="space-y-2">
                                 <label class="block text-gray-300 text-sm font-semibold pl-1" for="fullname">Full Name</label>
@@ -193,17 +211,6 @@
 
         </div>
     </div>
-
-    <script src="js/auth.js"></script>
-    <script>
-        // Gắn sự kiện chuẩn
-        document.addEventListener("DOMContentLoaded", () => {
-            const form = document.querySelector(".signup-form");
-            if (form) {
-                form.addEventListener("submit", handleSignup);
-            }
-        });
-    </script>
 
 </body>
 </html>

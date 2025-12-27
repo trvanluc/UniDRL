@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Admin - Check-in Management</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Thư viện quét QR Code - Load với fallback -->
+    <script>
+        // Load html5-qrcode library với nhiều CDN fallback
+        (function() {
+            const loadScript = (src, onError) => {
+                const script = document.createElement("script");
+                script.src = src;
+                script.onload = () => console.log("html5-qrcode loaded from:", src);
+                script.onerror = onError;
+                document.head.appendChild(script);
+            };
+
+            // Thử CDN đầu tiên
+            loadScript("https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js", () => {
+                console.warn("Failed to load from unpkg, trying jsdelivr...");
+                // Thử CDN thứ 2
+                loadScript("https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js", () => {
+                    console.error("Failed to load html5-qrcode from all CDNs. Camera scanning may not work.");
+                });
+            });
+        })();
+    </script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#19e66b",
+                        "primary-hover": "#16cd60",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#111714",
+                        "surface-dark": "#1c2621",
+                        "surface-light": "#ffffff",
+                        "danger": "#ef4444"
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* Sidebar Logic */
+        #sidebar-toggle:checked~.layout-container aside {
+            width: 5rem;
+        }
+
+        #sidebar-toggle:checked~.layout-container main {
+            margin-left: 0;
+        }
+
+        @media (min-width: 1024px) {
+            #sidebar-toggle:checked~.layout-container main {
+                margin-left: 5rem;
+            }
+        }
+
+        #sidebar-toggle:checked~.layout-container aside .nav-label {
+            display: none;
+        }
+
+        #sidebar-toggle:checked~.layout-container aside .nav-item {
+            justify-content: center;
+            padding: 0;
+        }
+
+        #sidebar-toggle:checked~.layout-container aside .system-status {
+            display: none;
+        }
+
+        /* Animation */
+        .scan-line {
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        /* Tooltip */
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 10px;
+            background-color: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 50;
+            transition: opacity 0.2s;
+            font-size: 0.75rem;
+            pointer-events: none;
+        }
+
+        #sidebar-toggle:checked~.layout-container aside a:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Material Icons Fix */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9YNFP8F87K');
+</script>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
+
+    <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+
+    <header
+        class="fixed top-0 left-0 right-0 h-20 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-6 flex items-center justify-between transition-colors duration-300">
+
+        <div class="flex items-center gap-4">
+            <label
+                class="p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer text-gray-600 dark:text-gray-300 transition-colors"
+                for="sidebar-toggle">
+                <span class="material-symbols-outlined">menu</span>
+            </label>
+            <div class="flex items-center gap-3">
+                <div class="size-8 text-primary shrink-0">
+                    <svg class="w-full h-full" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z"
+                            fill="currentColor"></path>
+                        <path clip-rule="evenodd"
+                            d="M7.24189 26.4066C7.31369 26.4411 7.64204 26.5637 8.52504 26.3738C9.59462 26.1438 11.0343 25.5311 12.7183 24.4963C14.7583 23.2426 17.0256 21.4503 19.238 19.238C21.4503 17.0256 23.2426 14.7583 24.4963 12.7183C25.5311 11.0343 26.1438 9.59463 26.3738 8.52504C26.5637 7.64204 26.4411 7.31369 26.4066 7.24189C26.345 7.21246 26.143 7.14535 25.6664 7.1918C24.9745 7.25925 23.9954 7.5498 22.7699 8.14278C20.3369 9.32007 17.3369 11.4915 14.4142 14.4142C11.4915 17.3369 9.32007 20.3369 8.14278 22.7699C7.5498 23.9954 7.25925 24.9745 7.1918 25.6664C7.14534 26.143 7.21246 26.345 7.24189 26.4066ZM29.9001 10.7285C29.4519 12.0322 28.7617 13.4172 27.9042 14.8126C26.465 17.1544 24.4686 19.6641 22.0664 22.0664C19.6641 24.4686 17.1544 26.465 14.8126 27.9042C13.4172 28.7617 12.0322 29.4519 10.7285 29.9001L21.5754 40.747C21.6001 40.7606 21.8995 40.931 22.8729 40.7217C23.9424 40.4916 25.3821 39.879 27.0661 38.8441C29.1062 37.5904 31.3734 35.7982 33.5858 33.5858C35.7982 31.3734 37.5904 29.1062 38.8441 27.0661C39.879 25.3821 40.4916 23.9425 40.7216 22.8729C40.931 21.8995 40.7606 21.6001 40.747 21.5754L29.9001 10.7285ZM29.2403 4.41187L43.5881 18.7597C44.9757 20.1473 44.9743 22.1235 44.6322 23.7139C44.2714 25.3919 43.4158 27.2666 42.252 29.1604C40.8128 31.5022 38.8165 34.012 36.4142 36.4142C34.012 38.8165 31.5022 40.8128 29.1604 42.252C27.2666 43.4158 25.3919 44.2714 23.7139 44.6322C22.1235 44.9743 20.1473 44.9757 18.7597 43.5881L4.41187 29.2403C3.29027 28.1187 3.08209 26.5973 3.21067 25.2783C3.34099 23.9415 3.8369 22.4852 4.54214 21.0277C5.96129 18.0948 8.43335 14.7382 11.5858 11.5858C14.7382 8.43335 18.0948 5.9613 21.0277 4.54214C22.4852 3.8369 23.9415 3.34099 25.2783 3.21067C26.5973 3.08209 28.1119 3.29028 29.2403 4.41187Z"
+                            fill="currentColor" fill-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg hidden sm:block">VNUK</span>
+            </div>
+        </div>
+
+        <div class="flex-1"></div>
+
+        <div class="flex items-center gap-3">
+            <button
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors relative">
+                <span
+                    class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">notifications</span>
+                <span
+                    class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-background-light dark:border-background-dark"></span>
+            </button>
+
+            <button
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
+            </button>
+
+            <button
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                onclick="document.documentElement.classList.toggle('dark')">
+                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">dark_mode</span>
+            </button>
+
+            <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+
+            <div id="admin-profile-header" class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                    <p id="admin-name" class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User
+                    </p>
+                    <p id="admin-role-label" class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super
+                        Admin</p>
+                </div>
+                <div id="admin-avatar" class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout-container flex pt-16 h-screen overflow-hidden">
+
+        <aside
+            class="w-64 bg-white dark:bg-surface-dark border-r border-gray-200 dark:border-white/5 flex flex-col shrink-0 transition-[width] duration-300 ease-in-out hidden md:flex h-full">
+            <div class="p-4 space-y-1">
+                <p
+                    class="px-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 mt-2 h-4 overflow-hidden nav-label">
+                    Management</p>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                    href="../home.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
+                    <span class="nav-label whitespace-nowrap">Home</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                    href="participants-management.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
+                    <span class="nav-label whitespace-nowrap">Participants</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary transition-colors overflow-hidden"
+                    href="check-in-management.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0 fill-current">fact_check</span>
+                    <span class="nav-label whitespace-nowrap">Check-in</span>
+                </a>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                    href="badge-system.html">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
+                    <span class="nav-label whitespace-nowrap">Badge System</span>
+                </a>
+                <div class="my-4 border-t border-gray-200 dark:border-white/5 mx-2"></div>
+                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                    href="#">
+                    <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
+                    <span class="nav-label whitespace-nowrap">Reports</span>
+                </a>
+            </div>
+
+            <!-- Collapse / Expand Sidebar Button -->
+<div class="px-4 pb-4">
+    <label for="sidebar-toggle"
+        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
+               text-gray-600 dark:text-gray-400
+               hover:bg-gray-100 dark:hover:bg-white/5
+               transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[22px]">chevron_left</span>
+        <span class="nav-label whitespace-nowrap">Collapse Sidebar</span>
+    </label>
+</div>
+
+            <div class="mt-auto p-4 system-status">
+                <div class="bg-gray-100 dark:bg-black/20 rounded-2xl p-4 border border-gray-200 dark:border-white/5">
+                    <h4 class="text-sm font-bold text-gray-900 dark:text-white">Admin Support</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Need help with the portal?</p>
+                    <button class="mt-3 text-xs font-bold text-primary hover:underline">Contact IT Dept</button>
+                </div>
+            </div>
+        </aside>
+
+        <main
+            class="flex-1 overflow-x-hidden overflow-y-auto bg-background-light dark:bg-background-dark p-6 sm:p-8 transition-all duration-300 h-full">
+            <div class="max-w-6xl mx-auto space-y-6">
+
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold">Check-in Management</h2>
+                </div>
+
+                <div
+                    class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 shadow-sm border border-gray-200 dark:border-white/5">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2"
+                        for="event-select">
+                        Select Active Event
+                    </label>
+                    <div class="relative">
+                        <select
+                            class="block w-full appearance-none rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 sm:text-base py-3 px-4 pr-10 transition-all cursor-pointer"
+                            id="event-select">
+                            <option disabled="" selected="" value="">Choose an event to manage...</option>
+                            <!-- Options sẽ được load động bằng JavaScript -->
+                        </select>
+                        <div
+                            class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-gray-500">
+                            <span class="material-symbols-outlined">expand_more</span>
+                        </div>
+                    </div>
+                    <p id="selected-event-info" class="mt-3 text-sm text-gray-600 dark:text-gray-400 hidden">
+                        <span class="font-bold">Event đã chọn:</span> <span id="selected-event-name">-</span>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+                    <div class="lg:col-span-7 flex flex-col gap-6">
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden shadow-lg border border-gray-200 dark:border-white/5 flex flex-col h-full">
+
+                            <div class="flex border-b border-gray-200 dark:border-white/5">
+                                <button id="tab-qr" onclick="switchMode('qr')"
+                                    class="flex-1 py-4 text-center font-bold text-sm sm:text-base text-primary border-b-2 border-primary bg-primary/5 transition-colors flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-[20px]">qr_code_scanner</span>
+                                    QR Scan Mode
+                                </button>
+                                <button id="tab-manual" onclick="switchMode('manual')"
+                                    class="flex-1 py-4 text-center font-bold text-sm sm:text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-[20px]">keyboard</span>
+                                    Manual Input Mode
+                                </button>
+                            </div>
+
+                            <div id="content-qr"
+                                class="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[400px]">
+                                <!-- Container để hiển thị camera quét QR -->
+                                <div id="qr-reader" class="w-full max-w-sm mb-6 min-h-[300px] bg-black rounded-2xl overflow-hidden flex items-center justify-center">
+                                    <p class="text-white text-sm text-center px-4">Camera sẽ hiển thị ở đây sau khi click "Bắt Đầu Quét"</p>
+                                    </div>
+
+                                <!-- Nút Start/Stop Scanner -->
+                                <div class="flex gap-3 mb-4">
+                                    <button id="start-scanner-btn" 
+                                        class="px-6 py-2 rounded-xl bg-primary hover:bg-primary-hover text-black font-bold transition-all shadow-lg flex items-center gap-2">
+                                        <span class="material-symbols-outlined">camera</span>
+                                        Bắt Đầu Quét
+                                    </button>
+                                    <button id="stop-scanner-btn" 
+                                        class="px-6 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-all shadow-lg hidden flex items-center gap-2">
+                                        <span class="material-symbols-outlined">stop</span>
+                                        Dừng Quét
+                                    </button>
+                                    </div>
+
+                                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 max-w-md">
+                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Hướng dẫn quét:</p>
+                                    <ul class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
+                                        <li>Đưa QR Code vào khung camera</li>
+                                        <li>Giữ khoảng cách 20-30cm từ camera</li>
+                                        <li>Đảm bảo ánh sáng đủ</li>
+                                        <li>Hoặc dùng <strong>Manual Input Mode</strong> để nhập mã</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="content-manual"
+                                class="hidden p-6 sm:p-8 flex flex-col items-center justify-center min-h-[400px]">
+                                <div class="w-full max-w-md">
+                                    <div class="text-center mb-8">
+                                        <div
+                                            class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary">
+                                            <span class="material-symbols-outlined text-3xl">keyboard_alt</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold mb-2">Manual Ticket Entry</h3>
+                                        <p class="text-gray-500 dark:text-gray-400 text-sm">Use this mode when QR
+                                            scanning is unavailable or ticket is damaged.</p>
+                                    </div>
+                                    <div class="space-y-6">
+                                        <div>
+                                            <label class="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300"
+                                                for="ticket-code">Enter Ticket Code</label>
+                                            <div class="relative">
+                                                <input
+                                                    class="w-full px-4 py-3 rounded-xl border-gray-300 dark:border-gray-600 bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 transition-all shadow-sm text-lg tracking-wide font-mono"
+                                                    id="ticket-code" placeholder="Enter student ticket code here..."
+                                                    type="text" />
+                                                <div
+                                                    class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                                    <span class="material-symbols-outlined">confirmation_number</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button id="manual-checkin-btn"
+                                            class="w-full py-3.5 px-6 rounded-xl bg-primary hover:bg-primary-hover text-surface-dark font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group">
+                                            <span>Xác Nhận Check-in</span>
+                                            <span
+                                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 flex flex-col gap-6">
+
+                        <!-- Card hiển thị thông tin sinh viên sau khi check-in -->
+                        <div id="student-info-card" class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border border-gray-200 dark:border-white/5">
+                            <div class="text-center py-8">
+                                <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-4xl text-gray-400">qr_code_scanner</span>
+                                </div>
+                                <p class="text-gray-500 dark:text-gray-400">Quét QR Code để xem thông tin sinh viên</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-white/5 flex-1 flex flex-col">
+                            <h3 class="font-bold text-lg mb-4 flex items-center justify-between">
+                                Check-in Gần Đây
+                                <span
+                                    class="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-lg">5
+                                    mới nhất</span>
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table id="recent-checkins-table" class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="text-xs text-gray-400 border-b border-gray-100 dark:border-white/5">
+                                            <th class="font-medium py-3 pl-2">MSSV</th>
+                                            <th class="font-medium py-3">Tên</th>
+                                            <th class="font-medium py-3">Thời gian</th>
+                                            <th class="font-medium py-3 pr-2 text-right">Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm">
+                                        <!-- Danh sách check-ins sẽ được render tự động bằng JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Container để hiển thị thông báo (sẽ được thêm động bằng JavaScript) -->
+    <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
+    </div>
+
+    <!-- Load JavaScript logic -->
+    <script src="../js/pages/check-in-management.page.js"></script>
+
+</body>
+
+</html>
