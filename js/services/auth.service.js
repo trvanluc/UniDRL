@@ -46,10 +46,7 @@ export function signup({ name, email, password, role }) {
     email,
     password,
     role,
-    studentId:
-      role === ROLES.STUDENT
-        ? "SV" + Math.floor(100000 + Math.random() * 900000)
-        : null,
+    studentId: null,
     createdAt: new Date().toISOString()
   };
 

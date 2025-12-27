@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5. Render action THEO ROLE (SAU KHI ĐÃ TOGGLE LAYOUT)
   renderEventActions(user, event);
   setupSidebarToggle();
-  
+
   // 5. Setup register modal (chỉ cho student)
   if (user.role === ROLES.STUDENT) {
     setupRegisterModal(event);
@@ -160,7 +160,7 @@ function renderEventInfo(event) {
   const categoryEl = document.getElementById("event-category");
   const pointsEl = document.getElementById("event-points");
   const bannerCategoryEl = document.getElementById("banner-category");
-  
+
   if (categoryEl) categoryEl.textContent = event.category;
   if (pointsEl) pointsEl.textContent = `${event.points} DRL Points`;
   if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
@@ -181,7 +181,7 @@ function renderEventInfo(event) {
   const organizerEl = document.getElementById("event-organizer");
   const organizerDeptEl = document.getElementById("event-organizer-dept");
   const organizerAvatarEl = document.getElementById("event-organizer-avatar");
-  
+
   if (organizerEl) organizerEl.textContent = event.organizer;
   if (organizerDeptEl) organizerDeptEl.textContent = event.organizerDept || "";
   if (organizerAvatarEl) {
@@ -208,13 +208,13 @@ function renderEventInfo(event) {
  */
 function setupThemeToggle() {
   const themeButtons = document.querySelectorAll('button:has(.theme-toggle-icon)');
-  
+
   themeButtons.forEach(button => {
     const icon = button.querySelector('.material-symbols-outlined');
     if (icon && !icon.classList.contains('theme-toggle-icon')) {
       icon.classList.add('theme-toggle-icon');
     }
-    
+
     button.addEventListener("click", () => {
       const newTheme = Theme.toggleTheme();
       Theme.updateIcon(newTheme);
@@ -309,7 +309,7 @@ function renderTabContent(user, event) {
 
     const storedQRs = JSON.parse(localStorage.getItem("completionQRs")) || {};
     const completionQRCode =
-    storedQRs[event.id] || generateCompletionQR(event.id);
+      storedQRs[event.id] || generateCompletionQR(event.id);
 
 
     tabQrContent.innerHTML = `
@@ -385,7 +385,7 @@ function renderEventActions(user, event) {
     const isRegistered = registrations.some(reg => {
       return reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email;
     });
-    
+
     if (isRegistered) {
       // Đã đăng ký rồi - hiển thị nút "Show My Ticket"
       actionsContainer.innerHTML = `
@@ -397,7 +397,7 @@ function renderEventActions(user, event) {
           Xem mã QR Code của bạn
         </p>
       `;
-      
+
       // Event listener cho nút "Show My Ticket"
       const showQRBtn = document.getElementById("show-my-qr-btn");
       showQRBtn?.addEventListener("click", () => {
@@ -445,7 +445,7 @@ function renderEventActions(user, event) {
     editBtn?.addEventListener("click", () => {
       enableInlineEdit(event);
     });
-    
+
 
 
     // Delete event listener
@@ -500,28 +500,28 @@ function setupAdminQRActions(event) {
   openBtn?.addEventListener("click", () => {
     const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
     const qrData = store[event.id];
-  
+
     if (!qrData?.code) {
       alert("Chưa có QR. Vui lòng Regenerate trước.");
       return;
     }
-  
+
     const qrImg = document.getElementById("completion-qr-img");
     if (!qrImg) return;
-  
+
     qrImg.src =
       `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrData.code)}`;
-  
+
     qrImg.classList.remove("hidden", "qr-closed");
-  
+
     saveQRStatus(event.id, {
       active: true
     });
-  
+
     alert("QR opened");
-  });  
-  
-  
+  });
+
+
 
   closeBtn?.addEventListener("click", () => {
     const qrImg = document.getElementById("completion-qr-img");
@@ -529,21 +529,21 @@ function setupAdminQRActions(event) {
       console.log("❌ QR IMG NOT FOUND");
       return;
     }
-  
+
     // ✅ đảm bảo ảnh đang hiển thị
     qrImg.classList.remove("hidden");
-  
+
     // ✅ THÊM class làm mờ
     qrImg.classList.add("qr-closed");
-  
+
     saveQRStatus(event.id, {
       active: false
     });
-  
+
     alert("QR has been CLOSED");
   });
-  
-  
+
+
 
   setTimeBtn?.addEventListener("click", () => {
     const minutes = validityInput?.value;
@@ -556,24 +556,24 @@ function setupAdminQRActions(event) {
 
   regenerateBtn?.addEventListener("click", () => {
     const newQR = `COMPLETION_${event.id}_${Date.now()}`;
-  
+
     const qrImg = document.getElementById("completion-qr-img");
     if (!qrImg) return;
-  
+
     qrImg.src =
       `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(newQR)}`;
-  
+
     qrImg.classList.remove("hidden", "qr-closed");
-  
+
     saveQRStatus(event.id, {
       active: true,
       code: newQR
     });
-  
+
     alert("QR regenerated");
   });
-  
-  
+
+
   function saveQRStatus(eventId, data) {
     const store = JSON.parse(localStorage.getItem("completionQRStatus")) || {};
     store[eventId] = {
@@ -582,9 +582,9 @@ function setupAdminQRActions(event) {
     };
     localStorage.setItem("completionQRStatus", JSON.stringify(store));
   }
-  
-  
-  
+
+
+
 }
 
 /**
@@ -620,7 +620,7 @@ function getAllRegistrations() {
   try {
     const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
     if (!data) return [];
-    
+
     const parsed = JSON.parse(data);
     return Array.isArray(parsed) ? parsed : [];
   } catch (error) {
@@ -642,17 +642,17 @@ function getEventRegistrations(eventId) {
  */
 function saveRegistration(registration) {
   let allRegistrations = getAllRegistrations();
-  
+
   // Ensure allRegistrations is always an array
   if (!Array.isArray(allRegistrations)) {
     allRegistrations = [];
   }
-  
+
   // Prevent duplicate registrations for the same mssv and eventId
-  const existingIndex = allRegistrations.findIndex(reg => 
+  const existingIndex = allRegistrations.findIndex(reg =>
     reg.mssv === registration.mssv && reg.eventId === registration.eventId
   );
-  
+
   if (existingIndex !== -1) {
     // Update existing registration
     allRegistrations[existingIndex] = { ...allRegistrations[existingIndex], ...registration };
@@ -660,7 +660,7 @@ function saveRegistration(registration) {
     // Add new registration
     allRegistrations.push(registration);
   }
-  
+
   localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(allRegistrations));
 }
 
@@ -669,14 +669,14 @@ function saveRegistration(registration) {
  */
 function updateRegistration(mssv, eventId, updates) {
   let allRegistrations = getAllRegistrations();
-  
+
   // Ensure allRegistrations is always an array
   if (!Array.isArray(allRegistrations)) {
     allRegistrations = [];
   }
-  
+
   const index = allRegistrations.findIndex(reg => reg.mssv === mssv && reg.eventId === eventId);
-  
+
   if (index !== -1) {
     allRegistrations[index] = { ...allRegistrations[index], ...updates };
     localStorage.setItem(STORAGE_KEY_REGISTRATIONS, JSON.stringify(allRegistrations));
@@ -838,12 +838,20 @@ function handleRegisterSubmit(event, formEvent) {
   const user = Storage.getCurrentUser();
   if (user) {
     user.studentId = mssv; // Lưu MSSV vào user để tìm lại đăng ký
+
+    const users = Storage.getUsers();
+    const userIndex = users.findIndex(u => u.email === user.email);
+    if (userIndex !== -1) {
+      users[userIndex].studentId = mssv;
+      Storage.saveUsers(users); // Lưu lại vào localStorage "users"
+    }
+    
     Storage.setCurrentUser(user);
     console.log("Đã cập nhật user.studentId:", mssv);
-    
+
     // Hiển thị thông báo thành công
     alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
-    
+
     // Render lại tab content và button actions (để cập nhật nút thành "Show My Ticket")
     // Đợi một chút để đảm bảo localStorage đã được cập nhật
     setTimeout(() => {
@@ -920,13 +928,13 @@ function renderQRCode(event, user) {
   console.log("Tìm đăng ký cho event:", event.id);
   console.log("User info:", { studentId: user.studentId, email: user.email });
   console.log("Tất cả đăng ký:", registrations);
-  
+
   // Tìm đăng ký bằng MSSV (user.studentId) hoặc email
   const userRegistration = registrations.find(reg => {
     const matchByMSSV = reg.mssv === user.studentId;
     const matchByEmail = reg.email === user.email;
     const matchByMSSVAsEmail = reg.mssv === user.email;
-    
+
     if (matchByMSSV || matchByEmail || matchByMSSVAsEmail) {
       console.log("Tìm thấy đăng ký:", reg);
       return true;
@@ -938,10 +946,10 @@ function renderQRCode(event, user) {
     // Chưa đăng ký
     console.error("Không tìm thấy đăng ký cho user:", user);
     console.error("Danh sách đăng ký hiện có:", registrations);
-    console.error("Đang tìm với:", { 
-      studentId: user.studentId, 
+    console.error("Đang tìm với:", {
+      studentId: user.studentId,
       email: user.email,
-      eventId: event.id 
+      eventId: event.id
     });
     return null;
   }
@@ -960,10 +968,10 @@ function renderQRCode(event, user) {
   // Nếu chưa load, dùng API online ngay lập tức (nhanh hơn)
   if (typeof QRCode === "undefined") {
     console.log("Thư viện QRCode chưa load, sử dụng API online (nhanh hơn)");
-    
+
     // Sử dụng API online - nhanh và không cần chờ thư viện
     const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(userRegistration.qrCode)}&bgcolor=ffffff&color=000000`;
-    
+
     qrCodeContainer.innerHTML = `
       <div class="text-center p-4">
         <div class="mb-4">
@@ -1024,7 +1032,7 @@ function renderQRCode(event, user) {
  */
 function renderQRCodeFallback(qrCodeString, container) {
   if (!container) return;
-  
+
   container.innerHTML = `
     <div class="text-center p-4">
       <div class="mb-4">
@@ -1346,7 +1354,7 @@ function openQRCodeModal(user, event) {
   const modalContent = document.getElementById("qr-ticket-modal-content");
   if (modalContent) {
     modalContent.innerHTML = `<div id="modal-ticket-container"></div>`;
-    
+
     // Render ticket design với scale nhỏ hơn cho modal
     setTimeout(() => {
       renderTicketDesignForModal(event, userRegistration, "modal-ticket-container");
@@ -1368,7 +1376,7 @@ function closeQRCodeModal() {
   if (modal) {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
-    
+
     // Clear content
     const modalContent = document.getElementById("qr-ticket-modal-content");
     if (modalContent) {
