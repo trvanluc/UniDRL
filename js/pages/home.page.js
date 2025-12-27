@@ -378,10 +378,7 @@ function createEventCard(event) {
         </div>
 
         <div class="mt-auto pt-4 flex items-center justify-between border-t border-slate-100 dark:border-[#2a3630]">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[20px]">stars</span>
-            <span class="text-sm font-bold text-slate-900 dark:text-white">${event.points} DRL</span>
-          </div>
+          
           <a 
             href="event-detail.html?id=${event.id}" 
             class="h-10 px-5 flex items-center rounded-full bg-slate-100 dark:bg-[#2a3630] group-hover:bg-primary text-slate-900 dark:text-white group-hover:text-background-dark font-bold text-sm transition-colors"
