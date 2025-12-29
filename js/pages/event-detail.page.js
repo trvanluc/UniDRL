@@ -613,7 +613,7 @@ function handleRegisterSubmit(event, formEvent) {
     console.log("Đã cập nhật user.studentId:", mssv);
 
     // Hiển thị thông báo thành công
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
+    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được huy chương sau khi hoàn thành sự kiện.`);
 
     // Render lại tab content và button actions
     setTimeout(() => {
@@ -621,7 +621,7 @@ function handleRegisterSubmit(event, formEvent) {
       renderEventActions(user, event);
     }, 100);
   } else {
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
+    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được huy chương sau khi hoàn thành sự kiện.`);
     window.location.reload();
   }
 }

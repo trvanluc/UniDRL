@@ -314,7 +314,7 @@ function createEventCard(event) {
           
           <a 
             href="event-detail.html?id=${event.id}" 
-            class="h-10 px-5 flex items-center rounded-full bg-slate-100 dark:bg-[#2a3630] group-hover:bg-primary text-slate-900 dark:text-white group-hover:text-background-dark font-bold text-sm transition-colors"
+            class="ml-auto h-10 px-5 flex items-center rounded-full bg-slate-100 dark:bg-[#2a3630] group-hover:bg-primary text-slate-900 dark:text-white group-hover:text-background-dark font-bold text-sm transition-colors"
           >
             View Detail
           </a>

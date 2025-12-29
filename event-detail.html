@@ -140,10 +140,16 @@
             #admin-sidebar {
                 transform: translateX(0);
             }
-            body.is-admin main {
-                margin-left: 450px;
-                margin-right: 0;
-                padding-top: 100px; /* h-16 */
+            body.is-admin .main-content {
+                margin-left: 300px;          /* = sidebar width */
+                max-width: 65rem;
+                margin-right: auto;
+                padding-top: 100px;
+            }
+            body:not(.is-admin) .main-content {
+                max-width: 80rem;
+                margin-left: auto;
+                margin-right: auto;
             }
         }
     </style>
@@ -297,7 +303,7 @@
         </aside>
     </div>
     
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+    <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         <div>
             <div
                 class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
