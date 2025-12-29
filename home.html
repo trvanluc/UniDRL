@@ -252,7 +252,7 @@
           </button>
         </div>
       </header>
-      
+      <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
       <header
       id="admin-header" class=" fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between">
       <div class="flex items-center gap-4">
@@ -330,10 +330,10 @@
         </div>
 
         
-    </header>
+      </header>
     
-
-        <aside
+    <div class="layout-container">
+      <aside
         id="admin-sidebar" class=" admin-only admin-surface
         fixed top-0 left-0
         w-64 h-screen
@@ -384,105 +384,106 @@
         
 
         
-    </aside>
-    <main id="main-content" class="pt-20 flex-1 transition-all duration-300 lg:ml-[250px] p-6">
-      <div class="max-w-[1200px] mx-auto w-full flex flex-col gap-8">
-        <div class="@container">
-          <div
-            class="relative flex flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center min-h-[400px] p-8 md:p-12 shadow-2xl"
-            style="
-                background-image: linear-gradient(
-                    180deg,
-                    rgba(17, 33, 23, 0) 0%,
-                    rgba(17, 33, 23, 0.9) 100%
-                  ),
-                  url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPxLQp92aSOGUIgxoO8m_NmGxdx8kpS3JnbnUPgCpAci7EyiYsVjh8qrJgkjONLubshfxhUWfDEnhsVNVbU84sn6qhV_Mt-KUjup26NQw3MKqdTd4l86ZR-o33Efwq-Ey3Bm6EKPJw0JiXXB7LQfy86smYpLaG2qTt5LIA5U8eC4n2TD8WcVKfNYeo2D2IbGW0tnggxkweF6a51AktkAJPZeR73pE023Y-1i2l-aF4ZJg-abyzYCUMHrZ4og_e5HWYqqx_nSYDQB4');
-              ">
-            <div class="relative z-10 flex flex-col gap-4 max-w-2xl">
-              <h1 id="welcome-title" class="text-4xl md:text-6xl font-black leading-tight tracking-tight text-white">
-                Welcome back, Alex.
-              </h1>
-              <p class="text-base md:text-lg text-slate-200 font-medium max-w-lg">
-                Don't miss out on the Annual Hackathon. Registration closes in
-                24 hours!
-              </p>
-              <div class="flex gap-4 pt-2">
-                
+      </aside>
+      <main id="main-content" class="pt-20 flex-1 transition-all duration-300 lg:ml-[250px] p-6">
+        <div class="max-w-[1200px] mx-auto w-full flex flex-col gap-8">
+          <div class="@container">
+            <div
+              class="relative flex flex-col justify-end overflow-hidden rounded-xl bg-cover bg-center min-h-[400px] p-8 md:p-12 shadow-2xl"
+              style="
+                  background-image: linear-gradient(
+                      180deg,
+                      rgba(17, 33, 23, 0) 0%,
+                      rgba(17, 33, 23, 0.9) 100%
+                    ),
+                    url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPxLQp92aSOGUIgxoO8m_NmGxdx8kpS3JnbnUPgCpAci7EyiYsVjh8qrJgkjONLubshfxhUWfDEnhsVNVbU84sn6qhV_Mt-KUjup26NQw3MKqdTd4l86ZR-o33Efwq-Ey3Bm6EKPJw0JiXXB7LQfy86smYpLaG2qTt5LIA5U8eC4n2TD8WcVKfNYeo2D2IbGW0tnggxkweF6a51AktkAJPZeR73pE023Y-1i2l-aF4ZJg-abyzYCUMHrZ4og_e5HWYqqx_nSYDQB4');
+                ">
+              <div class="relative z-10 flex flex-col gap-4 max-w-2xl">
+                <h1 id="welcome-title" class="text-4xl md:text-6xl font-black leading-tight tracking-tight text-white">
+                  Welcome back, Alex.
+                </h1>
+                <p class="text-base md:text-lg text-slate-200 font-medium max-w-lg">
+                  Don't miss out on the Annual Hackathon. Registration closes in
+                  24 hours!
+                </p>
+                <div class="flex gap-4 pt-2">
+                  
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
-          <label
-            class="flex items-center h-14 w-full lg:w-[400px] bg-white dark:bg-[#29382f] rounded-xl px-4 shadow-sm border border-slate-100 dark:border-transparent focus-within:ring-2 focus-within:ring-primary/50 transition-all">
-            <span class="material-symbols-outlined text-slate-400 dark:text-[#9eb7a8]">search</span>
-            <input
-              class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#9eb7a8] focus:ring-0 ml-3 text-base"
-              placeholder="Search for events, clubs, or points..." />
-          </label>
+          <div class="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between">
+            <label
+              class="flex items-center h-14 w-full lg:w-[400px] bg-white dark:bg-[#29382f] rounded-xl px-4 shadow-sm border border-slate-100 dark:border-transparent focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+              <span class="material-symbols-outlined text-slate-400 dark:text-[#9eb7a8]">search</span>
+              <input
+                class="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#9eb7a8] focus:ring-0 ml-3 text-base"
+                placeholder="Search for events, clubs, or points..." />
+            </label>
 
-          <div class="flex gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
-            <button data-filter="All"
-              class="whitespace-nowrap h-10 px-6 rounded-full bg-primary text-background-dark font-bold text-sm shadow-glow">
-              All Events
+            <div class="flex gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto scrollbar-hide">
+              <button data-filter="All"
+                class="whitespace-nowrap h-10 px-6 rounded-full bg-primary text-background-dark font-bold text-sm shadow-glow">
+                All Events
+              </button>
+              <button data-filter="Academic"
+                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+                Academic
+              </button>
+              <button data-filter="Social"
+                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+                Social
+              </button>
+              <button data-filter="Sports"
+                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+                Sports
+              </button>
+              <button data-filter="Workshop"
+                class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
+                Workshops
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-4">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+              Upcoming Events
+            </h2>
+          </div>
+
+          <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+            <!-- JS render events -->
+          </div>
+
+          <div class="flex items-center justify-center gap-2 py-8">
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
+              <span class="material-symbols-outlined text-[20px]">chevron_left</span>
             </button>
-            <button data-filter="Academic"
-              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
-              Academic
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-background-dark font-bold shadow-glow">
+              1
             </button>
-            <button data-filter="Social"
-              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
-              Social
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
+              2
             </button>
-            <button data-filter="Sports"
-              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
-              Sports
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
+              3
             </button>
-            <button data-filter="Workshop"
-              class="whitespace-nowrap h-10 px-6 rounded-full bg-white dark:bg-[#29382f] hover:bg-slate-100 dark:hover:bg-[#384b40] text-slate-700 dark:text-white font-medium text-sm transition-colors border border-slate-200 dark:border-transparent">
-              Workshops
+            <span class="px-2 text-slate-400">...</span>
+            <button
+              class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
+              <span class="material-symbols-outlined text-[20px]">chevron_right</span>
             </button>
           </div>
-        </div>
 
-        <div class="flex items-center justify-between pt-4">
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
-            Upcoming Events
-          </h2>
+            
         </div>
-
-        <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
-          <!-- JS render events -->
-        </div>
-
-        <div class="flex items-center justify-center gap-2 py-8">
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
-            <span class="material-symbols-outlined text-[20px]">chevron_left</span>
-          </button>
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-background-dark font-bold shadow-glow">
-            1
-          </button>
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
-            2
-          </button>
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400">
-            3
-          </button>
-          <span class="px-2 text-slate-400">...</span>
-          <button
-            class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all">
-            <span class="material-symbols-outlined text-[20px]">chevron_right</span>
-          </button>
-        </div>
-
-          
-      </div>
-    </main>
+      </main>
+    </div>
   </div>
 
   <!-- Admin Create Modal -->

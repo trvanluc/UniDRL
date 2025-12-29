@@ -135,6 +135,30 @@
         #admin-sidebar.open {
             transform: translateX(0);
         }
+        #sidebar-toggle:checked ~ .layout-container aside {
+            width: 5rem;
+        }
+
+        #sidebar-toggle:checked ~ .layout-container aside .nav-label {
+            display: none;
+        }
+
+        #sidebar-toggle:checked ~ .layout-container aside .nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .layout-container main {
+                margin-left: 16rem; /* 256px */
+                transition: margin-left 0.3s ease;
+            }
+
+            #sidebar-toggle:checked ~ .layout-container main {
+                margin-left: 5rem;
+            }
+        }
 
         @media (min-width: 1024px) {
             #admin-sidebar {
@@ -210,6 +234,7 @@
 </div>
   </div>
 </header>
+<input class="peer hidden" id="sidebar-toggle" type="checkbox" />
 <header
     id="admin-header" class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
     <div class="flex items-center gap-4">
@@ -257,213 +282,214 @@
         </div>
     </div>
 </header>
-    <div id="admin-layout" class="hidden">
-        <!-- Admin Sidebar -->
-        <aside id="admin-sidebar" class="admin-only admin-surface
-        fixed top-0 left-0
-        w-64 h-screen
-        pt-16
-        bg-white/90 dark:bg-surface-dark/90
-        backdrop-blur-md
-        border-r border-gray-200 dark:border-white/10
-        flex flex-col
-        z-40">
-            <div class="p-4 space-y-2">
-                <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary"
-                    href="home.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
-                    <span class="nav-label whitespace-nowrap">Home</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/participants-management.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
-                    <span class="nav-label whitespace-nowrap">Participant</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/check-in-management.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
-                    <span class="nav-label whitespace-nowrap">Check-in</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/badge-system.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
-                    <span class="nav-label whitespace-nowrap">Badge System</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/report.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
-                    <span class="nav-label whitespace-nowrap">Report</span>
-                </a>
-            </div>
-            
-        </aside>
-    </div>
-    
-    <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
-        <div>
-            <div
-                class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
-                <div id="event-banner"
-                    class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    role="img" aria-label="Event banner">></div>
+    <div class="layout-container">
+        <div id="admin-layout" class="hidden">
+            <!-- Admin Sidebar -->
+            <aside id="admin-sidebar" class="admin-only admin-surface
+            fixed top-0 left-0
+            w-64 h-screen
+            pt-16
+            bg-white/90 dark:bg-surface-dark/90
+            backdrop-blur-md
+            border-r border-gray-200 dark:border-white/10
+            flex flex-col
+            z-40">
+                <div class="p-4 space-y-2">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary"
+                        href="home.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
+                        <span class="nav-label whitespace-nowrap">Home</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/participants-management.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
+                        <span class="nav-label whitespace-nowrap">Participant</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/check-in-management.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
+                        <span class="nav-label whitespace-nowrap">Check-in</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/badge-system.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
+                        <span class="nav-label whitespace-nowrap">Badge System</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/report.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
+                        <span class="nav-label whitespace-nowrap">Report</span>
+                    </a>
+                </div>
+                
+            </aside>
+        </div>
+        
+        <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+            <div>
                 <div
-                    class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/40 to-transparent">
-                </div>
-                <div class="absolute bottom-0 left-0 p-6 sm:hidden">
-                    <span id="banner-category"
-                        class="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-2 backdrop-blur-sm border border-primary/20">
-                    </span>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <div class="lg:col-span-8 flex flex-col gap-8">
-                    <div class="flex flex-col gap-4">
-                        <div class="flex flex-wrap items-center gap-3">
-                            <span id="event-category"
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5"></span>
-                            <span
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5">Open
-                                to All</span>
-                        </div>
-                        <h1 id="event-name"
-                            class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
-                        </h1>
+                    class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
+                    <div id="event-banner"
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        role="img" aria-label="Event banner">></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/40 to-transparent">
                     </div>
+                    <div class="absolute bottom-0 left-0 p-6 sm:hidden">
+                        <span id="banner-category"
+                            class="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-2 backdrop-blur-sm border border-primary/20">
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <div class="lg:col-span-8 flex flex-col gap-8">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span id="event-category"
+                                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5"></span>
+                                <span
+                                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5">Open
+                                    to All</span>
+                            </div>
+                            <h1 id="event-name"
+                                class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
+                            </h1>
+                        </div>
 
-                    <div id="event-description"
-                        class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300">
-                    </div>
-                    <div class="h-px w-full bg-gray-200 dark:bg-[#29382f]"></div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">footprint</span>
-                            Attendance Journey
-                        </h3>
-                        <div class="relative">
-                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-[#29382f]"></div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-primary shadow-[0_0_15px_rgba(54,226,123,0.4)] border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span
-                                        class="material-symbols-outlined text-black text-[16px] font-bold">edit_square</span>
+                        <div id="event-description"
+                            class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300">
+                        </div>
+                        <div class="h-px w-full bg-gray-200 dark:bg-[#29382f]"></div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">footprint</span>
+                                Attendance Journey
+                            </h3>
+                            <div class="relative">
+                                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-[#29382f]"></div>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-primary shadow-[0_0_15px_rgba(54,226,123,0.4)] border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-black text-[16px] font-bold">edit_square</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-900 dark:text-white">Register Online</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reserve your spot
+                                            instantly. Seats are limited.</p>
+                                    </div>
                                 </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">Register Online</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reserve your spot
-                                        instantly. Seats are limited.</p>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span class="material-symbols-outlined text-gray-400 text-[16px]">qr_code_2</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Get Your Ticket</h4>
+                                        <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">A digital QR code will be
+                                            saved to "My Tickets".</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400 text-[16px]">qr_code_2</span>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span class="material-symbols-outlined text-gray-400 text-[16px]">sensor_door</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Scan at Venue</h4>
+                                        <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">Check-in at Room 304 upon
+                                            arrival.</p>
+                                    </div>
                                 </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Get Your Ticket</h4>
-                                    <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">A digital QR code will be
-                                        saved to "My Tickets".</p>
-                                </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400 text-[16px]">sensor_door</span>
-                                </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Scan at Venue</h4>
-                                    <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">Check-in at Room 304 upon
-                                        arrival.</p>
-                                </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span
-                                        class="material-symbols-outlined text-gray-400 text-[16px]">military_tech</span>
-                                </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Badges</h4>
-                                    <p id="journey-badges" class="text-sm text-gray-400 dark:text-gray-600 mt-1"></p>
+                                <div class="relative flex items-start gap-6 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-gray-400 text-[16px]">military_tech</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Badges</h4>
+                                        <p id="journey-badges" class="text-sm text-gray-400 dark:text-gray-600 mt-1"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="lg:col-span-4">
-                    <div class="sticky top-28 flex flex-col gap-6">
-                        <div
-                            class="bg-white dark:bg-[#1c2621] rounded-xl p-6 shadow-xl shadow-black/5 dark:shadow-none border border-gray-100 dark:border-white/5">
-                            <h3 class="text-xl font-bold mb-6">Event Details</h3>
-                            <div class="space-y-6">
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <div class="lg:col-span-4">
+                        <div class="sticky top-28 flex flex-col gap-6">
+                            <div
+                                class="bg-white dark:bg-[#1c2621] rounded-xl p-6 shadow-xl shadow-black/5 dark:shadow-none border border-gray-100 dark:border-white/5">
+                                <h3 class="text-xl font-bold mb-6">Event Details</h3>
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                        </div>
+                                        <div>
+                                            <p id="event-date" class="font-bold text-gray-900 dark:text-white"></p>
+                                            <p id="event-time" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                            <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
+                                                href="#">Add to Calendar</a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p id="event-date" class="font-bold text-gray-900 dark:text-white"></p>
-                                        <p id="event-time" class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                        <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
-                                            href="#">Add to Calendar</a>
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">location_on</span>
+                                        </div>
+                                        <div>
+                                            <p id="event-location" class="font-bold text-gray-900 dark:text-white"></p>
+                                            <p id="event-room" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                            <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
+                                                href="#">View Map</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">location_on</span>
-                                    </div>
-                                    <div>
-                                        <p id="event-location" class="font-bold text-gray-900 dark:text-white"></p>
-                                        <p id="event-room" class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                        <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
-                                            href="#">View Map</a>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">group</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-gray-900 dark:text-white">Limited Capacity</p>
-                                        <div class="flex items-center gap-2 mt-1">
-                                            <div
-                                                class="h-1.5 w-16 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
-                                                <div class="h-full bg-primary w-[60%] rounded-full"></div>
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">group</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900 dark:text-white">Limited Capacity</p>
+                                            <div class="flex items-center gap-2 mt-1">
+                                                <div
+                                                    class="h-1.5 w-16 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-primary w-[60%] rounded-full"></div>
+                                                </div>
+                                                <p id="event-seats" class="text-xs text-gray-500 dark:text-gray-400"></p>
                                             </div>
-                                            <p id="event-seats" class="text-xs text-gray-500 dark:text-gray-400"></p>
                                         </div>
                                     </div>
                                 </div>
+                                <div id="event-actions" class="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
+                                    <!-- JS will render actions here based on role -->
+                                </div>
                             </div>
-                            <div id="event-actions" class="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
-                                <!-- JS will render actions here based on role -->
-                            </div>
-                        </div>
-                        <div
-                            class="bg-white dark:bg-[#1c2621] rounded-xl p-5 border border-gray-100 dark:border-white/5 flex items-center gap-4">
-                            <div id="event-organizer-avatar"
-                                class="size-12 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden shrink-0 bg-cover bg-center"
-                                role="img" aria-label="Event organizer avatar">
-                            </div>
-                            <div>
-                                <p
-                                    class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-bold mb-0.5">
-                                    Organizer
-                                </p>
-                                <p id="event-organizer" class="font-bold text-sm"></p>
-                                <p id="event-organizer-dept" class="text-xs text-gray-500"></p>
+                            <div
+                                class="bg-white dark:bg-[#1c2621] rounded-xl p-5 border border-gray-100 dark:border-white/5 flex items-center gap-4">
+                                <div id="event-organizer-avatar"
+                                    class="size-12 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden shrink-0 bg-cover bg-center"
+                                    role="img" aria-label="Event organizer avatar">
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-bold mb-0.5">
+                                        Organizer
+                                    </p>
+                                    <p id="event-organizer" class="font-bold text-sm"></p>
+                                    <p id="event-organizer-dept" class="text-xs text-gray-500"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-    <footer class="mt-auto py-8 text-center text-gray-500 text-sm">
-        <p>© 2023 Student Portal System. All rights reserved.</p>
-    </footer>
-
+        </main>
+        <footer class="mt-auto py-8 text-center text-gray-500 text-sm">
+            <p>© 2023 Student Portal System. All rights reserved.</p>
+        </footer>
+    </div>
 
 
     <!-- REGISTER EVENT MODAL - Popup Form Đăng Ký -->
