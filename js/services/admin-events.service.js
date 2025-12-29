@@ -1,3 +1,4 @@
+// js/services/admin-events.service.js
 import { EVENTS } from "../data/events.data.js";
 
 const EVENT_KEY = "events";
