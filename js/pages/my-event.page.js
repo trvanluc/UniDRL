@@ -3,9 +3,10 @@ import { ROLES } from "../config/constants.js";
 import { Theme } from "../utils/theme.js";
 import { Storage } from "../utils/storage.js";
 import { EVENTS } from "../data/events.data.js";
-
-// Storage key for registrations
-const STORAGE_KEY_REGISTRATIONS = "event_registrations";
+import { RegistrationService } from "../services/registration.service.js";
+import { renderTicketDesignForModal } from "../components/ticket/ticket.component.js";
+import { openModal, closeModal, setupModalListeners } from "../components/modal/modal-manager.component.js";
+import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
@@ -18,66 +19,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   Theme.init();
+  setupThemeToggle();
   setupSettingsDropdown();
   setupLogout();
 
-  // Load and render registered tickets
   loadRegisteredTickets(user.studentId);
 
-  // Setup ticket modal event listeners
   setupTicketModal();
-}
-);
-
-document.querySelectorAll(".theme-toggle-icon").forEach(icon => {
-  icon.closest("button")?.addEventListener("click", () => {
-    const newTheme = Theme.toggleTheme();
-    Theme.updateIcon(newTheme);
-  });
 });
 
-/**
- * Load and render registered tickets for the user
- */
 function loadRegisteredTickets(mssv) {
-  const registrations = getUserRegistrations(mssv);
+  const registrations = RegistrationService.getByStudentId(mssv);
   const registeredEvents = getRegisteredEvents(registrations);
 
   renderTickets(registeredEvents, registrations);
 }
 
-/**
- * Get all registrations for a user
- */
-function getUserRegistrations(studentId) {
-  const data = localStorage.getItem(STORAGE_KEY_REGISTRATIONS);
-  const allRegistrations = data ? JSON.parse(data) : [];
-  return allRegistrations.filter(reg => reg.mssv === studentId);
-}
-
-/**
- * Get event details for registered events
- */
 function getRegisteredEvents(registrations) {
   const eventMap = new Map();
-  
-  // Process registrations and ensure unique events by eventId
+
   registrations.forEach(reg => {
     const event = EVENTS.find(e => e.id === reg.eventId);
     if (event) {
-      // Use eventId as key to ensure uniqueness
-      // If multiple registrations for same event, keep the latest one
       eventMap.set(reg.eventId, { ...event, registration: reg });
     }
   });
-  
-  // Return array of unique events
+
   return Array.from(eventMap.values());
 }
 
-/**
- * Render the tickets grid
- */
 function renderTickets(events, registrations) {
   const grid = document.getElementById("tickets-grid");
   if (!grid) return;
@@ -102,9 +72,6 @@ function renderTickets(events, registrations) {
   grid.innerHTML = events.map(event => createTicketCard(event)).join("");
 }
 
-/**
- * Create HTML for a ticket card
- */
 function createTicketCard(event) {
   const status = getEventStatus(event.registration);
   const statusColor = getStatusColor(status);
@@ -148,9 +115,6 @@ function createTicketCard(event) {
   `;
 }
 
-/**
- * Get status text for registration
- */
 function getEventStatus(registration) {
   if (registration.status === "checked-in" || registration.checkInTime) {
     return "Completed";
@@ -158,9 +122,6 @@ function getEventStatus(registration) {
   return "Registered";
 }
 
-/**
- * Get status color classes
- */
 function getStatusColor(status) {
   switch (status) {
     case "Completed":
@@ -179,9 +140,6 @@ function getStatusColor(status) {
   }
 }
 
-/**
- * Get button configuration based on status
- */
 function getButtonConfig(event, status) {
   if (status === "Completed") {
     return {
@@ -198,55 +156,7 @@ function getButtonConfig(event, status) {
   }
 }
 
-/**
- * =========================
- * SETUP SETTINGS DROPDOWN (Toggle with animation)
- * =========================
- */
-function setupSettingsDropdown() {
-  const settingsBtn = document.getElementById("settings-btn");
-  const dropdown = document.getElementById("settings-dropdown");
-
-  if (!settingsBtn || !dropdown) return;
-
-  settingsBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const isVisible = dropdown.style.display === "block";
-    dropdown.style.display = isVisible ? "none" : "block";
-    dropdown.style.opacity = isVisible ? "0" : "1";
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!settingsBtn.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = "none";
-      dropdown.style.opacity = "0";
-    }
-  });
-}
-
-/**
- * =========================
- * SETUP LOGOUT
- * =========================
- */
-function setupLogout() {
-  const logoutBtn = document.getElementById("logout-btn");
-
-  if (!logoutBtn) return;
-
-  logoutBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to logout?")) {
-      Storage.clearSession();
-      window.location.href = "/login.html";
-    }
-  });
-}
-
-/**
- * Setup event listeners for ticket modal
- */
 function setupTicketModal() {
-  // Add click listeners to all open ticket buttons
   document.addEventListener('click', (e) => {
     if (e.target.closest('.open-ticket-btn')) {
       e.preventDefault();
@@ -256,74 +166,36 @@ function setupTicketModal() {
     }
   });
 
-  // Setup modal close events
-  const modal = document.getElementById('qr-ticket-modal');
-  const closeBtn = document.getElementById('close-qr-ticket-modal-btn');
-  const overlay = document.getElementById('qr-ticket-modal-overlay');
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeTicketModal);
-  }
-  if (overlay) {
-    overlay.addEventListener('click', closeTicketModal);
-  }
-
-  // Close on ESC key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
-      closeTicketModal();
-    }
-  });
+  setupModalListeners("qr-ticket-modal", "close-qr-ticket-modal-btn", "qr-ticket-modal-overlay");
 }
 
-/**
- * Open ticket modal for specific event
- */
 function openTicketModal(eventId) {
-  const user = JSON.parse(localStorage.getItem('currentUser'));
+  const user = Storage.getCurrentUser();
   if (!user) return;
 
-  // Find the registration for this event
-  const registrations = getUserRegistrations(user.studentId || user.email);
+  const registrations = RegistrationService.getByStudentId(user.studentId || user.email);
   const registration = registrations.find(reg => reg.eventId === eventId);
-  
+
   if (!registration) {
     alert('Registration not found for this event.');
     return;
   }
 
-  // Find the event details
   const event = EVENTS.find(e => e.id === eventId);
   if (!event) {
     alert('Event details not found.');
     return;
   }
 
-  // Show modal
-  const modal = document.getElementById('qr-ticket-modal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
+  openModal("qr-ticket-modal");
 
-  // Render ticket
-  renderTicketForModal(event, registration);
-}
+  const modalContent = document.getElementById('qr-ticket-modal-content');
+  if (modalContent) {
+    modalContent.innerHTML = `<div id="modal-ticket-container"></div>`;
 
-/**
- * Close ticket modal
- */
-function closeTicketModal() {
-  const modal = document.getElementById('qr-ticket-modal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    
-    // Clear content
-    const modalContent = document.getElementById('qr-ticket-modal-content');
-    if (modalContent) {
-      modalContent.innerHTML = '';
-    }
+    setTimeout(() => {
+      renderTicketDesignForModal(event, registration, "modal-ticket-container");
+    }, 50);
   }
 }
 
@@ -455,4 +327,8 @@ function renderTicketForModal(event, userRegistration) {
       />
     `;
   }
+}
+
+function closeTicketModal() {
+  closeModal("qr-ticket-modal");
 }

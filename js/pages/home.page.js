@@ -2,75 +2,31 @@
  * ==========================================
  * HOME PAGE CONTROLLER
  * ==========================================
+ * Features:
+ * - Role-based layout
+ * - Event listing with search, filter, pagination
+ * ==========================================
  */
-
 import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Theme } from "../utils/theme.js";
-import { Storage } from "../utils/storage.js";  // Import Storage để clear session
+import { Storage } from "../utils/storage.js";
+import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
   if (!user) return;
-
   console.log("User authenticated:", user.name, "| Role:", user.role);
   console.log("Events loaded:", EVENTS.length, "events");
-
   Theme.init();
   setupThemeToggle();
-
+  setupSettingsDropdown();
+  setupLogout();
   renderWelcome(user);
   renderLayoutByRole(user);
   initEvents();
-  setupSettingsDropdown();  // Thêm để xử lý toggle dropdown
-  setupLogout();  // Thêm để xử lý logout
 });
-
-/**
- * =========================
- * SETUP SETTINGS DROPDOWN (Toggle with animation)
- * =========================
- */
-function setupSettingsDropdown() {
-  const settingsBtn = document.getElementById("settings-btn");
-  const dropdown = document.getElementById("settings-dropdown");
-
-  if (!settingsBtn || !dropdown) return;
-
-  settingsBtn.addEventListener("click", (e) => {
-    e.stopPropagation();  // Ngăn click lan ra ngoài
-    const isVisible = dropdown.style.display === "block";
-    dropdown.style.display = isVisible ? "none" : "block";
-    dropdown.style.opacity = isVisible ? "0" : "1";  // Animation fade
-  });
-
-  // Đóng dropdown khi click ngoài
-  document.addEventListener("click", (e) => {
-    if (!settingsBtn.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.style.display = "none";
-      dropdown.style.opacity = "0";
-    }
-  });
-}
-
-/**
- * =========================
- * SETUP LOGOUT
- * =========================
- */
-function setupLogout() {
-  const logoutBtn = document.getElementById("logout-btn");
-
-  if (!logoutBtn) return;
-
-  logoutBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to logout?")) {
-      Storage.clearSession();  // Xóa session từ localStorage
-      window.location.href = "login.html";  // Redirect về login
-    }
-  });
-}
 
 /**
  * =========================
@@ -79,31 +35,7 @@ function setupLogout() {
  */
 function renderWelcome(user) {
   const title = document.getElementById("welcome-title");
-  if (!title) return;
-
-  title.textContent = `Welcome back, ${user.name || "User"}.`;
-}
-
-/**
- * =========================
- *  THEME TOGGLE
- * =========================
- */
-function setupThemeToggle() {
-  const themeButtons = document.querySelectorAll('button:has(.theme-toggle-icon)');
-  
-  themeButtons.forEach(button => {
-    // Update icon on page load
-    const icon = button.querySelector('.material-symbols-outlined');
-    if (icon && !icon.classList.contains('theme-toggle-icon')) {
-      icon.classList.add('theme-toggle-icon');
-    }
-    
-    button.addEventListener("click", () => {
-      const newTheme = Theme.toggleTheme();
-      Theme.updateIcon(newTheme);
-    });
-  });
+  if (title) title.textContent = `Welcome back, ${user.name || "User"}.`;
 }
 
 /**
@@ -118,9 +50,7 @@ function renderLayoutByRole(user) {
   const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
   const adminProfileHeader = document.getElementById("admin-profile-header");
   const studentProfileHeader = document.getElementById("student-profile-header");
-
   if (!navMenu) return;
-
   // ===== STUDENT =====
   if (user.role === ROLES.STUDENT) {
     navMenu.innerHTML = `
@@ -130,34 +60,21 @@ function renderLayoutByRole(user) {
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/profile.html">Profile</a>
     `;
     const mainContent = document.getElementById("main-content");
-    mainContent.style.marginLeft = "0"; // reset margin-left
-
+    if (mainContent) mainContent.style.marginLeft = "0"; // reset margin-left
     [adminSidebar, openCreateModal, sidebarToggleBtn, adminProfileHeader].forEach(el => el?.classList.add("hidden"));
-    studentProfileHeader?.classList.remove("hidden");
-
-    if (user.name) {
-      studentProfileHeader.innerHTML = `
-      <div class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center font-black">
-        ${user.name.charAt(0).toUpperCase()}
-      </div>
-    `;
-    }
+    if (studentProfileHeader) studentProfileHeader.classList.remove("hidden");
     return;
   }
-
   // ===== ADMIN / ADVISOR / MANAGER =====
   if ([ROLES.ADMIN, ROLES.ADVISOR, ROLES.MANAGER].includes(user.role)) {
-    adminSidebar?.classList.remove("hidden");  // hiện sidebar
-    openCreateModal?.classList.remove("hidden");
-    sidebarToggleBtn?.classList.remove("hidden");
-    adminProfileHeader?.classList.remove("hidden");
-    studentProfileHeader?.classList.add("hidden");
-
-    // Reset margin-left main-content cho admin/advisor/manager
+    if (adminSidebar) adminSidebar.classList.remove("hidden"); // hiện sidebar
+    if (openCreateModal) openCreateModal.classList.remove("hidden");
+    if (sidebarToggleBtn) sidebarToggleBtn.classList.remove("hidden");
+    if (adminProfileHeader) adminProfileHeader.classList.remove("hidden");
+    if (studentProfileHeader) studentProfileHeader.classList.add("hidden");
     const mainContent = document.getElementById("main-content");
-    mainContent.style.marginLeft = "16rem"; // width sidebar mặc định
+    if (mainContent) mainContent.style.marginLeft = "16rem"; // width sidebar mặc định
   }
-
 }
 
 /**
@@ -168,62 +85,101 @@ function renderLayoutByRole(user) {
 function initEvents() {
   const grid = document.getElementById("events-grid");
   const searchInput = document.querySelector('input[placeholder*="Search"]');
-  
+ 
   if (!grid) {
     console.error("Element #events-grid not found");
     return;
   }
-
   const filterButtons = document.querySelectorAll("[data-filter]");
-  
+ 
   // ===== STATE =====
   let currentPage = 1;
   const eventsPerPage = 6;
   let currentFilter = "All";
   let searchQuery = "";
 
+  /**
+   * Filter events by category
+   * @param {Array} events - Full events list
+   * @param {string} filter - Category filter ("All" or specific category)
+   * @returns {Array} Filtered events
+   */
+  function filterEventsByCategory(events, filter) {
+    return filter === "All" ? events : events.filter(e => e.category === filter);
+  }
+
+  /**
+   * Filter events by search query
+   * @param {Array} events - Events list
+   * @param {string} query - Search string
+   * @returns {Array} Filtered events
+   */
+  function filterEventsBySearch(events, query) {
+    if (!query) return events;
+    const lowerQuery = query.toLowerCase();
+    return events.filter(event =>
+      event.title.toLowerCase().includes(lowerQuery) ||
+      event.category.toLowerCase().includes(lowerQuery) ||
+      event.location.toLowerCase().includes(lowerQuery) ||
+      event.organizer.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  /**
+   * Paginate events
+   * @param {Array} events - Filtered events
+   * @param {number} page - Current page
+   * @param {number} perPage - Events per page
+   * @returns {Object} {events: slicedEvents, totalPages}
+   */
+  function paginateEvents(events, page, perPage) {
+    const totalPages = Math.ceil(events.length / perPage);
+    const startIndex = (page - 1) * perPage;
+    return {
+      events: events.slice(startIndex, startIndex + perPage),
+      totalPages
+    };
+  }
+
+  /**
+   * Render empty state
+   * @param {string} search - Search query for message
+   */
+  function renderEmptyState(search) {
+    grid.innerHTML = `
+      <div class="col-span-full flex flex-col items-center justify-center py-12">
+        <span class="material-symbols-outlined text-6xl text-gray-400 mb-4">search_off</span>
+        <p class="text-center text-gray-500 text-lg font-medium">
+          ${search ? `No events found for "${search}"` : 'No events found'}
+        </p>
+        ${search ? '<p class="text-center text-gray-400 text-sm mt-2">Try different keywords or clear the search</p>' : ''}
+      </div>
+    `;
+    renderPagination(0, currentPage);
+  }
+
+  /**
+   * Render filtered/paginated events
+   * @param {string} filter - Category filter
+   * @param {number} page - Current page
+   * @param {string} search - Search query
+   */
   function renderEvents(filter = "All", page = 1, search = "") {
     currentFilter = filter;
     currentPage = page;
     searchQuery = search.toLowerCase();
-    
+
     grid.innerHTML = "";
 
-    // Filter by category
-    let filteredEvents =
-      filter === "All"
-        ? EVENTS
-        : EVENTS.filter(event => event.category === filter);
+    let filteredEvents = filterEventsByCategory(EVENTS, filter);
+    filteredEvents = filterEventsBySearch(filteredEvents, searchQuery);
 
-    // Filter by search query
-    if (searchQuery) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.title.toLowerCase().includes(searchQuery) ||
-        event.category.toLowerCase().includes(searchQuery) ||
-        event.location.toLowerCase().includes(searchQuery) ||
-        event.organizer.toLowerCase().includes(searchQuery)
-      );
-    }
+    const { events: eventsToShow, totalPages } = paginateEvents(filteredEvents, page, eventsPerPage);
 
     console.log(`🔍 Filter: ${filter} | Search: "${search}" | Found: ${filteredEvents.length} events`);
 
-    // Calculate pagination
-    const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
-    const startIndex = (page - 1) * eventsPerPage;
-    const endIndex = startIndex + eventsPerPage;
-    const eventsToShow = filteredEvents.slice(startIndex, endIndex);
-
-    // Render events
     if (!eventsToShow.length) {
-      grid.innerHTML = `
-        <div class="col-span-full flex flex-col items-center justify-center py-12">
-          <span class="material-symbols-outlined text-6xl text-gray-400 mb-4">search_off</span>
-          <p class="text-center text-gray-500 text-lg font-medium">
-            ${searchQuery ? `No events found for "${search}"` : 'No events found'}
-          </p>
-          ${searchQuery ? '<p class="text-center text-gray-400 text-sm mt-2">Try different keywords or clear the search</p>' : ''}
-        </div>`;
-      renderPagination(0, page);
+      renderEmptyState(search);
       return;
     }
 
@@ -231,21 +187,18 @@ function initEvents() {
       grid.insertAdjacentHTML("beforeend", createEventCard(event));
     });
 
-    // Render pagination controls
     renderPagination(totalPages, page);
   }
 
   function renderPagination(totalPages, currentPage) {
     const paginationContainer = document.querySelector(".flex.items-center.justify-center.gap-2.py-8");
     if (!paginationContainer) return;
-
     if (totalPages <= 1) {
       paginationContainer.innerHTML = "";
       return;
     }
-
     let paginationHTML = `
-      <button 
+      <button
         onclick="window.changePage(${currentPage - 1})"
         ${currentPage === 1 ? 'disabled' : ''}
         class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}"
@@ -253,16 +206,15 @@ function initEvents() {
         <span class="material-symbols-outlined text-[20px]">chevron_left</span>
       </button>
     `;
-
     // Page numbers
     for (let i = 1; i <= totalPages; i++) {
       if (
-        i === 1 || 
-        i === totalPages || 
+        i === 1 ||
+        i === totalPages ||
         (i >= currentPage - 1 && i <= currentPage + 1)
       ) {
         paginationHTML += `
-          <button 
+          <button
             onclick="window.changePage(${i})"
             class="w-10 h-10 flex items-center justify-center rounded-lg ${
               i === currentPage
@@ -277,9 +229,8 @@ function initEvents() {
         paginationHTML += `<span class="px-2 text-slate-400">...</span>`;
       }
     }
-
     paginationHTML += `
-      <button 
+      <button
         onclick="window.changePage(${currentPage + 1})"
         ${currentPage === totalPages ? 'disabled' : ''}
         class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 dark:border-[#2a3630] hover:bg-primary hover:text-background-dark transition-all ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}"
@@ -287,30 +238,18 @@ function initEvents() {
         <span class="material-symbols-outlined text-[20px]">chevron_right</span>
       </button>
     `;
-
     paginationContainer.innerHTML = paginationHTML;
   }
 
   // Global function for pagination buttons
   window.changePage = function(page) {
     // Recalculate based on current filter and search
-    let filteredEvents = currentFilter === "All" 
-      ? EVENTS 
-      : EVENTS.filter(e => e.category === currentFilter);
-    
-    if (searchQuery) {
-      filteredEvents = filteredEvents.filter(event =>
-        event.title.toLowerCase().includes(searchQuery) ||
-        event.category.toLowerCase().includes(searchQuery) ||
-        event.location.toLowerCase().includes(searchQuery) ||
-        event.organizer.toLowerCase().includes(searchQuery)
-      );
-    }
-    
-    const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+    let filteredEvents = filterEventsByCategory(EVENTS, currentFilter);
+    filteredEvents = filterEventsBySearch(filteredEvents, searchQuery);
 
+    const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
     if (page < 1 || page > totalPages) return;
-    
+
     renderEvents(currentFilter, page, searchInput?.value || "");
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -321,19 +260,16 @@ function initEvents() {
       renderEvents(currentFilter, 1, e.target.value); // Reset to page 1 on search
     });
   }
-
   // Filter button handlers
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
       filterButtons.forEach(btn =>
         btn.classList.remove("bg-primary", "text-background-dark")
       );
-
       button.classList.add("bg-primary", "text-background-dark");
       renderEvents(button.dataset.filter, 1, searchInput?.value || ""); // Reset to page 1
     });
   });
-
   // Initial render
   renderEvents("All", 1, "");
 }
@@ -347,16 +283,15 @@ function createEventCard(event) {
   return `
     <div class="group flex flex-col bg-white dark:bg-card-dark rounded-xl overflow-hidden border border-slate-100 dark:border-[#2a3630] hover:border-primary/50 transition-all hover:-translate-y-1 hover:shadow-glow">
       <div class="relative h-48 w-full overflow-hidden">
-        <img 
-          src="${event.image}" 
-          alt="${event.title}" 
+        <img
+          src="${event.image}"
+          alt="${event.title}"
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div class="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10">
           <span class="text-xs font-bold text-primary uppercase">${event.status}</span>
         </div>
       </div>
-
       <div class="p-6 flex flex-col flex-1 gap-4">
         <div class="flex justify-between items-start gap-4">
           <h3 class="text-xl font-bold text-slate-900 dark:text-white leading-tight">${event.title}</h3>
@@ -365,7 +300,6 @@ function createEventCard(event) {
             <span class="text-xl font-black text-primary">${event.date.split(' ')[1]}</span>
           </div>
         </div>
-
         <div class="flex flex-col gap-2 text-slate-500 dark:text-slate-400 text-sm">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-[18px]">location_on</span>
@@ -376,7 +310,6 @@ function createEventCard(event) {
             <span>${event.time}</span>
           </div>
         </div>
-
         <div class="mt-auto pt-4 flex items-center justify-between border-t border-slate-100 dark:border-[#2a3630]">
           
           <a 
