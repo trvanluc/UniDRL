@@ -1,20 +1,23 @@
 import { requireAuth } from "../guards/auth.guard.js";
-import { ROLES } from "../config/constants.js";
+import { ROLES, STORAGE_KEYS } from "../config/constants.js";
 import { Theme } from "../utils/theme.js";
 import { Storage } from "../utils/storage.js";
 import { EVENTS } from "../data/events.data.js";
 import { RegistrationService } from "../services/registration.service.js";
+import { BadgeService } from "../services/badge.service.js";
 import { renderTicketDesignForModal } from "../components/ticket/ticket.component.js";
 import { openModal, closeModal, setupModalListeners } from "../components/modal/modal-manager.component.js";
 import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
+import { Toast } from "../components/toast/toast.js";
+import { Dialog } from "../components/dialog/dialog.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
   if (!user) return;
 
   if (user.role !== ROLES.STUDENT) {
-    alert("Access denied");
-    window.location.href = "../home.html";
+    Toast.error('Truy cập bị từ chối');
+    setTimeout(() => { window.location.href = "../home.html"; }, 1500);
     return;
   }
 
@@ -26,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadRegisteredTickets(user.studentId);
 
   setupTicketModal();
+  setupCheckoutScanner(user);
 });
 
 function loadRegisteredTickets(mssv) {
@@ -116,8 +120,12 @@ function createTicketCard(event) {
 }
 
 function getEventStatus(registration) {
-  if (registration.status === "checked-in" || registration.checkInTime) {
+  // Priority: Completed (checkout done) > Checked-in > Registered
+  if (registration.status === "completed" || registration.checkoutTime) {
     return "Completed";
+  }
+  if (registration.status === "checked-in" || registration.checkInTime) {
+    return "Checked-in";
   }
   return "Registered";
 }
@@ -125,6 +133,12 @@ function getEventStatus(registration) {
 function getStatusColor(status) {
   switch (status) {
     case "Completed":
+      return {
+        text: "text-green-500",
+        bg: "bg-green-500/10",
+        border: "border-green-500/20"
+      };
+    case "Checked-in":
       return {
         text: "text-green-500",
         bg: "bg-green-500/10",
@@ -148,6 +162,7 @@ function getButtonConfig(event, status) {
       classes: "border border-[#29382f] text-gray-400 hover:text-white hover:bg-[#29382f]"
     };
   } else {
+    // Both Registered and Checked-in show Open Ticket
     return {
       text: "Open Ticket",
       icon: "confirmation_number",
@@ -162,6 +177,16 @@ function setupTicketModal() {
       e.preventDefault();
       const button = e.target.closest('.open-ticket-btn');
       const eventId = button.getAttribute('data-event-id');
+
+      // Check if this is a "View History" button (status = Completed)
+      const buttonText = button.querySelector('span')?.textContent?.trim();
+      if (buttonText === 'View History') {
+        // Redirect to my-journey page
+        window.location.href = 'my-journey.html';
+        return;
+      }
+
+      // Otherwise open the ticket modal
       openTicketModal(eventId);
     }
   });
@@ -331,4 +356,368 @@ function renderTicketForModal(event, userRegistration) {
 
 function closeTicketModal() {
   closeModal("qr-ticket-modal");
+}
+
+// ================================
+// CHECKOUT QR SCANNER FUNCTIONS
+// ================================
+
+let checkoutScanner = null;
+let isCheckoutScanning = false;
+let currentUser = null;
+let currentCheckoutEvent = null;
+let currentQAPairs = [];
+let currentBadgeRules = null;
+
+/**
+ * Setup checkout scanner and all related event listeners
+ */
+function setupCheckoutScanner(user) {
+  currentUser = user;
+
+  // Open scanner button
+  document.getElementById('scan-checkout-btn')?.addEventListener('click', openCheckoutScanner);
+
+  // Close scanner button
+  document.getElementById('close-checkout-scanner-btn')?.addEventListener('click', closeCheckoutScanner);
+  document.getElementById('checkout-scanner-modal-overlay')?.addEventListener('click', closeCheckoutScanner);
+
+  // Start/Stop scanner buttons
+  document.getElementById('start-checkout-scanner-btn')?.addEventListener('click', startCheckoutScanning);
+  document.getElementById('stop-checkout-scanner-btn')?.addEventListener('click', stopCheckoutScanning);
+
+  // Q&A submit button
+  document.getElementById('submit-qa-btn')?.addEventListener('click', submitQAAnswers);
+
+  // Success modal close button
+  document.getElementById('close-success-modal-btn')?.addEventListener('click', () => {
+    closeModal('checkout-success-modal');
+    // Reload tickets to show updated status
+    if (currentUser) {
+      loadRegisteredTickets(currentUser.studentId || currentUser.email);
+    }
+  });
+}
+
+/**
+ * Open the checkout scanner modal
+ */
+function openCheckoutScanner() {
+  openModal('checkout-scanner-modal');
+}
+
+/**
+ * Close the checkout scanner modal
+ */
+function closeCheckoutScanner() {
+  stopCheckoutScanning();
+  closeModal('checkout-scanner-modal');
+}
+
+/**
+ * Start QR code scanning
+ */
+function startCheckoutScanning() {
+  if (isCheckoutScanning) return;
+
+  if (typeof Html5Qrcode === 'undefined') {
+    alert('Thư viện quét QR chưa được tải. Vui lòng reload trang.');
+    return;
+  }
+
+  const qrReader = document.getElementById('checkout-qr-reader');
+  if (!qrReader) return;
+
+  qrReader.innerHTML = '';
+
+  try {
+    checkoutScanner = new Html5Qrcode('checkout-qr-reader');
+
+    checkoutScanner.start(
+      { facingMode: 'environment' },
+      { fps: 10, qrbox: { width: 250, height: 250 } },
+      (decodedText) => {
+        // QR code scanned successfully
+        stopCheckoutScanning();
+        handleCheckoutQRScanned(decodedText);
+      },
+      (errorMessage) => {
+        // Ignore scan errors
+      }
+    ).then(() => {
+      isCheckoutScanning = true;
+      document.getElementById('start-checkout-scanner-btn')?.classList.add('hidden');
+      document.getElementById('stop-checkout-scanner-btn')?.classList.remove('hidden');
+    }).catch((err) => {
+      alert('Không thể khởi động camera. Vui lòng cấp quyền camera.');
+      console.error('Camera error:', err);
+    });
+  } catch (error) {
+    alert('Lỗi khởi tạo scanner.');
+    console.error('Scanner error:', error);
+  }
+}
+
+/**
+ * Stop QR code scanning
+ */
+function stopCheckoutScanning() {
+  if (!isCheckoutScanning || !checkoutScanner) return;
+
+  checkoutScanner.stop().then(() => {
+    checkoutScanner.clear();
+    isCheckoutScanning = false;
+    document.getElementById('start-checkout-scanner-btn')?.classList.remove('hidden');
+    document.getElementById('stop-checkout-scanner-btn')?.classList.add('hidden');
+  }).catch((err) => {
+    console.error('Error stopping scanner:', err);
+    isCheckoutScanning = false;
+  });
+}
+
+/**
+ * Handle scanned checkout QR code
+ */
+function handleCheckoutQRScanned(qrCode) {
+  console.log('🔥 [1] Scanned QR:', qrCode);
+
+  // Verify QR code format
+  if (!qrCode || !qrCode.startsWith('CHECKOUT_')) {
+    console.log('❌ [2] Invalid QR format');
+    Toast.error('Mã QR không hợp lệ. Vui lòng quét mã Checkout từ giảng viên.');
+    return;
+  }
+  console.log('✅ [2] QR format valid');
+
+  // Get checkout QR data from localStorage
+  const allCheckoutQR = JSON.parse(localStorage.getItem('vnuk_checkout_qr') || '{}');
+  console.log('📦 [3] All Checkout QR in storage:', allCheckoutQR);
+
+  // Parse QR code to get eventId
+  const parts = qrCode.split('_');
+  const eventId = parts.slice(1, -1).join('_'); // CHECKOUT_eventId_timestamp
+  console.log('🔑 [4] Parsed eventId:', eventId);
+
+  const storedQR = allCheckoutQR[eventId];
+  console.log('📋 [5] Stored QR for this event:', storedQR);
+
+  if (!storedQR || storedQR.qrCode !== qrCode) {
+    console.log('❌ [6] QR mismatch - storedQR:', storedQR?.qrCode, 'vs scanned:', qrCode);
+    Toast.error('Mã QR không khớp hoặc không tồn tại.');
+    return;
+  }
+  console.log('✅ [6] QR matches');
+
+  // Check expiration
+  if (new Date() > new Date(storedQR.expiresAt)) {
+    console.log('❌ [7] QR expired at:', storedQR.expiresAt);
+    Toast.warning('Mã QR đã hết hạn. Vui lòng liên hệ giảng viên.');
+    return;
+  }
+  console.log('✅ [7] QR not expired');
+
+  // Check if student registered for this event
+  const studentId = currentUser?.studentId || currentUser?.email;
+  console.log('👤 [8] Current user studentId:', studentId);
+
+  const registration = RegistrationService.findByMSSVAndEventId(studentId, eventId);
+  console.log('📝 [9] Registration found:', registration);
+
+  if (!registration) {
+    console.log('❌ [10] Not registered');
+    Toast.error('Bạn chưa đăng ký sự kiện này.');
+    return;
+  }
+  console.log('✅ [10] User is registered');
+
+  // Check if already checked in
+  console.log('📌 [11] Registration status:', registration.status, 'checkInTime:', registration.checkInTime);
+  if (registration.status !== 'checked-in' && !registration.checkInTime) {
+    console.log('❌ [12] Not checked in yet');
+    Toast.warning('Bạn cần check-in trước khi checkout.');
+    return;
+  }
+  console.log('✅ [12] User is checked in');
+
+  // Check if already checked out
+  if (registration.status === 'completed' || registration.checkoutTime) {
+    console.log('❌ [13] Already checked out');
+    Toast.info('Bạn đã checkout sự kiện này rồi.');
+    return;
+  }
+  console.log('✅ [13] Not checked out yet');
+
+  // Get event and badge config
+  const event = BadgeService.getById(eventId);
+  console.log('🎯 [14] Event from BadgeService:', event);
+
+  if (!event) {
+    console.log('❌ [15] Event not found');
+    Toast.error('Không tìm thấy thông tin sự kiện.');
+    return;
+  }
+  console.log('✅ [15] Event found, badgeConfig:', event.badgeConfig);
+
+  // Close scanner modal - wrap in try-catch to ensure flow continues
+  try {
+    closeCheckoutScanner();
+    console.log('✅ [16] Scanner modal closed');
+  } catch (err) {
+    console.error('⚠️ [16] Error closing scanner (continuing anyway):', err);
+  }
+
+  // Check if badge Q&A is enabled
+  console.log('🎖️ [17] Checking badge config - isClaimable:', event.badgeConfig?.isClaimable, 'qa_pairs:', event.badgeConfig?.qa_pairs);
+
+  try {
+    if (event.badgeConfig && event.badgeConfig.isClaimable && event.badgeConfig.qa_pairs?.length > 0) {
+      // Show Q&A quiz
+      console.log('🎉 [18] Showing Q&A quiz with', event.badgeConfig.qa_pairs.length, 'questions');
+      currentCheckoutEvent = event;
+      currentQAPairs = event.badgeConfig.qa_pairs;
+      currentBadgeRules = event.badgeConfig.rules;
+      showQAQuiz(event);
+    } else {
+      // No Q&A, just complete checkout
+      console.log('⏭️ [18] No Q&A configured, completing checkout directly');
+      completeCheckoutProcess(eventId, null, 0);
+    }
+  } catch (err) {
+    console.error('❌ [19] Error showing Q&A or completing checkout:', err);
+    Toast.error('Có lỗi xảy ra: ' + err.message);
+  }
+}
+
+/**
+ * Show Q&A quiz modal
+ */
+function showQAQuiz(event) {
+  const container = document.getElementById('qa-questions-container');
+  const titleEl = document.getElementById('qa-event-title');
+
+  if (titleEl) titleEl.textContent = event.title;
+
+  if (container && currentQAPairs.length > 0) {
+    container.innerHTML = currentQAPairs.map((qa, index) => `
+      <div class="bg-surface-dark rounded-xl p-4 border border-[#29382f]">
+        <p class="text-white font-medium mb-3">
+          <span class="text-primary font-bold">Câu ${index + 1}:</span> ${qa.q}
+        </p>
+        <input 
+          type="text" 
+          class="qa-answer w-full px-4 py-3 rounded-xl bg-[#112117] border border-[#29382f] text-white placeholder-gray-500 focus:border-primary focus:outline-none"
+          data-index="${index}"
+          placeholder="Nhập câu trả lời của bạn..."
+        />
+      </div>
+    `).join('');
+  }
+
+  openModal('qa-quiz-modal');
+}
+
+/**
+ * Submit Q&A answers and calculate badge
+ */
+function submitQAAnswers() {
+  const answerInputs = document.querySelectorAll('.qa-answer');
+  let correctCount = 0;
+
+  answerInputs.forEach((input, index) => {
+    const userAnswer = input.value.trim().toLowerCase();
+    const correctAnswer = currentQAPairs[index]?.a?.toLowerCase();
+
+    if (userAnswer === correctAnswer) {
+      correctCount++;
+      input.classList.add('border-green-500');
+    } else {
+      input.classList.add('border-red-500');
+    }
+  });
+
+  // Calculate badge
+  const badge = calculateBadge(correctCount, currentBadgeRules);
+
+  // Close Q&A modal
+  closeModal('qa-quiz-modal');
+
+  // Complete checkout
+  completeCheckoutProcess(currentCheckoutEvent.id, badge, correctCount);
+}
+
+/**
+ * Calculate badge based on correct answers
+ */
+function calculateBadge(correctAnswers, rules) {
+  if (!rules) return null;
+
+  if (correctAnswers >= rules.gold) {
+    return 'gold';
+  } else if (correctAnswers >= rules.silver) {
+    return 'silver';
+  } else if (correctAnswers >= rules.bronze) {
+    return 'bronze';
+  }
+
+  return null;
+}
+
+/**
+ * Complete the checkout process
+ */
+function completeCheckoutProcess(eventId, badge, correctAnswers) {
+  const studentId = currentUser?.studentId || currentUser?.email;
+  const checkoutTime = new Date().toISOString();
+
+  // Update registration in localStorage
+  const allRegistrations = RegistrationService.getAll();
+  const index = allRegistrations.findIndex(r => r.mssv === studentId && r.eventId === eventId);
+
+  if (index !== -1) {
+    allRegistrations[index] = {
+      ...allRegistrations[index],
+      status: 'completed',
+      checkoutTime: checkoutTime,
+      badgeEarned: badge,
+      correctAnswers: correctAnswers
+    };
+    localStorage.setItem(STORAGE_KEYS.REGISTRATIONS, JSON.stringify(allRegistrations));
+  }
+
+  // Show success modal
+  showCheckoutSuccess(badge, correctAnswers);
+}
+
+/**
+ * Show checkout success modal
+ */
+function showCheckoutSuccess(badge, correctAnswers) {
+  const messageEl = document.getElementById('success-message');
+  const badgeDisplay = document.getElementById('success-badge-display');
+  const badgeNameEl = document.getElementById('success-badge-name');
+
+  if (badge) {
+    const badgeNames = {
+      gold: '🥇 Gold Badge',
+      silver: '🥈 Silver Badge',
+      bronze: '🥉 Bronze Badge'
+    };
+    const badgeColors = {
+      gold: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-500',
+      silver: 'bg-gray-400/20 border-gray-400/30 text-gray-400',
+      bronze: 'bg-orange-500/20 border-orange-500/30 text-orange-500'
+    };
+
+    if (messageEl) messageEl.textContent = `Bạn trả lời đúng ${correctAnswers} câu và nhận được:`;
+    if (badgeNameEl) badgeNameEl.textContent = badgeNames[badge] || badge;
+    if (badgeDisplay) {
+      badgeDisplay.className = `inline-flex items-center gap-2 px-4 py-2 rounded-full ${badgeColors[badge] || 'bg-primary/20 border-primary/30 text-primary'} mb-6`;
+      badgeDisplay.classList.remove('hidden');
+    }
+  } else {
+    if (messageEl) messageEl.textContent = 'Checkout thành công! Cảm ơn bạn đã tham gia.';
+    if (badgeDisplay) badgeDisplay.classList.add('hidden');
+  }
+
+  openModal('checkout-success-modal');
 }

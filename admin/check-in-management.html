@@ -19,7 +19,7 @@
     <!-- Thư viện quét QR Code - Load với fallback -->
     <script>
         // Load html5-qrcode library với nhiều CDN fallback
-        (function() {
+        (function () {
             const loadScript = (src, onError) => {
                 const script = document.createElement("script");
                 script.src = src;
@@ -154,14 +154,14 @@
         }
     </style>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'G-9YNFP8F87K');
-</script>
+        gtag('config', 'G-9YNFP8F87K');
+    </script>
 </head>
 
 <body
@@ -268,16 +268,15 @@
             </div>
 
             <!-- Collapse / Expand Sidebar Button -->
-<div class="px-4 pb-4">
-    <label for="sidebar-toggle"
-        class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
+            <div class="px-4 pb-4">
+                <label for="sidebar-toggle" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
                text-gray-600 dark:text-gray-400
                hover:bg-gray-100 dark:hover:bg-white/5
                transition-colors cursor-pointer">
-        <span class="material-symbols-outlined text-[22px]">chevron_left</span>
-        <span class="nav-label whitespace-nowrap">Collapse Sidebar</span>
-    </label>
-</div>
+                    <span class="material-symbols-outlined text-[22px]">chevron_left</span>
+                    <span class="nav-label whitespace-nowrap">Collapse Sidebar</span>
+                </label>
+            </div>
 
             <div class="mt-auto p-4 system-status">
                 <div class="bg-gray-100 dark:bg-black/20 rounded-2xl p-4 border border-gray-200 dark:border-white/5">
@@ -341,27 +340,32 @@
                             <div id="content-qr"
                                 class="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[400px]">
                                 <!-- Container để hiển thị camera quét QR -->
-                                <div id="qr-reader" class="w-full max-w-sm mb-6 min-h-[300px] bg-black rounded-2xl overflow-hidden flex items-center justify-center">
-                                    <p class="text-white text-sm text-center px-4">Camera sẽ hiển thị ở đây sau khi click "Bắt Đầu Quét"</p>
-                                    </div>
+                                <div id="qr-reader"
+                                    class="w-full max-w-sm mb-6 min-h-[300px] bg-black rounded-2xl overflow-hidden flex items-center justify-center">
+                                    <p class="text-white text-sm text-center px-4">Camera sẽ hiển thị ở đây sau khi
+                                        click "Bắt Đầu Quét"</p>
+                                </div>
 
                                 <!-- Nút Start/Stop Scanner -->
                                 <div class="flex gap-3 mb-4">
-                                    <button id="start-scanner-btn" 
+                                    <button id="start-scanner-btn"
                                         class="px-6 py-2 rounded-xl bg-primary hover:bg-primary-hover text-black font-bold transition-all shadow-lg flex items-center gap-2">
                                         <span class="material-symbols-outlined">camera</span>
                                         Bắt Đầu Quét
                                     </button>
-                                    <button id="stop-scanner-btn" 
+                                    <button id="stop-scanner-btn"
                                         class="px-6 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-all shadow-lg hidden flex items-center gap-2">
                                         <span class="material-symbols-outlined">stop</span>
                                         Dừng Quét
                                     </button>
-                                    </div>
+                                </div>
 
-                                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 max-w-md">
-                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Hướng dẫn quét:</p>
-                                    <ul class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
+                                <div
+                                    class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 max-w-md">
+                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Hướng dẫn
+                                        quét:</p>
+                                    <ul
+                                        class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
                                         <li>Đưa QR Code vào khung camera</li>
                                         <li>Giữ khoảng cách 20-30cm từ camera</li>
                                         <li>Đảm bảo ánh sáng đủ</li>
@@ -413,10 +417,13 @@
                     <div class="lg:col-span-5 flex flex-col gap-6">
 
                         <!-- Card hiển thị thông tin sinh viên sau khi check-in -->
-                        <div id="student-info-card" class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border border-gray-200 dark:border-white/5">
+                        <div id="student-info-card"
+                            class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border border-gray-200 dark:border-white/5">
                             <div class="text-center py-8">
-                                <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center mx-auto mb-4">
-                                    <span class="material-symbols-outlined text-4xl text-gray-400">qr_code_scanner</span>
+                                <div
+                                    class="w-16 h-16 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center mx-auto mb-4">
+                                    <span
+                                        class="material-symbols-outlined text-4xl text-gray-400">qr_code_scanner</span>
                                 </div>
                                 <p class="text-gray-500 dark:text-gray-400">Quét QR Code để xem thông tin sinh viên</p>
                             </div>

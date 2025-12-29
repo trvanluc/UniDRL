@@ -5,6 +5,7 @@
  */
 
 import { signup } from "../services/auth.service.js";
+import { Toast } from "../components/toast/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("signupForm");
@@ -21,26 +22,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const terms = document.getElementById("terms");
 
     if (!name || !email || !password || !confirm) {
-      alert("Please fill all required fields");
+      Toast.warning("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
     if (password !== confirm) {
-      alert("Passwords do not match");
+      Toast.error("Mật khẩu xác nhận không khớp");
       return;
     }
 
     if (terms && !terms.checked) {
-      alert("Please accept Terms and Privacy Policy");
+      Toast.warning("Vui lòng đồng ý với Điều khoản sử dụng");
       return;
     }
 
     try {
       signup({ name, email, password, role });
-      alert("Signup successful. Please login.");
-      window.location.href = "login.html";
+      Toast.success("Đăng ký thành công! Đang chuyển đến trang đăng nhập...");
+      setTimeout(() => { window.location.href = "login.html"; }, 1500);
     } catch (err) {
-      alert(err.message);
+      Toast.error(err.message);
     }
   });
 });

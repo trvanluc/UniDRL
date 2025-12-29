@@ -1,6 +1,7 @@
 // js/utils/ui-helpers.js
 import { Theme } from "./theme.js";
 import { Storage } from "./storage.js";
+import { Dialog } from "../components/dialog/dialog.js";
 
 // Reuse cho settings dropdown
 export function setupSettingsDropdown() {
@@ -30,8 +31,14 @@ export function setupLogout() {
 
   if (!logoutBtn) return;
 
-  logoutBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to logout?")) {
+  logoutBtn.addEventListener("click", async () => {
+    const confirmed = await Dialog.confirm(
+      "Đăng xuất",
+      "Bạn có chắc chắn muốn đăng xuất?",
+      "Đăng xuất",
+      "Hủy"
+    );
+    if (confirmed) {
       Storage.clearSession();
       window.location.href = "/login.html";
     }
@@ -41,13 +48,13 @@ export function setupLogout() {
 // Reuse cho theme toggle
 export function setupThemeToggle() {
   const themeButtons = document.querySelectorAll('button:has(.theme-toggle-icon)');
-  
+
   themeButtons.forEach(button => {
     const icon = button.querySelector('.material-symbols-outlined');
     if (icon && !icon.classList.contains('theme-toggle-icon')) {
       icon.classList.add('theme-toggle-icon');
     }
-    
+
     button.addEventListener("click", () => {
       const newTheme = Theme.toggleTheme();
       Theme.updateIcon(newTheme);
