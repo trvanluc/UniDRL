@@ -7,10 +7,7 @@ export function renderTicketFooter(statusText, statusColor, statusTextColor, poi
           <span class="w-2.5 h-2.5 rounded-full ${statusColor}"></span>
           <span class="text-xs font-bold ${statusTextColor}">${statusText}</span>
         </div>
-        <div class="text-right">
-          <p class="text-xs text-gray-500 dark:text-gray-400">DRL Points</p>
-          <p class="text-base font-black text-primary">${points}</p>
-        </div>
+        
       </div>
     </div>
   `;
