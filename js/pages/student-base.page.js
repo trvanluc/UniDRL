@@ -24,6 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadStudentProfile();
   setupProfileSave();
+
+  // Update avatar
+  const avatar = document.getElementById("user-avatar-initial");
+  if (avatar && user.name) {
+    avatar.textContent = user.name.charAt(0).toUpperCase();
+  }
 });
 
 function loadStudentProfile() {

@@ -26,6 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSettingsDropdown();
   setupLogout();
 
+  // Update avatar
+  const avatar = document.getElementById("user-avatar-initial");
+  if (avatar && user.name) {
+    avatar.textContent = user.name.charAt(0).toUpperCase();
+  }
+
   loadRegisteredTickets(user.studentId);
 
   setupTicketModal();
@@ -192,6 +198,15 @@ function setupTicketModal() {
   });
 
   setupModalListeners("qr-ticket-modal", "close-qr-ticket-modal-btn", "qr-ticket-modal-overlay");
+
+  // Setup checkout success modal listener - Reload on close to update UI
+  const closeSuccessBtn = document.getElementById('close-success-modal-btn');
+  if (closeSuccessBtn) {
+    closeSuccessBtn.addEventListener('click', () => {
+      closeModal('checkout-success-modal');
+      window.location.reload();
+    });
+  }
 }
 
 function openTicketModal(eventId) {
