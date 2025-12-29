@@ -12,6 +12,7 @@
 
 import { Storage } from "../utils/storage.js";
 import { ROLES } from "../config/constants.js";
+import { Toast } from "../components/toast/toast.js";
 
 /**
  * =========================
@@ -23,8 +24,8 @@ export function requireAuth() {
   const currentUser = Storage.getCurrentUser();
 
   if (!currentUser) {
-    alert("Bạn cần đăng nhập để tiếp tục");
-    window.location.href = "/login.html";
+    Toast.warning("Bạn cần đăng nhập để tiếp tục");
+    setTimeout(() => { window.location.href = "/login.html"; }, 1500);
     return false;
   }
 
@@ -43,8 +44,8 @@ export function requireRole(allowedRoles = []) {
   if (!currentUser) return false;
 
   if (!allowedRoles.includes(currentUser.role)) {
-    alert(`Bạn không có quyền truy cập trang này (Yêu cầu: ${allowedRoles.join(", ")})`);
-    redirectByRole(currentUser.role);
+    Toast.error(`Bạn không có quyền truy cập trang này`);
+    setTimeout(() => { redirectByRole(currentUser.role); }, 1500);
     return false;
   }
 
@@ -59,11 +60,11 @@ export function requireRole(allowedRoles = []) {
  */
 export function studentGuard() {
   const user = requireRole([ROLES.STUDENT]);
-  
+
   if (!user) {
     console.log("❌ Access denied: Not a student");
   }
-  
+
   return user;
 }
 

@@ -8,7 +8,8 @@ export const STORAGE_KEYS = {
   CURRENT_USER: "vnuk_currentUser",
   EVENTS: "events",
   BADGES: "vnuk_badge_config",
-  REGISTRATIONS: "event_registrations", // Thêm để nhất quán
+  REGISTRATIONS: "event_registrations",
+  CHECKOUT_QR: "vnuk_checkout_qr", // Checkout QR codes for events
 };
 
 export const ROLES = {
