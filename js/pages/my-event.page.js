@@ -81,9 +81,6 @@ function createTicketCard(event) {
     <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
       <div class="h-36 bg-cover bg-center relative" style="background-image: url('${event.image}');">
         <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
-        <div class="absolute top-3 left-3">
-          <span class="bg-black/60 backdrop-blur text-primary text-[10px] font-bold px-2 py-1 rounded-full border border-primary/20">+${event.points} DRL</span>
-        </div>
         <div class="absolute bottom-3 left-4 right-4">
           <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">${event.category}</p>
           <h3 class="text-white text-lg font-bold leading-tight line-clamp-2">${event.title}</h3>
@@ -199,6 +196,136 @@ function openTicketModal(eventId) {
     setTimeout(() => {
       renderTicketDesignForModal(event, registration, "modal-ticket-container");
     }, 50);
+  }
+}
+
+/**
+ * Render ticket design for modal
+ */
+function renderTicketForModal(event, userRegistration) {
+  const modalContent = document.getElementById('qr-ticket-modal-content');
+  if (!modalContent) return;
+
+  const qrCodeString = userRegistration.qrCode;
+  const statusText = userRegistration.status === 'checked-in' ? 'Đã Check-in' : 'Chưa Check-in';
+  const statusColor = userRegistration.status === 'checked-in' ? 'bg-green-500' : 'bg-yellow-500';
+  const statusTextColor = userRegistration.status === 'checked-in' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400';
+
+  // Format registration date
+  const registrationDate = new Date(userRegistration.registrationDate);
+  const formattedRegDate = registrationDate.toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+  const formattedRegTime = registrationDate.toLocaleTimeString('vi-VN', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  modalContent.innerHTML = `
+    <div class="bg-white dark:bg-[#1c2621] rounded-2xl shadow-2xl shadow-primary/30 border-4 border-primary/50 ticket-qr active w-full origin-center animate-scale-in-modal" style="padding: 16px;">
+      <!-- Header với logo VN-UK -->
+      <div class="bg-gradient-to-r from-primary to-[#2fd16d] p-3 text-center">
+        <div class="flex items-center justify-center gap-2 mb-0.5">
+          <div class="w-8 h-8 rounded-full bg-background-dark flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary text-lg">school</span>
+          </div>
+          <h2 class="text-lg font-black text-background-dark">VN-UK</h2>
+        </div>
+        <p class="text-[10px] font-bold text-background-dark/80">EVENT TICKET</p>
+      </div>
+
+      <!-- Thông tin sự kiện -->
+      <div class="p-3 space-y-2 border-b-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="text-center">
+          <h3 class="text-base font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">${event.title}</h3>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold border border-primary/30">
+            ${event.category}
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <div class="flex items-start gap-1.5">
+            <span class="material-symbols-outlined text-primary text-base mt-0.5">calendar_month</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Ngày & Giờ</p>
+              <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.date}</p>
+              <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.time}</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-1.5">
+            <span class="material-symbols-outlined text-primary text-base mt-0.5">location_on</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Địa điểm</p>
+              <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.location}</p>
+              <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.room || 'N/A'}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thông tin người tham gia - Compact -->
+      <div class="px-3 py-2 border-b-2 border-dashed border-gray-200 dark:border-gray-600 bg-gray-50/50 dark:bg-black/20">
+        <div class="grid grid-cols-3 gap-2 text-center">
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Họ tên</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white truncate">${userRegistration.name}</p>
+          </div>
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">MSSV</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white font-mono">${userRegistration.mssv}</p>
+          </div>
+          <div>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Lớp</p>
+            <p class="text-xs font-bold text-gray-900 dark:text-white">${userRegistration.class}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR Code Section -->
+      <div class="p-3">
+        <div id="modal-ticket-qr-code" class="w-full flex items-center justify-center mb-2 bg-white p-2 rounded-xl">
+          <!-- QR Code sẽ được render vào đây -->
+        </div>
+        <div class="text-center mb-1.5">
+          <input 
+            class="w-full text-center text-[10px] font-mono text-gray-900 dark:text-white bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 rounded-lg p-1 shadow-sm focus:outline-none cursor-default" 
+            readonly 
+            type="text"
+            value="${qrCodeString}"
+          />
+          <p class="text-[9px] text-gray-500 dark:text-gray-400 font-medium uppercase tracking-widest mt-1">
+            Ticket ID
+          </p>
+        </div>
+      </div>
+
+      <!-- Footer với thông tin bổ sung -->
+      <div class="px-3 py-2 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-black/30 dark:to-black/40 border-t-2 border-dashed border-gray-200 dark:border-gray-600">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full ${statusColor}"></span>
+            <span class="text-[10px] font-bold ${statusTextColor}">${statusText}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Render QR Code
+  const qrCodeContainer = document.getElementById('modal-ticket-qr-code');
+  if (qrCodeContainer) {
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrCodeString)}&bgcolor=ffffff&color=000000&margin=1`;
+    qrCodeContainer.innerHTML = `
+      <img 
+        src="${qrCodeUrl}" 
+        alt="QR Code" 
+        class="w-full max-w-[180px] h-auto"
+        loading="eager"
+      />
+    `;
   }
 }
 

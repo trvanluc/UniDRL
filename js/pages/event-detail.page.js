@@ -28,18 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // TOGGLE LAYOUT THEO ROLE
   const studentLayout = document.getElementById("student-layout");
   const adminLayout = document.getElementById("admin-layout");
+  const studentHeader = document.getElementById("student-header");
+  const adminHeader = document.getElementById("admin-header");
+
   if (user.role === ROLES.STUDENT) {
     studentLayout?.classList.remove("hidden");
     adminLayout?.classList.add("hidden");
+    document.body.classList.remove("is-admin");
+    studentHeader?.classList.remove("hidden");
+    adminHeader?.classList.add("hidden");
   } else {
     adminLayout?.classList.remove("hidden");
     studentLayout?.classList.add("hidden");
-  }
-  const studentHeader = document.getElementById("student-header");
-  if (user.role !== ROLES.STUDENT) {
+    adminHeader?.classList.remove("hidden");
     studentHeader?.classList.add("hidden");
-  } else {
-    studentHeader?.classList.remove("hidden");
+    document.body.classList.add("is-admin");
   }
   // Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -110,10 +113,8 @@ function renderEventInfo(event) {
   if (dateEl) dateEl.textContent = event.date;
   if (timeEl) timeEl.textContent = event.time;
   const categoryEl = document.getElementById("event-category");
-  const pointsEl = document.getElementById("event-points");
   const bannerCategoryEl = document.getElementById("banner-category");
   if (categoryEl) categoryEl.textContent = event.category;
-  if (pointsEl) pointsEl.textContent = `${event.points} DRL Points`;
   if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
   const locationEl = document.getElementById("event-location");
   const roomEl = document.getElementById("event-room");
@@ -135,9 +136,11 @@ function renderEventInfo(event) {
   if (bannerEl) {
     bannerEl.style.backgroundImage = `url(${event.image})`;
   }
-  const journeyPointsEl = document.getElementById("journey-points");
-  if (journeyPointsEl) {
-    journeyPointsEl.textContent = `${event.points} DRL points added to your profile automatically.`;
+
+  // Journey points
+  const journeyBadgesEl = document.getElementById("journey-badges");
+  if (journeyBadgesEl) {
+    journeyBadgesEl.textContent = `Event badge added to your profile automatically.`;
   }
 }
 
