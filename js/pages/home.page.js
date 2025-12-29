@@ -44,6 +44,8 @@ function renderWelcome(user) {
  * =========================
  */
 function renderLayoutByRole(user) {
+  const adminHeader = document.getElementById("admin-header");
+  const studentHeader = document.getElementById("student-header");
   const navMenu = document.getElementById("nav-menu");
   const adminSidebar = document.getElementById("admin-sidebar");
   const openCreateModal = document.getElementById("open-create-modal");
@@ -53,6 +55,8 @@ function renderLayoutByRole(user) {
   if (!navMenu) return;
   // ===== STUDENT =====
   if (user.role === ROLES.STUDENT) {
+    adminHeader?.classList.add("hidden");
+    studentHeader?.classList.remove("hidden");
     navMenu.innerHTML = `
       <a class="text-sm font-bold text-primary" href="home.html">Home</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Tickets</a>
@@ -67,6 +71,8 @@ function renderLayoutByRole(user) {
   }
   // ===== ADMIN / ADVISOR / MANAGER =====
   if ([ROLES.ADMIN, ROLES.ADVISOR, ROLES.MANAGER].includes(user.role)) {
+    adminHeader?.classList.remove("hidden");
+    studentHeader?.classList.add("hidden");
     if (adminSidebar) adminSidebar.classList.remove("hidden"); // hiện sidebar
     if (openCreateModal) openCreateModal.classList.remove("hidden");
     if (sidebarToggleBtn) sidebarToggleBtn.classList.remove("hidden");
@@ -76,6 +82,7 @@ function renderLayoutByRole(user) {
     if (mainContent) mainContent.style.marginLeft = "16rem"; // width sidebar mặc định
   }
 }
+
 
 /**
  * =========================
