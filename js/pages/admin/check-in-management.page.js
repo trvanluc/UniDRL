@@ -158,7 +158,7 @@ function handleQRCodeScanned(decodedText) {
 
     if (!registration) {
         // Không tìm thấy đăng ký
-        showNotification("Mã không hợp lệ", "QR Code không tồn tại trong hệ thống", "error");
+        showToast("QR Code không tồn tại trong hệ thống", 'error');
         return;
     }
 
@@ -166,10 +166,10 @@ function handleQRCodeScanned(decodedText) {
     if (registration.eventId !== selectedEventId) {
         const event = EVENTS.find(e => e.id === registration.eventId);
         const selectedEvent = EVENTS.find(e => e.id === selectedEventId);
-        showNotification(
-            "QR Code không khớp",
+        showToast(
             `QR Code này thuộc event "${event?.title || registration.eventId}" nhưng bạn đang quét cho event "${selectedEvent?.title || selectedEventId}"`,
-            "error"
+            'error',
+            5000
         );
         return;
     }
@@ -179,7 +179,7 @@ function handleQRCodeScanned(decodedText) {
         // Đã check-in rồi
         showStudentInfo(registration, true);
         updateRecentCheckIns();
-        showNotification("Đã check-in", `Sinh viên ${registration.name} (${registration.mssv}) đã check-in trước đó`, "warning");
+        showToast(`Sinh viên ${registration.name} (${registration.mssv}) đã check-in trước đó`, 'warning', 4000);
         return;
     }
 
@@ -200,7 +200,7 @@ function handleQRCodeScanned(decodedText) {
         showStudentInfo(updatedRegistration, false);
 
         // Hiển thị thông báo thành công
-        showNotification("Check-in thành công", `${updatedRegistration.name} đã được check-in`, "success");
+        showToast(`${updatedRegistration.name} đã được check-in thành công`, 'success');
 
         // Cập nhật danh sách recent check-ins
         updateRecentCheckIns();
