@@ -1,10 +1,11 @@
-// js/pages/admin/badge-management.page.js
 import { BadgeService } from "../../services/badge.service.js";
 import { setupThemeToggle, setupSettingsDropdown, setupLogout } from "../../utils/ui-helpers.js";
+import { Theme } from "../../utils/theme.js";
 import { openModal, closeModal, setupModalListeners } from "../../components/modal/modal-manager.component.js";
 
 // MAIN INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
+  Theme.init();
   setupThemeToggle();
   setupSettingsDropdown();
   setupLogout();
@@ -12,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderEvents();
   bindEvents();
   initSearchAndFilter();
-  initHeaderIcons();
+  initSearchAndFilter();
+  // Header icons init handled above via ui-helpers
   setupModalListeners("badgeConfigModal", "btn-close-modal", "modal-overlay"); // Setup modal listeners
 });
 
@@ -203,35 +205,4 @@ function applySearchAndFilter() {
   renderEvents(events);
 }
 
-// Init Header Icons
-function initHeaderIcons() {
-  const themeBtn = document.querySelector('[title="Theme"]');
-  const settingsBtn = document.querySelector('[title="Settings"]');
-  const logoutBtn = document.querySelector('[title="Notifications"]');
-
-  if (themeBtn) {
-    themeBtn.addEventListener("click", () => {
-      const html = document.documentElement;
-      const isDark = html.classList.toggle("dark");
-      localStorage.setItem("vnuk_theme", isDark ? "dark" : "light");
-    });
-
-    const savedTheme = localStorage.getItem("vnuk_theme");
-    if (savedTheme === "dark") document.documentElement.classList.add("dark");
-  }
-
-  if (settingsBtn) {
-    settingsBtn.addEventListener("click", () => {
-      window.location.href = "../student/profile.html";
-    });
-  }
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      if (confirm("Are you sure you want to logout?")) {
-        localStorage.removeItem("currentUser");
-        window.location.href = "../login.html";
-      }
-    });
-  }
-}
+// Header initialization handled by ui-helpers.js

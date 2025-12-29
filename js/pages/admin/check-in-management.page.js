@@ -1,3 +1,6 @@
+import { Theme } from "../../utils/theme.js";
+import { setupThemeToggle } from "../../utils/ui-helpers.js";
+
 /**
  * ==========================================
  * CHECK-IN MANAGEMENT - Admin Page
@@ -625,6 +628,13 @@ function switchMode(mode) {
  * Khởi tạo khi trang load
  */
 document.addEventListener('DOMContentLoaded', () => {
+    Theme.init();
+    setupThemeToggle();
+
+    // Tab Listeners
+    document.getElementById('tab-qr')?.addEventListener('click', () => switchMode('qr'));
+    document.getElementById('tab-manual')?.addEventListener('click', () => switchMode('manual'));
+
     // Load events vào dropdown
     loadEventsToDropdown();
 

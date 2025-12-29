@@ -80,9 +80,10 @@ function renderLayoutByRole(user) {
     if (studentProfileHeader) studentProfileHeader.classList.remove("hidden");
 
     // Update avatar check
-    const avatar = document.getElementById("home-student-avatar");
+    const avatar = document.getElementById("student-avatar-initial");
     if (avatar && user.name) {
       avatar.textContent = user.name.charAt(0).toUpperCase();
+      avatar.classList.remove("hidden");
     }
     return;
   }

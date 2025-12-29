@@ -78,18 +78,22 @@ export function setupLogout() {
  */
 export function setupThemeToggle() {
   const themeButtons = document.querySelectorAll(
-    'button:has(.theme-toggle-icon)'
+    'button:has(.theme-toggle-icon), #theme-toggle-btn'
   );
 
   themeButtons.forEach((button) => {
+    // Ensure icon has the class if selected by ID
     const icon = button.querySelector(".material-symbols-outlined");
     if (icon && !icon.classList.contains("theme-toggle-icon")) {
       icon.classList.add("theme-toggle-icon");
     }
 
-    button.addEventListener("click", () => {
+    // Remove old listeners (if any) to prevent duplicates isn't easy without weakmaps, 
+    // but assuming this runs once per page load.
+    button.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent bubbling issues
       const newTheme = Theme.toggleTheme();
-      Theme.updateIcon(Theme.toggleTheme());
+      Theme.updateIcon(newTheme);
     });
   });
 }
