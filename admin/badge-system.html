@@ -110,25 +110,13 @@
         >
           <span class="material-symbols-outlined">menu</span>
         </label>
-        <div class="flex items-center gap-3">
-          <div class="size-8 text-primary shrink-0">
-            <svg
-              class="w-full h-full"
-              fill="none"
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z"
-                fill="currentColor"
-              ></path>
-            </svg>
+        <div class="flex items-center gap-4">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+            <span class="material-symbols-outlined">school</span>
           </div>
-          <h1
-            class="text-lg font-bold tracking-tight text-gray-900 dark:text-white hidden sm:block"
-          >
-            VNUK
-          </h1>
+          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+            VN-UK
+          </h2>
         </div>
       </div>
 
@@ -184,7 +172,7 @@
 
     <div class="layout-container flex pt-20 h-screen overflow-hidden">
       <aside
-        class="fixed inset-y-0 left-0 top-20 z-40 w-72 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 hidden lg:flex"
+        class="fixed inset-y-0 left-0 top-20 z-40 w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 hidden lg:flex"
       >
         <nav class="flex-1 py-6 px-4 space-y-1">
           <a
@@ -218,7 +206,7 @@
             <span class="nav-label">Check-in</span>
           </a>
           <a
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-black dark:text-white bg-primary/10 border border-primary/20 transition-colors shadow-sm shadow-primary/5"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary transition-colors overflow-hidden/5"
             href="badge-system.html"
           >
             <span class="material-symbols-outlined text-[22px] text-primary"
@@ -237,17 +225,7 @@
             <span class="nav-label">Reports</span>
           </a>
         </nav>
-        <div class="px-4 pb-4">
-          <label
-            for="sidebar-toggle"
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors cursor-pointer"
-          >
-            <span class="material-symbols-outlined text-[22px]"
-              >chevron_left</span
-            >
-            <span class="nav-label whitespace-nowrap">Collapse Sidebar</span>
-          </label>
-        </div>
+        
       </aside>
 
       <main
