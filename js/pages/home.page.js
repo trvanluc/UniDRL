@@ -78,6 +78,13 @@ function renderLayoutByRole(user) {
     if (mainContent) mainContent.style.marginLeft = "0"; // reset margin-left
     [adminSidebar, openCreateModal, sidebarToggleBtn, adminProfileHeader].forEach(el => el?.classList.add("hidden"));
     if (studentProfileHeader) studentProfileHeader.classList.remove("hidden");
+
+    // Update avatar check
+    const avatar = document.getElementById("student-avatar-initial");
+    if (avatar && user.name) {
+      avatar.textContent = user.name.charAt(0).toUpperCase();
+      avatar.classList.remove("hidden");
+    }
     return;
   }
   // ===== ADMIN / ADVISOR / MANAGER =====
@@ -102,13 +109,13 @@ function renderLayoutByRole(user) {
 function initEvents() {
   const grid = document.getElementById("events-grid");
   const searchInput = document.querySelector('input[placeholder*="Search"]');
- 
+
   if (!grid) {
     console.error("Element #events-grid not found");
     return;
   }
   const filterButtons = document.querySelectorAll("[data-filter]");
- 
+
   // ===== STATE =====
   let currentPage = 1;
   const eventsPerPage = 6;
@@ -233,11 +240,10 @@ function initEvents() {
         paginationHTML += `
           <button
             onclick="window.changePage(${i})"
-            class="w-10 h-10 flex items-center justify-center rounded-lg ${
-              i === currentPage
-                ? 'bg-primary text-background-dark font-bold shadow-glow'
-                : 'border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400'
-            }"
+            class="w-10 h-10 flex items-center justify-center rounded-lg ${i === currentPage
+            ? 'bg-primary text-background-dark font-bold shadow-glow'
+            : 'border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400'
+          }"
           >
             ${i}
           </button>
@@ -259,7 +265,7 @@ function initEvents() {
   }
 
   // Global function for pagination buttons
-  window.changePage = function(page) {
+  window.changePage = function (page) {
     // Recalculate based on current filter and search
     let filteredEvents = filterEventsByCategory(EVENTS, currentFilter);
     filteredEvents = filterEventsBySearch(filteredEvents, searchQuery);

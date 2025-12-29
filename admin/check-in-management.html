@@ -170,7 +170,7 @@
     <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
 
     <header
-    class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
+        class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
 
         <div class="flex items-center gap-4">
             <label
@@ -180,31 +180,31 @@
             </label>
             <div class="flex items-center gap-4">
                 <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-                  <span class="material-symbols-outlined">school</span>
+                    <span class="material-symbols-outlined">school</span>
                 </div>
                 <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-                  VN-UK
+                    VN-UK
                 </h2>
-              </div>
+            </div>
         </div>
 
         <div class="flex-1"></div>
 
         <div class="flex items-center gap-3">
             <button
-          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-          <span class="material-symbols-outlined text-[20px]">notifications</span>
-        </button>
+                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+            </button>
 
             <button
                 class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
                 <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
             </button>
 
-            <button
-                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                onclick="document.documentElement.classList.toggle('dark')">
-                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">dark_mode</span>
+            <button id="theme-toggle-btn"
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                <span
+                    class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300 theme-toggle-icon">light_mode</span>
             </button>
 
             <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
@@ -228,7 +228,7 @@
         <aside
             class="w-64 bg-white dark:bg-surface-dark border-r border-gray-200 dark:border-white/5 flex flex-col shrink-0 transition-[width] duration-300 ease-in-out hidden md:flex h-full">
             <div class="p-4 space-y-1">
-                
+
                 <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
                     href="../home.html">
                     <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
@@ -257,7 +257,7 @@
                 </a>
             </div>
 
-            
+
         </aside>
 
         <main
@@ -298,12 +298,12 @@
                             class="bg-surface-light dark:bg-surface-dark rounded-3xl overflow-hidden shadow-lg border border-gray-200 dark:border-white/5 flex flex-col h-full">
 
                             <div class="flex border-b border-gray-200 dark:border-white/5">
-                                <button id="tab-qr" onclick="switchMode('qr')"
+                                <button id="tab-qr"
                                     class="flex-1 py-4 text-center font-bold text-sm sm:text-base text-primary border-b-2 border-primary bg-primary/5 transition-colors flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[20px]">qr_code_scanner</span>
                                     QR Scan Mode
                                 </button>
-                                <button id="tab-manual" onclick="switchMode('manual')"
+                                <button id="tab-manual"
                                     class="flex-1 py-4 text-center font-bold text-sm sm:text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-[20px]">keyboard</span>
                                     Manual Input Mode
@@ -439,7 +439,7 @@
     </div>
 
     <!-- Load JavaScript logic -->
-    <script src="../js/pages/admin/check-in-management.page.js"></script>
+    <script type="module" src="../js/pages/admin/check-in-management.page.js"></script>
 
 </body>
 
