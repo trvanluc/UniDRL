@@ -2,6 +2,7 @@ import { requireAuth } from "../guards/auth.guard.js";
 import { ROLES } from "../config/constants.js";
 import { Theme } from "../utils/theme.js";
 import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
+import { Toast } from "../components/toast/toast.js";
 import {
   getStudentProfile,
   updateStudentProfile
@@ -25,10 +26,30 @@ document.addEventListener("DOMContentLoaded", () => {
   loadStudentProfile();
   setupProfileSave();
 
-  // Update avatar
+  // Update header avatar
   const avatar = document.getElementById("user-avatar-initial");
   if (avatar && user.name) {
     avatar.textContent = user.name.charAt(0).toUpperCase();
+  }
+
+  // Update profile avatar (large one)
+  const profileAvatar = document.getElementById("profile-avatar");
+  if (profileAvatar && user.name) {
+    profileAvatar.textContent = user.name.charAt(0).toUpperCase();
+  }
+
+  // Update profile name and info
+  const profileName = document.getElementById("profile-name");
+  if (profileName && user.name) {
+    profileName.textContent = user.name;
+  }
+
+  const profileInfo = document.getElementById("profile-info");
+  const profile = getStudentProfile();
+  if (profileInfo) {
+    const dept = profile?.department || "Not set";
+    const mssv = user.studentId || "N/A";
+    profileInfo.textContent = `${dept} | ID: ${mssv}`;
   }
 });
 
@@ -57,6 +78,6 @@ function setupProfileSave() {
       bio: document.getElementById("bio").value.trim()
     });
 
-    alert("Profile updated successfully");
+    Toast.success("Profile updated successfully!");
   });
 }

@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Student Profile - Basic</title>
+  <title>Student Profile - UniDRL</title>
 
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <!-- Preconnect to improve font loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+  <!-- Preload critical fonts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap"
+    as="style" />
+
+  <!-- Load fonts with display=swap for better LCP -->
+  <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL@24,400,0&display=swap"
+    rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
   <script id="tailwind-config">
@@ -43,14 +53,30 @@
   </script>
 
   <style>
-    body { font-family: "Spline Sans", sans-serif; }
+    body {
+      font-family: "Spline Sans", sans-serif;
+    }
+
     .material-symbols-outlined {
       font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
     }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #112117; }
-    ::-webkit-scrollbar-thumb { background: #2a3630; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #36e27b; }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #112117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #2a3630;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #36e27b;
+    }
 
     #settings-dropdown {
       display: none;
@@ -63,312 +89,230 @@
       padding: 8px;
     }
   </style>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-9YNFP8F87K');
-</script>
 </head>
 
-  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300">
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-300">
   <!-- <div class="relative flex min-h-screen w-full flex-col overflow-x-hidden"> -->
 
-    <header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
-  <div class="flex items-center gap-4">
-    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-      <span class="material-symbols-outlined">school</span>
+  <header
+    class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
+    <div class="flex items-center gap-4">
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+        <span class="material-symbols-outlined">school</span>
+      </div>
+      <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+        VN-UK
+      </h2>
     </div>
-    <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-      VN-UK
-    </h2>
-  </div>
 
-  <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
-    <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
-    <a href="my-event.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Tickets</a>
-    <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
-    <a href="profile.html" class="text-primary font-bold relative">
-      Profile
-    </a>
-  </nav>
+    <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
+      <a href="../home.html"
+        class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
+      <a href="my-event.html"
+        class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My
+        Tickets</a>
+      <a href="my-journey.html"
+        class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My
+        Journey</a>
+      <a href="profile.html" class="text-primary font-bold relative">
+        Profile
+      </a>
+    </nav>
 
-  <div class="flex gap-3 relative">
-    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px]">notifications</span>
-    </button>
-    <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px]">settings</span>
-    </button>
-    <div id="settings-dropdown" class="hidden">
-      <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
-        Logout
+    <div class="flex gap-3 relative">
+      <button
+        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <span class="material-symbols-outlined text-[20px]">notifications</span>
+      </button>
+      <button id="settings-btn"
+        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <span class="material-symbols-outlined text-[20px]">settings</span>
+      </button>
+      <div id="settings-dropdown" class="hidden">
+        <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
+          Logout
+        </button>
+      </div>
+      <button
+        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+        <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
+      </button>
+
+      <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+
+      <!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
+      <div class="flex items-center justify-center">
+        <div id="user-avatar-initial"
+          class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
+          A
+        </div>
+      </div>
+      <button id="sidebar-toggle-btn"
+        class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
+        <span class="material-symbols-outlined text-[20px]">menu</span>
       </button>
     </div>
-    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
-    </button>
+  </header>
 
-    <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+  <main class="flex-1 flex flex-col items-center py-8 px-4 md:px-10">
+    <div class="w-full max-w-[800px] flex flex-col gap-8">
+      <div
+        class="flex flex-col md:flex-row justify-between items-end gap-4 pb-4 border-b border-gray-200 dark:border-[#29382f]">
+        <div>
+          <h1 class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+            Student Profile
+          </h1>
+          <p class="text-gray-500 dark:text-gray-400 text-base font-normal mt-2">
+            Manage your academic identity and points.
+          </p>
+        </div>
+      </div>
 
-<!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
-<div class="flex items-center justify-center">
-  <div id="user-avatar-initial" 
-       class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
-    A
-  </div>
-</div>
-<button id="sidebar-toggle-btn"
-            class="md:hidden flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] text-slate-700 dark:text-white">
-            <span class="material-symbols-outlined text-[20px]">menu</span>
-          </button>
-  </div>
-</header>
-
-    <main class="flex-1 flex flex-col items-center py-8 px-4 md:px-10">
-      <div class="w-full max-w-[800px] flex flex-col gap-8">
-        <div
-          class="flex flex-col md:flex-row justify-between items-end gap-4 pb-4 border-b border-gray-200 dark:border-border-dark"
-        >
-          <div>
-            <h1
-              class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]"
-            >
-              Student Profile
-            </h1>
-            <p
-              class="text-text-muted dark:text-text-muted-dark text-base font-normal mt-2"
-            >
-              Manage your academic identity and points.
+      <div class="flex flex-col gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-white dark:bg-card-dark rounded-xl p-6 shadow-sm border border-gray-200 dark:border-[#29382f] flex flex-col items-center text-center relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/10 to-transparent"></div>
+            <div class="relative z-10 mb-4">
+              <div id="profile-avatar"
+                class="w-32 h-32 rounded-full border-4 border-white dark:border-[#29382f] bg-primary text-background-dark flex items-center justify-center text-5xl font-bold shadow-lg">
+                A</div>
+              <div
+                class="absolute bottom-0 right-0 bg-primary rounded-full p-1.5 border-4 border-white dark:border-[#29382f] cursor-pointer hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-background-dark text-[16px] font-bold">edit</span>
+              </div>
+            </div>
+            <h2 id="profile-name" class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+              Student Name
+            </h2>
+            <p id="profile-info" class="text-gray-500 dark:text-gray-400 text-sm">
+              Department | ID: MSSV
             </p>
           </div>
-        </div>
 
-        <div class="flex flex-col gap-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div
-              class="bg-white dark:bg-card-dark rounded-xl p-6 shadow-sm border border-btn-light dark:border-border-dark flex flex-col items-center text-center relative overflow-hidden group"
-            >
-              <div
-                class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/10 to-transparent"
-              ></div>
-              <div class="relative z-10 mb-4">
-                <div
-                  class="w-32 h-32 rounded-full border-4 border-white dark:border-border-dark bg-cover bg-center shadow-lg"
-                  data-alt="Portrait of student Alex Rivera"
-                  style="
-                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD44UVMNgv6KCbpZKM0OCxgUzIIfNFtomlX4Hm3EUGnpRtLzo_wZ-LhiVZHDL7hP-ZcMoUvwYS3CkooUcSMJGLCqnMftavvY6ZiCSfP5EdshhbO0Qg1HGQ_nXuj2l7Hjxb2dN_G-RetbCkIOigSun03nWgt5u5ltUkKWAvNqUhW77muSZQXAXRvhzfZBBh0VYfv_yUHDcuONtFcGBwf0LRmcqb-vhknnB4bX0o466sOw6rKZAMx0RRjue8u_-pMRZJd6EZtut4s9NI');
-                  "
-                ></div>
-                <div
-                  class="absolute bottom-0 right-0 bg-primary rounded-full p-1.5 border-4 border-white dark:border-border-dark cursor-pointer hover:scale-105 transition-transform"
-                >
-                  <span
-                    class="material-symbols-outlined text-background-dark text-[16px] font-bold"
-                    >edit</span
-                  >
-                </div>
-              </div>
-              <h2
-                class="text-2xl font-bold text-text-main dark:text-white mb-1"
-              >
-                Alex Rivera
-              </h2>
-              <p class="text-text-muted dark:text-text-muted-dark text-sm">
-                Computer Science | ID: 20245678
+          <div class="bg-white dark:bg-card-dark rounded-xl p-8 border border-gray-200 dark:border-[#29382f]
+                    flex flex-col items-center justify-start text-center shadow-sm relative overflow-hidden">
+
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
+            <div class="relative z-10">
+              <p class="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider mb-2">
+                Total Badge
               </p>
+
             </div>
-
-            <div
-              class="bg-white dark:bg-card-dark rounded-xl p-8 border border-btn-light dark:border-border-dark
-                    flex flex-col items-center justify-start text-center shadow-sm relative overflow-hidden"
-            >
-
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"
-              ></div>
-              <div class="relative z-10">
-                <p
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium uppercase tracking-wider mb-2"
-                >
-                  Total Badge
-                </p>
-                
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="bg-white dark:bg-card-dark rounded-xl p-6 shadow-sm border border-btn-light dark:border-border-dark"
-          >
-            <div class="flex justify-between items-center mb-6">
-              <h3 class="text-text-main dark:text-white text-lg font-bold">
-                Personal Details
-              </h3>
-              <button
-                id="save-profile-btn"
-                type="button"
-                class="text-primary text-sm font-bold hover:underline"
-              >
-                Save Changes
-              </button>
-            </div>
-
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="flex flex-col gap-2">
-                <label
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium"
-                  >Email Address</label
-                >
-                <div class="relative group">
-                  <div
-                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                  >
-                    <span
-                      class="material-symbols-outlined text-black text-[20px]"
-                      >mail</span
-                    >
-                  </div>
-                  <input
-                    id="email"
-                    type="email"
-                    class="w-full bg-background-light dark:bg-input-dark text-black text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
-                  />
-
-                  <div
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <span
-                      class="material-symbols-outlined text-text-muted text-[18px]"
-                      >edit</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <label
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium"
-                  >Phone Number</label
-                >
-                <div class="relative group">
-                  <div
-                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                  >
-                    <span
-                      class="material-symbols-outlined text-black text-[20px]"
-                      >call</span
-                    >
-                  </div>
-                  <input
-                    id="phone"
-                    type="text"
-                    class="w-full bg-background-light dark:bg-input-dark text-black text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
-                  />
-                  <div
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <span
-                      class="material-symbols-outlined text-text-muted text-[18px]"
-                      >edit</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <label
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium"
-                  >Department</label
-                >
-                <div class="relative group">
-                  <div
-                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                  >
-                    <span
-                      class="material-symbols-outlined text-black text-[20px]"
-                      >school</span
-                    >
-                  </div>
-                  <input
-                    id="department"
-                    type="text"
-                    class="w-full bg-background-light dark:bg-input-dark text-black text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
-                  />
-                  <div
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <span
-                      class="material-symbols-outlined text-text-muted text-[18px]"
-                      >edit</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <label
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium"
-                  >Year of Study</label
-                >
-                <div class="relative group">
-                  <div
-                    class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-                  >
-                    <span
-                      class="material-symbols-outlined text-black text-[20px]"
-                      >calendar_today</span
-                    >
-                  </div>
-                  <input
-                    id="year"
-                    type="text"
-                    class="w-full bg-background-light dark:bg-input-dark text-black text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all"
-                  />
-
-                  <div
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <span
-                      class="material-symbols-outlined text-text-muted text-[18px]"
-                      >edit</span
-                    >
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2 md:col-span-2">
-                <label
-                  class="text-text-muted dark:text-text-muted-dark text-sm font-medium"
-                  >Bio</label
-                >
-                <div class="relative group">
-                  <textarea
-                    id="bio"
-                    rows="3"
-                    class="w-full bg-background-light dark:bg-input-dark text-black text-sm rounded-lg border border-transparent focus:border-primary focus:ring-1 focus:ring-primary py-3 px-4 resize-none transition-all"
-                  ></textarea>
-
-                  <div
-                    class="absolute top-3 right-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <span
-                      class="material-symbols-outlined text-text-muted text-[18px]"
-                      >edit</span
-                    >
-                  </div>
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       </div>
-    </main>
-    <script type="module" src="../js/pages/student-base.page.js"></script>
-    <!-- </div> -->
-  </body>
+
+      <div class="bg-white dark:bg-card-dark rounded-xl p-6 shadow-sm border border-gray-200 dark:border-[#29382f]">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-gray-900 dark:text-white text-lg font-bold">
+            Personal Details
+          </h3>
+          <button id="save-profile-btn" type="button" class="text-primary text-sm font-bold hover:underline">
+            Save Changes
+          </button>
+        </div>
+
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="flex flex-col gap-2">
+            <label for="email" class="text-gray-500 dark:text-gray-400 text-sm font-medium">Email Address</label>
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[20px]">mail</span>
+              </div>
+              <input id="email" type="email"
+                class="w-full bg-gray-100 dark:bg-[#384b40] text-gray-900 dark:text-white text-sm rounded-lg border border-gray-200 dark:border-[#29382f] focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all" />
+
+              <div
+                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">edit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="phone" class="text-gray-500 dark:text-gray-400 text-sm font-medium">Phone Number</label>
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[20px]">call</span>
+              </div>
+              <input id="phone" type="text"
+                class="w-full bg-gray-100 dark:bg-[#384b40] text-gray-900 dark:text-white text-sm rounded-lg border border-gray-200 dark:border-[#29382f] focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all" />
+              <div
+                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">edit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="department" class="text-gray-500 dark:text-gray-400 text-sm font-medium">Department</label>
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[20px]">school</span>
+              </div>
+              <input id="department" type="text"
+                class="w-full bg-gray-100 dark:bg-[#384b40] text-gray-900 dark:text-white text-sm rounded-lg border border-gray-200 dark:border-[#29382f] focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all" />
+              <div
+                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">edit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="year" class="text-gray-500 dark:text-gray-400 text-sm font-medium">Year of Study</label>
+            <div class="relative group">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span
+                  class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[20px]">calendar_today</span>
+              </div>
+              <input id="year" type="text"
+                class="w-full bg-gray-100 dark:bg-[#384b40] text-gray-900 dark:text-white text-sm rounded-lg border border-gray-200 dark:border-[#29382f] focus:border-primary focus:ring-1 focus:ring-primary py-3 pl-10 pr-4 transition-all" />
+
+              <div
+                class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">edit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 md:col-span-2">
+            <label for="bio" class="text-gray-500 dark:text-gray-400 text-sm font-medium">Bio</label>
+            <div class="relative group">
+              <textarea id="bio" rows="3"
+                class="w-full bg-gray-100 dark:bg-[#384b40] text-gray-900 dark:text-white text-sm rounded-lg border border-gray-200 dark:border-[#29382f] focus:border-primary focus:ring-1 focus:ring-primary py-3 px-4 resize-none transition-all"></textarea>
+
+              <div
+                class="absolute top-3 right-3 flex items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <span class="material-symbols-outlined text-gray-400 text-[18px]">edit</span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+  </main>
+  <script type="module" src="../js/pages/student-base.page.js"></script>
+
+  <!-- Lazy load Google Analytics after page is interactive -->
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        var script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K';
+        script.async = true;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9YNFP8F87K');
+      }, 2000); // Load after 2 seconds
+    });
+  </script>
+</body>
+
 </html>
