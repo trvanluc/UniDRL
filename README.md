@@ -114,28 +114,36 @@ UniDRL digitizes the entire workflow using a **QR-based event management model**
 ```bash
 UniDRL/
 ├── admin/                  # Admin-facing pages
-│   ├── badge-management.html
-│   ├── check-in-management.html
-│   ├── participants-management.html
-│   └── report.html
-├── components/             # Reusable UI components
-├── config/                 # Application constants
-├── data/                   # Mock data sources
-├── guards/                 # Authentication guards
-├── libs/                   # Third-party library adapters
-├── managers/               # Feature-specific managers
-├── pages/                  # Page-level controllers
-├── services/               # Business logic services
+│   ├── badge-system.html   # Configure gamification badges
+│   ├── check-in-management.html # QR Scanner for checking students in
+│   ├── participants-management.html # List and manage attendees
+│   └── report.html         # Data visualization and CSV export
+├── assets/                 # Static assets (images, icons, etc.)
+├── css/                    # Global styles
+│   └── style.css           # Custom overrides and base styles
+├── js/                     # Application source code
+│   ├── components/         # Reusable UI components (header, footer, cards)
+│   ├── config/             # App constants (roles, storage keys)
+│   ├── data/               # Mock data (initial seed for events)
+│   ├── guards/             # Auth guards (redirect if not logged in)
+│   ├── libs/               # Adapters for third-party libs
+│   ├── managers/           # Feature-specific logic managers
+│   ├── pages/              # Scripts specific to HTML pages
+│   ├── services/           # Business logic (Auth, Event, Badge services)
+│   └── utils/              # Helpers (DateTime, Storage wrapper)
 ├── student/                # Student-facing pages
-│   ├── my-event.html
-│   ├── my-journey.html
-│   └── profile.html
-├── utils/                  # Helper utilities
-├── index.html              # Landing page
-├── login.html              # Login page
-├── signup.html             # Signup page
+│   ├── my-event.html       # List of registered events
+│   ├── my-journey.html     # History timeline
+│   └── profile.html        # User profile settings
+├── event-detail.html       # Individual event view
 ├── home.html               # Main dashboard
-└── event-detail.html       # Event detail page
+├── index.html              # Landing page
+├── login.html              # Sign in page
+├── signup.html             # Sign up page
+├── package.json            # Project dependencies and scripts
+├── pnpm-lock.yaml          # Dependency lock file
+├── postcss.config.js       # PostCSS configuration
+└── tailwind.config.js      # Tailwind CSS configuration
 ```
 
 ---
