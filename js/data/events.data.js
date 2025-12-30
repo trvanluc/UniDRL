@@ -18,7 +18,7 @@ export const EVENTS = [
     location: "Innovation Hall",
     room: "Main Auditorium",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800",
+    image: "/assets/images/events/hackathon-2024.avif",
     description: `
       <p>The Annual Hackathon 2024 brings together students to solve real-world problems using technology.</p>
       <p>Teams will compete over 48 hours with mentorship from industry experts.</p>
@@ -38,7 +38,7 @@ export const EVENTS = [
     location: "Career Center",
     room: "Room 201",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800",
+    image: "/assets/images/events/career-fair.avif",
     description: `
       <p>Prepare your CV, LinkedIn, and interview skills before the Career Fair.</p>
     `,
@@ -57,7 +57,7 @@ export const EVENTS = [
     location: "Student Plaza",
     room: "Outdoor Stage",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800",
+    image: "/assets/images/events/jazz-night.avif",
     description: `
       <p>Enjoy a relaxing night of live jazz performed by student bands.</p>
     `,
@@ -76,7 +76,7 @@ export const EVENTS = [
     location: "Engineering Lab",
     room: "Lab 3",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800",
+    image: "/assets/images/events/robotics.avif",
     description: `
       <p>Hands-on introduction to robotics and automation.</p>
     `,
@@ -95,7 +95,7 @@ export const EVENTS = [
     location: "Sports Complex",
     room: "Yoga Room",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800",
+    image: "/assets/images/events/yoga-week.avif",
     description: `
       <p>Start your day refreshed with guided yoga sessions.</p>
     `,
@@ -114,7 +114,7 @@ export const EVENTS = [
     location: "Conference Hall",
     room: "Hall A",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800",
+    image: "/assets/images/events/leadership-summit.avif",
     description: `
       <p>Develop leadership skills with keynote speakers and workshops.</p>
     `,
@@ -133,7 +133,7 @@ export const EVENTS = [
     location: "Tech Hub",
     room: "Innovation Lab",
     seats: { total: 0, left: 0 },
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800",
+    image: "/assets/images/events/blockchain-workshop.avif",
     description: `
       <p>Explore the fundamentals of blockchain technology and Web3 development.</p>
       <p>Learn about smart contracts, decentralized applications, and the future of the internet.</p>
