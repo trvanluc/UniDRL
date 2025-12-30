@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Seeding Sample Data (Visual Restoration)
-  seedSampleData(user);
+  // seedSampleData(user); // Disabled to prevent ghost data after clearing storage
 
   // Load and render journey
   loadJourney(user);
