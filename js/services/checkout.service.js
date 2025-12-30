@@ -89,13 +89,13 @@ export const CheckoutService = {
     verifyCheckoutQR(qrCode) {
         // Check format
         if (!qrCode || !qrCode.startsWith("CHECKOUT_")) {
-            return { valid: false, error: "Mã QR không hợp lệ" };
+            return { valid: false, error: "Invalid QR code" };
         }
 
         // Parse QR code: CHECKOUT_eventId_timestamp
         const parts = qrCode.split("_");
         if (parts.length < 3) {
-            return { valid: false, error: "Định dạng mã QR không đúng" };
+            return { valid: false, error: "Invalid QR code format" };
         }
 
         // Get eventId (could have underscores in it)
@@ -106,16 +106,16 @@ export const CheckoutService = {
         const storedQR = allQR[eventId];
 
         if (!storedQR) {
-            return { valid: false, error: "Không tìm thấy mã checkout cho sự kiện này" };
+            return { valid: false, error: "Checkout code not found for this event" };
         }
 
         if (storedQR.qrCode !== qrCode) {
-            return { valid: false, error: "Mã QR không khớp" };
+            return { valid: false, error: "QR code does not match" };
         }
 
         // Check expiration
         if (this.isExpired(storedQR.expiresAt)) {
-            return { valid: false, error: "Mã QR đã hết hạn" };
+            return { valid: false, error: "QR code has expired" };
         }
 
         return { valid: true, eventId: eventId, qrData: storedQR };
@@ -139,23 +139,23 @@ export const CheckoutService = {
         // 2. Check if student registered for this event
         const registration = RegistrationService.findByMSSVAndEventId(studentId, eventId);
         if (!registration) {
-            return { success: false, error: "Bạn chưa đăng ký sự kiện này" };
+            return { success: false, error: "You have not registered for this event" };
         }
 
         // 3. Check if student has checked in
         if (registration.status !== "checked-in" && !registration.checkInTime) {
-            return { success: false, error: "Bạn cần check-in trước khi checkout" };
+            return { success: false, error: "You need to check-in before checkout" };
         }
 
         // 4. Check if already checked out
         if (registration.status === "completed" || registration.checkoutTime) {
-            return { success: false, error: "Bạn đã checkout sự kiện này rồi" };
+            return { success: false, error: "You have already checked out of this event" };
         }
 
         // 5. Get event info for Q&A
         const event = BadgeService.getById(eventId);
         if (!event) {
-            return { success: false, error: "Không tìm thấy thông tin sự kiện" };
+            return { success: false, error: "Event information not found" };
         }
 
         // 6. Check if badge claiming is enabled
@@ -166,7 +166,7 @@ export const CheckoutService = {
                 success: true,
                 event: event,
                 hasBadgeQuiz: false,
-                message: "Checkout thành công!"
+                message: "Checkout successful!"
             };
         }
 

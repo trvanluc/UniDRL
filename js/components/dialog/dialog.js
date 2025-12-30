@@ -5,8 +5,8 @@
  * Replace browser alert/confirm with beautiful custom dialogs
  * 
  * Usage:
- * - await Dialog.alert('Thông báo', 'Nội dung thông báo')
- * - const result = await Dialog.confirm('Xác nhận', 'Bạn có chắc?')
+ * - await Dialog.alert('Notification', 'Message content')
+ * - const result = await Dialog.confirm('Confirm', 'Are you sure?')
  * - if (result) { ... }
  */
 
@@ -16,11 +16,11 @@ const Dialog = {
      */
     create(options) {
         const {
-            title = 'Thông báo',
+            title = 'Notification',
             message = '',
             type = 'info', // info, success, warning, error, confirm
             confirmText = 'OK',
-            cancelText = 'Hủy',
+            cancelText = 'Cancel',
             showCancel = false
         } = options;
 
@@ -135,7 +135,7 @@ const Dialog = {
     /**
      * Show confirm dialog (replacement for window.confirm)
      */
-    confirm(title, message, confirmText = 'Xác nhận', cancelText = 'Hủy') {
+    confirm(title, message, confirmText = 'Confirm', cancelText = 'Cancel') {
         return this.create({
             title,
             message,
@@ -154,7 +154,7 @@ const Dialog = {
             title,
             message,
             type: 'success',
-            confirmText: 'Tuyệt vời!',
+            confirmText: 'Awesome!',
             showCancel: false
         });
     },
@@ -167,7 +167,7 @@ const Dialog = {
             title,
             message,
             type: 'error',
-            confirmText: 'Đóng',
+            confirmText: 'Close',
             showCancel: false
         });
     },
@@ -180,7 +180,7 @@ const Dialog = {
             title,
             message,
             type: 'warning',
-            confirmText: 'Đã hiểu',
+            confirmText: 'Got it',
             showCancel: false
         });
     }

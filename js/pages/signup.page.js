@@ -22,23 +22,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const terms = document.getElementById("terms");
 
     if (!name || !email || !password || !confirm) {
-      Toast.warning("Vui lòng điền đầy đủ thông tin");
+      Toast.warning("Please fill in all information");
       return;
     }
 
     if (password !== confirm) {
-      Toast.error("Mật khẩu xác nhận không khớp");
+      Toast.error("Password confirmation does not match");
       return;
     }
 
     if (terms && !terms.checked) {
-      Toast.warning("Vui lòng đồng ý với Điều khoản sử dụng");
+      Toast.warning("Please agree to the Terms of Service");
       return;
     }
 
     try {
       signup({ name, email, password, role });
-      Toast.success("Đăng ký thành công! Đang chuyển đến trang đăng nhập...");
+      Toast.success("Registration successful! Redirecting to login page...");
       setTimeout(() => { window.location.href = "login.html"; }, 1500);
     } catch (err) {
       Toast.error(err.message);

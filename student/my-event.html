@@ -220,12 +220,12 @@
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="qr-ticket-modal-overlay"></div>
 
     <!-- Modal box -->
-    <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-8">
+    <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-16">
       <div class="bg-transparent w-full max-w-md relative">
-        <!-- Close button -->
+        <!-- Close button - positioned above ticket -->
         <button id="close-qr-ticket-modal-btn"
-          class="absolute -top-12 right-0 text-white hover:text-gray-200 transition-colors">
-          <span class="material-symbols-outlined text-[32px]">close</span>
+          class="absolute -top-10 right-0 text-white hover:text-primary transition-colors bg-black/40 hover:bg-black/60 rounded-full p-1.5">
+          <span class="material-symbols-outlined text-[24px]">close</span>
         </button>
 
         <!-- Ticket container -->
@@ -242,27 +242,28 @@
     <div class="relative z-10 w-full max-w-md mx-4">
       <div class="bg-card-dark rounded-2xl p-6 border border-[#29382f]">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-bold text-white">Quét Checkout QR</h3>
+          <h3 class="text-xl font-bold text-white">Scan Checkout QR</h3>
           <button id="close-checkout-scanner-btn" class="text-gray-400 hover:text-white">
             <span class="material-symbols-outlined">close</span>
           </button>
         </div>
         <div id="checkout-qr-reader" class="w-full aspect-square bg-black rounded-xl overflow-hidden mb-4">
-          <p class="text-gray-400 text-sm text-center p-4">Nhấn nút bên dưới để bắt đầu quét</p>
+          <p class="text-gray-400 text-sm text-center p-4">Press the button below to start scanning</p>
         </div>
         <div class="flex gap-3">
           <button id="start-checkout-scanner-btn"
             class="flex-1 py-3 rounded-xl bg-primary hover:bg-[#2fd16f] text-background-dark font-bold flex items-center justify-center gap-2">
             <span class="material-symbols-outlined">camera</span>
-            Bắt đầu quét
+            Start Scanning
           </button>
           <button id="stop-checkout-scanner-btn"
             class="hidden flex-1 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold flex items-center justify-center gap-2">
             <span class="material-symbols-outlined">stop</span>
-            Dừng
+            Stop
           </button>
         </div>
-        <p class="text-gray-500 text-xs text-center mt-4">Quét mã QR từ giảng viên để checkout và nhận badge</p>
+        <p class="text-gray-500 text-xs text-center mt-4">Scan the QR code from your instructor to checkout and receive
+          badge</p>
       </div>
     </div>
   </div>
@@ -279,8 +280,8 @@
               <span class="material-symbols-outlined text-primary text-2xl">quiz</span>
             </div>
             <div>
-              <h3 class="text-xl font-bold text-white">Nhận Badge</h3>
-              <p id="qa-event-title" class="text-sm text-gray-400">Trả lời câu hỏi để nhận badge</p>
+              <h3 class="text-xl font-bold text-white">Earn Badge</h3>
+              <p id="qa-event-title" class="text-sm text-gray-400">Answer questions to earn a badge</p>
             </div>
           </div>
         </div>
@@ -294,7 +295,7 @@
         <div class="p-6 border-t border-[#29382f] flex gap-3">
           <button id="submit-qa-btn"
             class="flex-1 py-3 rounded-xl bg-primary hover:bg-[#2fd16f] text-background-dark font-bold">
-            Nộp câu trả lời
+            Submit Answers
           </button>
         </div>
       </div>
@@ -310,8 +311,8 @@
           class="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-6 animate-bounce">
           <span class="material-symbols-outlined text-primary text-5xl">workspace_premium</span>
         </div>
-        <h3 class="text-2xl font-bold text-white mb-2">🎉 Chúc mừng!</h3>
-        <p id="success-message" class="text-gray-400 mb-4">Bạn đã checkout thành công!</p>
+        <h3 class="text-2xl font-bold text-white mb-2">🎉 Congratulations!</h3>
+        <p id="success-message" class="text-gray-400 mb-4">You have successfully checked out!</p>
         <div id="success-badge-display"
           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 border border-primary/30 mb-6">
           <span class="material-symbols-outlined text-primary">workspace_premium</span>
@@ -319,7 +320,7 @@
         </div>
         <button id="close-success-modal-btn"
           class="w-full py-3 rounded-xl bg-primary hover:bg-[#2fd16f] text-background-dark font-bold">
-          Tuyệt vời!
+          Awesome!
         </button>
       </div>
     </div>

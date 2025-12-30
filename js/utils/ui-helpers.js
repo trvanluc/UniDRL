@@ -57,10 +57,10 @@ export function setupLogout() {
 
     logoutBtn.addEventListener("click", async () => {
       const confirmed = await Dialog.confirm(
-        "Đăng xuất",
-        "Bạn có chắc chắn muốn đăng xuất?",
-        "Đăng xuất",
-        "Hủy"
+        "Logout",
+        "Are you sure you want to logout?",
+        "Logout",
+        "Cancel"
       );
 
       if (confirmed) {

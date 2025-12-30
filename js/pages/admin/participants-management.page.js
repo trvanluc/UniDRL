@@ -1,5 +1,5 @@
 import { Theme } from "../../utils/theme.js";
-import { setupThemeToggle } from "../../utils/ui-helpers.js";
+import { setupThemeToggle, setupSettingsDropdown, setupLogout } from "../../utils/ui-helpers.js";
 
 const EVENTS = {
   "hackathon-2024": {
@@ -54,6 +54,8 @@ let currentStudentId = null;
 document.addEventListener("DOMContentLoaded", () => {
   Theme.init();
   setupThemeToggle();
+  setupSettingsDropdown();
+  setupLogout();
   currentEventId = new URLSearchParams(window.location.search).get("id");
 
   const event = EVENTS.find(e => e.id === currentEventId);

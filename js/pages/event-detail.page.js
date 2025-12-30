@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const event = storedEvents.find(e => e.id === eventId);
   if (!event) {
     console.error("Event not found:", eventId);
-    Toast.error("Không tìm thấy sự kiện");
+    Toast.error("Event not found");
     setTimeout(() => { window.location.href = "home.html"; }, 1500);
     return;
   }
@@ -168,13 +168,13 @@ function renderTabContent(user, event) {
               <span class="material-symbols-outlined text-4xl text-gray-400">confirmation_number</span>
             </div>
             <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-              Bạn chưa đăng ký sự kiện này
+              You have not registered for this event
             </h2>
             <p class="text-gray-600 dark:text-gray-400 mb-6">
-              Vui lòng đăng ký để nhận mã QR Code và vé tham dự sự kiện.
+              Please register to receive your QR Code and event ticket.
             </p>
             <button id="register-from-ticket-btn" class="px-6 py-3 rounded-xl bg-primary hover:bg-[#2fd16d] text-black font-bold transition-all shadow-lg shadow-primary/25">
-              Đăng Ký Ngay
+              Register Now
             </button>
           </div>
         </div>
@@ -274,7 +274,7 @@ function renderEventActions(user, event) {
           <span>Show My Ticket</span>
         </button>
         <p class="text-center text-xs text-gray-400 mt-3">
-          Xem mã QR Code của bạn
+          View your QR Code
         </p>
       `;
       const showQRBtn = document.getElementById("show-my-qr-btn");
@@ -284,11 +284,11 @@ function renderEventActions(user, event) {
     } else {
       actionsContainer.innerHTML = `
         <button id="register-event-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
-          Đăng Ký Ngay
+          Register Now
           <span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
         </button>
         <p class="text-center text-xs text-gray-400 mt-3">
-          Đăng ký sẽ đóng sau 2 ngày
+          Registration closes in 2 days
         </p>
       `;
       const registerBtn = document.getElementById("register-event-btn");
@@ -303,7 +303,7 @@ function renderEventActions(user, event) {
         <!-- Checkout QR Button - Main action -->
         <button id="checkout-qr-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
           <span class="material-symbols-outlined">qr_code_2</span>
-          <span>Tạo Checkout QR</span>
+          <span>Create Checkout QR</span>
         </button>
         
         <!-- Edit & Delete buttons -->
@@ -319,7 +319,7 @@ function renderEventActions(user, event) {
         </div>
       </div>
       <p class="text-center text-xs text-gray-400">
-        Tạo mã QR để sinh viên checkout khi kết thúc sự kiện
+        Create QR code for students to checkout at the end of the event
       </p>
     `;
 
@@ -336,13 +336,13 @@ function renderEventActions(user, event) {
     const deleteBtn = document.getElementById("delete-event-btn");
     deleteBtn?.addEventListener("click", async () => {
       const confirmed = await Dialog.confirm(
-        "Xóa sự kiện",
-        `Bạn có chắc chắn muốn xóa "${event.title}"?`,
-        "Xóa",
-        "Hủy"
+        "Delete Event",
+        `Are you sure you want to delete "${event.title}"?`,
+        "Delete",
+        "Cancel"
       );
       if (confirmed) {
-        Toast.success(`Đã xóa sự kiện: ${event.title}`);
+        Toast.success(`Deleted event: ${event.title}`);
         // TODO: Delete event from database
         setTimeout(() => { window.location.href = "home.html"; }, 1500);
       }
@@ -380,7 +380,7 @@ function setupAdminQRActions(event) {
     const store = Storage.get("completionQRStatus") || {};
     const qrData = store[event.id];
     if (!qrData?.code) {
-      alert("Chưa có QR. Vui lòng Regenerate trước.");
+      alert("No QR available. Please Regenerate first.");
       return;
     }
     const qrImg = document.getElementById("completion-qr-img");
@@ -448,7 +448,7 @@ function openQRCodeModal(user, event) {
   const registrations = RegistrationService.getByEventId(event.id);
   const userRegistration = registrations.find(reg => reg.mssv === user.studentId || reg.email === user.email || reg.mssv === user.email);
   if (!userRegistration) {
-    alert("Không tìm thấy thông tin đăng ký");
+    alert("Registration information not found");
     return;
   }
   const modalContent = document.getElementById("qr-ticket-modal-content");
@@ -538,7 +538,7 @@ function saveEventEdit(event) {
   const newDesc = document.getElementById("edit-description")?.value.trim();
   const newOrganizer = document.getElementById("edit-organizer")?.value.trim();
   if (!newName || !newDesc || !newOrganizer) {
-    alert("Không được để trống thông tin");
+    alert("Information cannot be empty");
     return;
   }
   event.title = newName;
@@ -578,11 +578,11 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Validation sử dụng FormValidator
   const validator = new FormValidator()
-    .required(name, "Vui lòng nhập họ và tên", "error-name")
-    .required(classValue, "Vui lòng nhập lớp", "error-class")
-    .required(email, "Vui lòng nhập email", "error-email")
-    .email(email, "Email không hợp lệ", "error-email")
-    .required(mssv, "Vui lòng nhập MSSV", "error-mssv");
+    .required(name, "Please enter your full name", "error-name")
+    .required(classValue, "Please enter your class", "error-class")
+    .required(email, "Please enter your email", "error-email")
+    .email(email, "Invalid email format", "error-email")
+    .required(mssv, "Please enter your Student ID", "error-mssv");
 
   if (!validator.isValid()) {
     return;
@@ -590,7 +590,7 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Kiểm tra MSSV đã đăng ký chưa
   if (RegistrationService.isRegistered(mssv, event.id)) {
-    Toast.warning("MSSV này đã đăng ký cho sự kiện này rồi!");
+    Toast.warning("This Student ID has already registered for this event!");
     return;
   }
 
@@ -615,7 +615,7 @@ function handleRegisterSubmit(event, formEvent) {
   const success = RegistrationService.save(registration);
 
   if (!success) {
-    Toast.error("Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại!");
+    Toast.error("An error occurred during registration. Please try again!");
     return;
   }
 
@@ -638,7 +638,7 @@ function handleRegisterSubmit(event, formEvent) {
     console.log("Đã cập nhật user.studentId:", mssv);
 
     // Hiển thị thông báo thành công
-    Toast.success(`Đăng ký thành công! Bạn sẽ nhận được huy chương điểm sau khi hoàn thành.`);
+    Toast.success(`Registration successful! You will receive a badge after completing the event.`);
 
     // Render lại tab content và button actions
     setTimeout(() => {
@@ -646,7 +646,7 @@ function handleRegisterSubmit(event, formEvent) {
       renderEventActions(user, event);
     }, 100);
   } else {
-    Toast.success(`Đăng ký thành công! Bạn sẽ nhận được huy chương điểm sau khi hoàn thành.`);
+    Toast.success(`Registration successful! You will receive a badge after completing the event.`);
     setTimeout(() => { window.location.reload(); }, 1500);
   }
 }
@@ -764,7 +764,7 @@ function startCheckoutQRTimer(expiresAt) {
       // Timer expired
       clearInterval(checkoutQRTimerInterval);
       if (countdownEl) countdownEl.textContent = '00:00';
-      alert('QR đã hết hạn! Vui lòng tạo mới.');
+      alert('QR has expired! Please create a new one.');
       closeCheckoutQRModal();
       return;
     }
@@ -817,7 +817,7 @@ function stopCheckoutQR() {
     checkoutQRTimerInterval = null;
   }
 
-  alert('Đã hủy Checkout QR');
+  alert('Checkout QR cancelled');
 }
 
 /**

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!user) return;
 
   if (user.role !== ROLES.STUDENT) {
-    Toast.error('Truy cập bị từ chối');
+    Toast.error('Access denied');
     setTimeout(() => { window.location.href = "../home.html"; }, 1500);
     return;
   }
@@ -247,7 +247,7 @@ function renderTicketForModal(event, userRegistration) {
   if (!modalContent) return;
 
   const qrCodeString = userRegistration.qrCode;
-  const statusText = userRegistration.status === 'checked-in' ? 'Đã Check-in' : 'Chưa Check-in';
+  const statusText = userRegistration.status === 'checked-in' ? 'Checked In' : 'Not Checked In';
   const statusColor = userRegistration.status === 'checked-in' ? 'bg-green-500' : 'bg-yellow-500';
   const statusTextColor = userRegistration.status === 'checked-in' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400';
 
@@ -289,7 +289,7 @@ function renderTicketForModal(event, userRegistration) {
           <div class="flex items-start gap-1.5">
             <span class="material-symbols-outlined text-primary text-base mt-0.5">calendar_month</span>
             <div class="flex-1 min-w-0">
-              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Ngày & Giờ</p>
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Date & Time</p>
               <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.date}</p>
               <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.time}</p>
             </div>
@@ -298,7 +298,7 @@ function renderTicketForModal(event, userRegistration) {
           <div class="flex items-start gap-1.5">
             <span class="material-symbols-outlined text-primary text-base mt-0.5">location_on</span>
             <div class="flex-1 min-w-0">
-              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Địa điểm</p>
+              <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wide font-bold">Location</p>
               <p class="text-xs font-bold text-gray-900 dark:text-white leading-tight">${event.location}</p>
               <p class="text-[10px] text-gray-600 dark:text-gray-300">${event.room || 'N/A'}</p>
             </div>
@@ -310,7 +310,7 @@ function renderTicketForModal(event, userRegistration) {
       <div class="px-3 py-2 border-b-2 border-dashed border-gray-200 dark:border-gray-600 bg-gray-50/50 dark:bg-black/20">
         <div class="grid grid-cols-3 gap-2 text-center">
           <div>
-            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Họ tên</p>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Full Name</p>
             <p class="text-xs font-bold text-gray-900 dark:text-white truncate">${userRegistration.name}</p>
           </div>
           <div>
@@ -318,7 +318,7 @@ function renderTicketForModal(event, userRegistration) {
             <p class="text-xs font-bold text-gray-900 dark:text-white font-mono">${userRegistration.mssv}</p>
           </div>
           <div>
-            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Lớp</p>
+            <p class="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold mb-0.5">Class</p>
             <p class="text-xs font-bold text-gray-900 dark:text-white">${userRegistration.class}</p>
           </div>
         </div>
@@ -436,7 +436,7 @@ function startCheckoutScanning() {
   if (isCheckoutScanning) return;
 
   if (typeof Html5Qrcode === 'undefined') {
-    alert('Thư viện quét QR chưa được tải. Vui lòng reload trang.');
+    alert('QR library not loaded. Please reload the page.');
     return;
   }
 
@@ -464,11 +464,11 @@ function startCheckoutScanning() {
       document.getElementById('start-checkout-scanner-btn')?.classList.add('hidden');
       document.getElementById('stop-checkout-scanner-btn')?.classList.remove('hidden');
     }).catch((err) => {
-      alert('Không thể khởi động camera. Vui lòng cấp quyền camera.');
+      alert('Cannot start camera. Please grant camera permission.');
       console.error('Camera error:', err);
     });
   } catch (error) {
-    alert('Lỗi khởi tạo scanner.');
+    alert('Scanner initialization error.');
     console.error('Scanner error:', error);
   }
 }
@@ -499,7 +499,7 @@ function handleCheckoutQRScanned(qrCode) {
   // Verify QR code format
   if (!qrCode || !qrCode.startsWith('CHECKOUT_')) {
     console.log('❌ [2] Invalid QR format');
-    Toast.error('Mã QR không hợp lệ. Vui lòng quét mã Checkout từ giảng viên.');
+    Toast.error('Invalid QR code. Please scan the Checkout QR from your instructor.');
     return;
   }
   console.log('✅ [2] QR format valid');
@@ -518,7 +518,7 @@ function handleCheckoutQRScanned(qrCode) {
 
   if (!storedQR || storedQR.qrCode !== qrCode) {
     console.log('❌ [6] QR mismatch - storedQR:', storedQR?.qrCode, 'vs scanned:', qrCode);
-    Toast.error('Mã QR không khớp hoặc không tồn tại.');
+    Toast.error('QR code does not match or does not exist.');
     return;
   }
   console.log('✅ [6] QR matches');
@@ -526,7 +526,7 @@ function handleCheckoutQRScanned(qrCode) {
   // Check expiration
   if (new Date() > new Date(storedQR.expiresAt)) {
     console.log('❌ [7] QR expired at:', storedQR.expiresAt);
-    Toast.warning('Mã QR đã hết hạn. Vui lòng liên hệ giảng viên.');
+    Toast.warning('QR code has expired. Please contact your instructor.');
     return;
   }
   console.log('✅ [7] QR not expired');
@@ -540,7 +540,7 @@ function handleCheckoutQRScanned(qrCode) {
 
   if (!registration) {
     console.log('❌ [10] Not registered');
-    Toast.error('Bạn chưa đăng ký sự kiện này.');
+    Toast.error('You have not registered for this event.');
     return;
   }
   console.log('✅ [10] User is registered');
@@ -549,7 +549,7 @@ function handleCheckoutQRScanned(qrCode) {
   console.log('📌 [11] Registration status:', registration.status, 'checkInTime:', registration.checkInTime);
   if (registration.status !== 'checked-in' && !registration.checkInTime) {
     console.log('❌ [12] Not checked in yet');
-    Toast.warning('Bạn cần check-in trước khi checkout.');
+    Toast.warning('You need to check-in before checkout.');
     return;
   }
   console.log('✅ [12] User is checked in');
@@ -557,7 +557,7 @@ function handleCheckoutQRScanned(qrCode) {
   // Check if already checked out
   if (registration.status === 'completed' || registration.checkoutTime) {
     console.log('❌ [13] Already checked out');
-    Toast.info('Bạn đã checkout sự kiện này rồi.');
+    Toast.info('You have already checked out of this event.');
     return;
   }
   console.log('✅ [13] Not checked out yet');
@@ -568,7 +568,7 @@ function handleCheckoutQRScanned(qrCode) {
 
   if (!event) {
     console.log('❌ [15] Event not found');
-    Toast.error('Không tìm thấy thông tin sự kiện.');
+    Toast.error('Event information not found.');
     return;
   }
   console.log('✅ [15] Event found, badgeConfig:', event.badgeConfig);
@@ -599,7 +599,7 @@ function handleCheckoutQRScanned(qrCode) {
     }
   } catch (err) {
     console.error('❌ [19] Error showing Q&A or completing checkout:', err);
-    Toast.error('Có lỗi xảy ra: ' + err.message);
+    Toast.error('An error occurred: ' + err.message);
   }
 }
 
@@ -616,13 +616,13 @@ function showQAQuiz(event) {
     container.innerHTML = currentQAPairs.map((qa, index) => `
       <div class="bg-surface-dark rounded-xl p-4 border border-[#29382f]">
         <p class="text-white font-medium mb-3">
-          <span class="text-primary font-bold">Câu ${index + 1}:</span> ${qa.q}
+          <span class="text-primary font-bold">Question ${index + 1}:</span> ${qa.q}
         </p>
         <input 
           type="text" 
           class="qa-answer w-full px-4 py-3 rounded-xl bg-[#112117] border border-[#29382f] text-white placeholder-gray-500 focus:border-primary focus:outline-none"
           data-index="${index}"
-          placeholder="Nhập câu trả lời của bạn..."
+          placeholder="Enter your answer..."
         />
       </div>
     `).join('');
@@ -723,14 +723,14 @@ function showCheckoutSuccess(badge, correctAnswers) {
       bronze: 'bg-orange-500/20 border-orange-500/30 text-orange-500'
     };
 
-    if (messageEl) messageEl.textContent = `Bạn trả lời đúng ${correctAnswers} câu và nhận được:`;
+    if (messageEl) messageEl.textContent = `You answered ${correctAnswers} questions correctly and earned:`;
     if (badgeNameEl) badgeNameEl.textContent = badgeNames[badge] || badge;
     if (badgeDisplay) {
       badgeDisplay.className = `inline-flex items-center gap-2 px-4 py-2 rounded-full ${badgeColors[badge] || 'bg-primary/20 border-primary/30 text-primary'} mb-6`;
       badgeDisplay.classList.remove('hidden');
     }
   } else {
-    if (messageEl) messageEl.textContent = 'Checkout thành công! Cảm ơn bạn đã tham gia.';
+    if (messageEl) messageEl.textContent = 'Checkout successful! Thank you for participating.';
     if (badgeDisplay) badgeDisplay.classList.add('hidden');
   }
 

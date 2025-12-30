@@ -2,11 +2,11 @@
  * ==========================================
  * AUTH GUARD - Route Protection
  * ==========================================
- * Nhiệm vụ:
- * - Bảo vệ các trang private (student / admin)
- * - Kiểm tra đăng nhập
- * - Kiểm tra role
- * - Redirect hợp lý
+ * Purpose:
+ * - Protect private pages (student / admin)
+ * - Check authentication
+ * - Check role
+ * - Redirect appropriately
  * ==========================================
  */
 
@@ -16,15 +16,15 @@ import { Toast } from "../components/toast/toast.js";
 
 /**
  * =========================
- * 1. REQUIRE AUTH (GUARD CHUNG)
+ * 1. REQUIRE AUTH (GENERAL GUARD)
  * =========================
- * Kiểm tra user đã đăng nhập chưa
+ * Check if user is logged in
  */
 export function requireAuth() {
   const currentUser = Storage.getCurrentUser();
 
   if (!currentUser) {
-    Toast.warning("Bạn cần đăng nhập để tiếp tục");
+    Toast.warning("You need to login to continue");
     setTimeout(() => { window.location.href = "/login.html"; }, 1500);
     return false;
   }
@@ -34,9 +34,9 @@ export function requireAuth() {
 
 /**
  * =========================
- * 2. REQUIRE ROLE (GUARD THEO VAI TRÒ)
+ * 2. REQUIRE ROLE (ROLE-BASED GUARD)
  * =========================
- * Kiểm tra user có role phù hợp không
+ * Check if user has the appropriate role
  */
 export function requireRole(allowedRoles = []) {
   const currentUser = requireAuth();
@@ -44,7 +44,7 @@ export function requireRole(allowedRoles = []) {
   if (!currentUser) return false;
 
   if (!allowedRoles.includes(currentUser.role)) {
-    Toast.error(`Bạn không có quyền truy cập trang này`);
+    Toast.error(`You don't have permission to access this page`);
     setTimeout(() => { redirectByRole(currentUser.role); }, 1500);
     return false;
   }
@@ -56,7 +56,7 @@ export function requireRole(allowedRoles = []) {
  * =========================
  * 3. STUDENT GUARD
  * =========================
- * Chỉ cho phép student truy cập
+ * Only allow students to access
  */
 export function studentGuard() {
   const user = requireRole([ROLES.STUDENT]);
@@ -72,7 +72,7 @@ export function studentGuard() {
  * =========================
  * 4. ADMIN GUARD
  * =========================
- * Cho phép manager, advisor truy cập
+ * Allow manager, advisor to access
  */
 export function adminGuard() {
   const user = requireRole([
@@ -92,7 +92,7 @@ export function adminGuard() {
  * =========================
  * 5. MULTI-ROLE GUARD
  * =========================
- * Cho phép nhiều role truy cập
+ * Allow multiple roles to access
  */
 export function multiRoleGuard(roles) {
   return requireRole(roles);
@@ -102,7 +102,7 @@ export function multiRoleGuard(roles) {
  * =========================
  * HELPER: REDIRECT BY ROLE
  * =========================
- * Chuyển hướng về trang phù hợp với role
+ * Redirect to appropriate page based on role
  */
 function redirectByRole(role) {
   switch (role) {

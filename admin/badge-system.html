@@ -1,452 +1,360 @@
 <!DOCTYPE html>
 <html class="dark" lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Badge System Management - Admin Portal</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#19e66b",
-              "primary-hover": "#14cc5e",
-              "background-light": "#f6f8f7",
-              "background-dark": "#111714",
-              "surface-dark": "#1c2621",
-              "surface-light": "#ffffff",
-              "border-dark": "#29382f",
-              "border-light": "#e5e7eb",
-            },
-            fontFamily: {
-              display: ["Spline Sans", "sans-serif"],
-              body: ["Noto Sans", "sans-serif"],
-            },
-            borderRadius: {
-              DEFAULT: "1rem",
-              lg: "1.5rem",
-              xl: "2rem",
-              "2xl": "3rem",
-              full: "9999px",
-            },
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Badge System Management - Admin Portal</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&family=Noto+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#19e66b",
+            "primary-hover": "#14cc5e",
+            "background-light": "#f6f8f7",
+            "background-dark": "#111714",
+            "surface-dark": "#1c2621",
+            "surface-light": "#ffffff",
+            "border-dark": "#29382f",
+            "border-light": "#e5e7eb",
+          },
+          fontFamily: {
+            display: ["Spline Sans", "sans-serif"],
+            body: ["Noto Sans", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "1.5rem",
+            xl: "2rem",
+            "2xl": "3rem",
+            full: "9999px",
           },
         },
-      };
-    </script>
-    <style>
-      #sidebar-toggle:checked ~ .layout-container aside {
-        width: 5rem;
-      }
-      #sidebar-toggle:checked ~ .layout-container main {
-        margin-left: 0;
-      }
-      @media (min-width: 1024px) {
-        #sidebar-toggle:checked ~ .layout-container main {
-          margin-left: 5rem;
-        }
-      }
-      #sidebar-toggle:checked ~ .layout-container aside .nav-label {
-        display: none;
-      }
-      #sidebar-toggle:checked ~ .layout-container aside .nav-item {
-        justify-content: center;
-        padding: 0;
-      }
-      #sidebar-toggle:checked ~ .layout-container aside .system-status {
-        display: none;
-      }
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #29382f;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #19e66b;
-      }
-      select::-ms-expand {
-        display: none;
-      }
-      select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-      }
-      .material-symbols-outlined {
-        font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
-      }
-    </style>
-  </head>
+      },
+    };
+  </script>
+  <style>
+    #sidebar-toggle:checked~.layout-container aside {
+      width: 5rem;
+    }
 
-  <body
-    class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col text-gray-900 dark:text-white overflow-hidden transition-colors duration-300"
-  >
-    <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+    #sidebar-toggle:checked~.layout-container main {
+      margin-left: 0;
+    }
 
-    <header
-      class="fixed top-0 left-0 right-0 h-20 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark flex items-center justify-between px-6"
-    >
+    @media (min-width: 1024px) {
+      #sidebar-toggle:checked~.layout-container main {
+        margin-left: 5rem;
+      }
+    }
+
+    #sidebar-toggle:checked~.layout-container aside .nav-label {
+      display: none;
+    }
+
+    #sidebar-toggle:checked~.layout-container aside .nav-item {
+      justify-content: center;
+      padding: 0;
+    }
+
+    #sidebar-toggle:checked~.layout-container aside .system-status {
+      display: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #29382f;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #19e66b;
+    }
+
+    select::-ms-expand {
+      display: none;
+    }
+
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+    }
+  </style>
+</head>
+
+<body
+  class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col text-gray-900 dark:text-white overflow-hidden transition-colors duration-300">
+  <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+
+  <header
+    class="fixed top-0 left-0 right-0 h-20 z-50 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark flex items-center justify-between px-6">
+    <div class="flex items-center gap-4">
+      <label
+        class="p-2 -ml-2 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer"
+        for="sidebar-toggle">
+        <span class="material-symbols-outlined">menu</span>
+      </label>
       <div class="flex items-center gap-4">
-        <label
-          class="p-2 -ml-2 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer"
-          for="sidebar-toggle"
-        >
-          <span class="material-symbols-outlined">menu</span>
-        </label>
-        <div class="flex items-center gap-4">
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-            <span class="material-symbols-outlined">school</span>
-          </div>
-          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-            VN-UK
-          </h2>
+        <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+          <span class="material-symbols-outlined">school</span>
         </div>
+        <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+          VN-UK
+        </h2>
       </div>
+    </div>
 
-      <div class="flex-1"></div>
+    <div class="flex-1"></div>
 
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-1">
-          <button
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-1">
+        <button
+          class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-colors"
+          title="Notifications">
+          <span class="material-symbols-outlined text-[22px]">notifications</span>
+        </button>
+        <div class="relative">
+          <button id="admin-settings-btn"
             class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-colors"
-            title="Notifications"
-          >
-            <span class="material-symbols-outlined text-[22px]"
-              >notifications</span
-            >
-          </button>
-          <button
-            class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-colors"
-            title="Settings"
-          >
+            title="Settings">
             <span class="material-symbols-outlined text-[22px]">settings</span>
           </button>
-          <button
-            class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-colors"
-            title="Theme"
-          >
-            <span class="material-symbols-outlined text-[22px]"
-              >light_mode</span
-            >
+          <div id="admin-settings-dropdown"
+            class="hidden absolute top-full right-0 mt-2 bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark rounded-lg z-50 shadow-lg">
+            <button id="admin-logout-btn"
+              class="block w-full px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 text-left whitespace-nowrap">
+              Logout
+            </button>
+          </div>
+        </div>
+        <button id="admin-theme-toggle-btn"
+          class="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-xl transition-colors"
+          title="Theme">
+          <span class="material-symbols-outlined text-[22px] theme-toggle-icon">light_mode</span>
+        </button>
+      </div>
+
+      <div class="h-8 w-px bg-border-light dark:bg-border-dark hidden sm:block"></div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-right hidden md:block">
+          <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">
+            Admin User
+          </p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">
+            Super Admin
+          </p>
+        </div>
+        <div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
+          style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout-container flex pt-20 h-screen overflow-hidden">
+    <aside
+      class="fixed inset-y-0 left-0 top-20 z-40 w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 hidden lg:flex">
+      <nav class="flex-1 py-6 px-4 space-y-1">
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
+          href="../home.html">
+          <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">home</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
+          href="participants-management.html">
+          <span class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">groups</span>
+          <span class="nav-label">Participant</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
+          href="check-in-management.html">
+          <span
+            class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">fact_check</span>
+          <span class="nav-label">Check-in</span>
+        </a>
+        <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary transition-colors overflow-hidden/5"
+          href="badge-system.html">
+          <span class="material-symbols-outlined text-[22px] text-primary">workspace_premium</span>
+          <span class="nav-label">Badge System</span>
+        </a>
+        <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
+          href="#">
+          <span
+            class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors">analytics</span>
+          <span class="nav-label">Reports</span>
+        </a>
+      </nav>
+
+    </aside>
+
+    <main
+      class="flex-1 lg:ml-72 flex flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark relative transition-all duration-300">
+      <div class="flex-1 overflow-y-auto p-6 lg:p-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <h2 class="text-3xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white">
+              Badge Award System
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400 text-sm max-w-3xl">
+              Manage event badges, configure Q&A logic, and pass thresholds.
+            </p>
+          </div>
+
+          <button id="btn-reset-data"
+            class="shrink-0 flex items-center gap-2 text-sm font-bold text-red-500 bg-red-50 dark:bg-red-900/10 px-4 py-2.5 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/20 border border-red-100 dark:border-red-900/30 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">restart_alt</span>
+            Reset Data
           </button>
         </div>
 
         <div
-          class="h-8 w-px bg-border-light dark:bg-border-dark hidden sm:block"
-        ></div>
-
-        <div class="flex items-center gap-3">
-          <div class="text-right hidden md:block">
-            <p
-              class="text-sm font-bold text-gray-900 dark:text-white leading-none"
-            >
-              Admin User
-            </p>
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none"
-            >
-              Super Admin
-            </p>
-          </div>
-          <div class="size-10 rounded-full bg-gray-300 dark:bg-gray-700"></div>
-        </div>
-      </div>
-    </header>
-
-    <div class="layout-container flex pt-20 h-screen overflow-hidden">
-      <aside
-        class="fixed inset-y-0 left-0 top-20 z-40 w-64 bg-surface-light dark:bg-surface-dark border-r border-border-light dark:border-border-dark flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0 hidden lg:flex"
-      >
-        <nav class="flex-1 py-6 px-4 space-y-1">
-          <a
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
-            href="../home.html"
-          >
-            <span
-              class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors"
-              >home</span
-            >
-            <span class="nav-label">Home</span>
-          </a>
-          <a
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
-            href="participants-management.html"
-          >
-            <span
-              class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors"
-              >groups</span
-            >
-            <span class="nav-label">Participant</span>
-          </a>
-          <a
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
-            href="check-in-management.html"
-          >
-            <span
-              class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors"
-              >fact_check</span
-            >
-            <span class="nav-label">Check-in</span>
-          </a>
-          <a
-            class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary transition-colors overflow-hidden/5"
-            href="badge-system.html"
-          >
-            <span class="material-symbols-outlined text-[22px] text-primary"
-              >workspace_premium</span
-            >
-            <span class="nav-label">Badge System</span>
-          </a>
-          <a
-            class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group"
-            href="#"
-          >
-            <span
-              class="material-symbols-outlined text-[22px] group-hover:text-primary transition-colors"
-              >analytics</span
-            >
-            <span class="nav-label">Reports</span>
-          </a>
-        </nav>
-        
-      </aside>
-
-      <main
-        class="flex-1 lg:ml-72 flex flex-col h-full overflow-hidden bg-background-light dark:bg-background-dark relative transition-all duration-300"
-      >
-        <div class="flex-1 overflow-y-auto p-6 lg:p-10">
-          <div
-            class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8"
-          >
-            <div>
-              <h2
-                class="text-3xl font-bold tracking-tight mb-2 text-gray-900 dark:text-white"
-              >
-                Badge Award System
-              </h2>
-              <p class="text-gray-500 dark:text-gray-400 text-sm max-w-3xl">
-                Manage event badges, configure Q&A logic, and pass thresholds.
-              </p>
+          class="bg-surface-light dark:bg-surface-dark p-2 rounded-2xl border border-border-light dark:border-border-dark mb-8 shadow-sm">
+          <div class="flex flex-col md:flex-row gap-3">
+            <div class="relative flex-1">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+              <input id="search-input"
+                class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder-gray-500 dark:placeholder-gray-500 text-gray-900 dark:text-white"
+                placeholder="Search event to award badges..." type="text" />
             </div>
 
-            <button
-              id="btn-reset-data"
-              class="shrink-0 flex items-center gap-2 text-sm font-bold text-red-500 bg-red-50 dark:bg-red-900/10 px-4 py-2.5 rounded-xl hover:bg-red-100 dark:hover:bg-red-900/20 border border-red-100 dark:border-red-900/30 transition-colors shadow-sm"
-            >
-              <span class="material-symbols-outlined text-[18px]"
-                >restart_alt</span
-              >
-              Reset Data
-            </button>
-          </div>
-
-          <div
-            class="bg-surface-light dark:bg-surface-dark p-2 rounded-2xl border border-border-light dark:border-border-dark mb-8 shadow-sm"
-          >
-            <div class="flex flex-col md:flex-row gap-3">
-              <div class="relative flex-1">
+            <div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 px-1 md:px-0">
+              <div class="relative">
+                <select id="status-filter"
+                  class="appearance-none pl-4 pr-10 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                  <option>All Status</option>
+                  <option>Claiming Open</option>
+                  <option>Claiming Closed</option>
+                </select>
                 <span
-                  class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
-                  >search</span
-                >
-                <input
-                  id="search-input"
-                  class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder-gray-500 dark:placeholder-gray-500 text-gray-900 dark:text-white"
-                  placeholder="Search event to award badges..."
-                  type="text"
-                />
-              </div>
-
-              <div
-                class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 px-1 md:px-0"
-              >
-                <div class="relative">
-                  <select
-                    id="status-filter"
-                    class="appearance-none pl-4 pr-10 py-3 bg-gray-50 dark:bg-black/20 border border-gray-100 dark:border-white/5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-primary focus:border-primary cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
-                  >
-                    <option>All Status</option>
-                    <option>Claiming Open</option>
-                    <option>Claiming Closed</option>
-                  </select>
-                  <span
-                    class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]"
-                    >expand_more</span
-                  >
-                </div>
+                  class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-[20px]">expand_more</span>
               </div>
             </div>
           </div>
-
-          <div
-            id="events-grid"
-            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
-          ></div>
         </div>
-      </main>
-    </div>
+
+        <div id="events-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="badgeConfigModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div id="modal-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
 
     <div
-      id="badgeConfigModal"
-      class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4"
-    >
+      class="relative w-full max-w-2xl bg-surface-light dark:bg-surface-dark rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-border-light dark:border-border-dark animate-[fadeIn_0.2s_ease-out]">
       <div
-        id="modal-overlay"
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
-      ></div>
+        class="px-6 py-4 border-b border-gray-200 dark:border-white/5 flex justify-between items-center bg-gray-50 dark:bg-white/5">
+        <div>
+          <h3 class="text-lg font-bold dark:text-white">
+            Configure Badge Logic
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400" id="modal-event-title">
+            Event Name
+          </p>
+        </div>
+        <button id="btn-close-modal"
+          class="size-8 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+          <span class="material-symbols-outlined text-gray-500">close</span>
+        </button>
+      </div>
 
-      <div
-        class="relative w-full max-w-2xl bg-surface-light dark:bg-surface-dark rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-border-light dark:border-border-dark animate-[fadeIn_0.2s_ease-out]"
-      >
-        <div
-          class="px-6 py-4 border-b border-gray-200 dark:border-white/5 flex justify-between items-center bg-gray-50 dark:bg-white/5"
-        >
-          <div>
-            <h3 class="text-lg font-bold dark:text-white">
-              Configure Badge Logic
-            </h3>
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400"
-              id="modal-event-title"
-            >
-              Event Name
-            </p>
+      <div class="p-6 overflow-y-auto space-y-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg text-blue-600 dark:text-blue-200">
+              <span class="material-symbols-outlined">how_to_vote</span>
+            </div>
+            <div>
+              <p class="text-sm font-bold dark:text-white">Enable Claiming</p>
+            </div>
           </div>
-          <button
-            id="btn-close-modal"
-            class="size-8 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
-          >
-            <span class="material-symbols-outlined text-gray-500">close</span>
-          </button>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="config-isClaimable" class="sr-only peer" />
+            <div
+              class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+            </div>
+          </label>
         </div>
 
-        <div class="p-6 overflow-y-auto space-y-6">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div
-                class="p-2 bg-blue-100 dark:bg-blue-800 rounded-lg text-blue-600 dark:text-blue-200"
-              >
-                <span class="material-symbols-outlined">how_to_vote</span>
-              </div>
-              <div>
-                <p class="text-sm font-bold dark:text-white">Enable Claiming</p>
-              </div>
+        <div class="p-4 bg-gray-50 dark:bg-black/20 rounded-2xl border border-gray-200 dark:border-white/5">
+          <h4 class="text-xs font-bold uppercase text-gray-500 mb-3 tracking-wider">
+            Thresholds (Correct Answers Needed)
+          </h4>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="text-center">
+              <label class="block text-xs font-bold text-orange-600 mb-1">Bronze</label>
+              <input type="number" id="rule-bronze"
+                class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
+                placeholder="1" />
             </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                id="config-isClaimable"
-                class="sr-only peer"
-              />
-              <div
-                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"
-              ></div>
-            </label>
-          </div>
-
-          <div
-            class="p-4 bg-gray-50 dark:bg-black/20 rounded-2xl border border-gray-200 dark:border-white/5"
-          >
-            <h4
-              class="text-xs font-bold uppercase text-gray-500 mb-3 tracking-wider"
-            >
-              Thresholds (Correct Answers Needed)
-            </h4>
-            <div class="grid grid-cols-3 gap-4">
-              <div class="text-center">
-                <label class="block text-xs font-bold text-orange-600 mb-1"
-                  >Bronze</label
-                >
-                <input
-                  type="number"
-                  id="rule-bronze"
-                  class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
-                  placeholder="1"
-                />
-              </div>
-              <div class="text-center">
-                <label class="block text-xs font-bold text-gray-500 mb-1"
-                  >Silver</label
-                >
-                <input
-                  type="number"
-                  id="rule-silver"
-                  class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
-                  placeholder="3"
-                />
-              </div>
-              <div class="text-center">
-                <label class="block text-xs font-bold text-yellow-600 mb-1"
-                  >Gold</label
-                >
-                <input
-                  type="number"
-                  id="rule-gold"
-                  class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
-                  placeholder="5"
-                />
-              </div>
+            <div class="text-center">
+              <label class="block text-xs font-bold text-gray-500 mb-1">Silver</label>
+              <input type="number" id="rule-silver"
+                class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
+                placeholder="3" />
             </div>
-          </div>
-
-          <div>
-            <div class="flex justify-between items-center mb-3">
-              <label class="block text-sm font-bold dark:text-white"
-                >Q&A Repository</label
-              >
-              <span
-                id="current-q-count"
-                class="text-xs bg-gray-100 dark:bg-white/10 px-2 py-1 rounded font-bold text-gray-500"
-                >0 Items</span
-              >
+            <div class="text-center">
+              <label class="block text-xs font-bold text-yellow-600 mb-1">Gold</label>
+              <input type="number" id="rule-gold"
+                class="w-full text-center rounded-lg border-gray-200 dark:border-white/10 bg-white dark:bg-surface-dark text-sm font-bold text-gray-900 dark:text-white"
+                placeholder="5" />
             </div>
-
-            <div id="questions-list" class="space-y-4 mb-4"></div>
-
-            <button
-              id="btn-add-question"
-              class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-gray-500 font-bold hover:bg-gray-50 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2 text-sm"
-            >
-              <span class="material-symbols-outlined text-[18px]"
-                >add_circle</span
-              >
-              Add Question & Answer
-            </button>
           </div>
         </div>
 
-        <div
-          class="p-6 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/5"
-        >
-          <input type="hidden" id="current-editing-event-id" />
-          <button
-            id="btn-save-config"
-            class="w-full py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-primary/30 active:scale-95 transition-transform"
-          >
-            Save Logic
+        <div>
+          <div class="flex justify-between items-center mb-3">
+            <label class="block text-sm font-bold dark:text-white">Q&A Repository</label>
+            <span id="current-q-count"
+              class="text-xs bg-gray-100 dark:bg-white/10 px-2 py-1 rounded font-bold text-gray-500">0 Items</span>
+          </div>
+
+          <div id="questions-list" class="space-y-4 mb-4"></div>
+
+          <button id="btn-add-question"
+            class="w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl text-gray-500 font-bold hover:bg-gray-50 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-2 text-sm">
+            <span class="material-symbols-outlined text-[18px]">add_circle</span>
+            Add Question & Answer
           </button>
         </div>
       </div>
+
+      <div class="p-6 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/5">
+        <input type="hidden" id="current-editing-event-id" />
+        <button id="btn-save-config"
+          class="w-full py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-primary/30 active:scale-95 transition-transform">
+          Save Logic
+        </button>
+      </div>
     </div>
+  </div>
 
-    <script type="module" src="../js/pages/admin/badge-management.page.js"></script>
+  <script type="module" src="../js/pages/admin/badge-management.page.js"></script>
 
-  </body>
+</body>
+
 </html>
