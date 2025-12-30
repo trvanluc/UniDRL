@@ -65,10 +65,21 @@ export function setupLogout() {
 
       if (confirmed) {
         Storage.clearSession();
-        window.location.href = "/login.html";
+        const basePath = window.location.hostname.includes('github.io') ? '/UniDRL' : '';
+        window.location.href = `${basePath}/login.html`;
       }
     });
   });
+}
+
+/**
+ * =========================
+ * HELPER: GET BASE PATH
+ * =========================
+ * Returns repo name if on GitHub Pages
+ */
+export function getBasePath() {
+  return window.location.hostname.includes('github.io') ? '/UniDRL' : '';
 }
 
 /**

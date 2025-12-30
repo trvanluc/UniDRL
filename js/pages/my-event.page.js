@@ -7,7 +7,7 @@ import { RegistrationService } from "../services/registration.service.js";
 import { BadgeService } from "../services/badge.service.js";
 import { renderTicketDesignForModal } from "../components/ticket/ticket.component.js";
 import { openModal, closeModal, setupModalListeners } from "../components/modal/modal-manager.component.js";
-import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
+import { setupSettingsDropdown, setupLogout, setupThemeToggle, getBasePath } from "../utils/ui-helpers.js";
 import { Toast } from "../components/toast/toast.js";
 import { Dialog } from "../components/dialog/dialog.js";
 
@@ -89,7 +89,7 @@ function createTicketCard(event) {
 
   return `
     <div class="bg-card-dark rounded-2xl border border-[#29382f] overflow-hidden flex flex-col hover:border-primary/50 transition-colors group">
-      <div class="h-36 bg-cover bg-center relative" style="background-image: url('${event.image}');">
+      <div class="h-36 bg-cover bg-center relative" style="background-image: url('${getBasePath()}${event.image}');">
         <div class="absolute inset-0 bg-gradient-to-t from-card-dark to-transparent opacity-90"></div>
         <div class="absolute bottom-3 left-4 right-4">
           <p class="text-primary text-[10px] font-bold uppercase tracking-wider mb-1">${event.category}</p>

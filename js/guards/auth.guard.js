@@ -25,7 +25,10 @@ export function requireAuth() {
 
   if (!currentUser) {
     Toast.warning("You need to login to continue");
-    setTimeout(() => { window.location.href = "/login.html"; }, 1500);
+    setTimeout(() => {
+      const basePath = window.location.hostname.includes('github.io') ? '/UniDRL' : '';
+      window.location.href = `${basePath}/login.html`;
+    }, 1500);
     return false;
   }
 
@@ -104,16 +107,21 @@ export function multiRoleGuard(roles) {
  * =========================
  * Redirect to appropriate page based on role
  */
+function getBasePath() {
+  return window.location.hostname.includes('github.io') ? '/UniDRL' : '';
+}
+
 function redirectByRole(role) {
+  const basePath = getBasePath();
   switch (role) {
     case ROLES.STUDENT:
-      window.location.href = "/home.html";
+      window.location.href = `${basePath}/home.html`;
       break;
     case ROLES.ADVISOR:
     case ROLES.MANAGER:
-      window.location.href = "/home.html";
+      window.location.href = `${basePath}/home.html`;
       break;
     default:
-      window.location.href = "/login.html";
+      window.location.href = `${basePath}/login.html`;
   }
 }
