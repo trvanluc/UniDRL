@@ -12,7 +12,7 @@ import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Theme } from "../utils/theme.js";
 import { Storage } from "../utils/storage.js";
-import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
+import { setupSettingsDropdown, setupLogout, setupThemeToggle, getBasePath } from "../utils/ui-helpers.js";
 
 const user = Storage.getCurrentUser();
 
@@ -307,7 +307,7 @@ function createEventCard(event) {
     <div class="group flex flex-col bg-white dark:bg-card-dark rounded-xl overflow-hidden border border-slate-100 dark:border-[#2a3630] hover:border-primary/50 transition-all hover:-translate-y-1 hover:shadow-glow">
       <div class="relative h-48 w-full overflow-hidden">
         <img
-          src="${event.image}"
+          src="${getBasePath()}${event.image}"
           alt="${event.title}"
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />

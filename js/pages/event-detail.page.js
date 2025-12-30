@@ -13,7 +13,7 @@ import { ROLES } from "../config/constants.js";
 import { EVENTS } from "../data/events.data.js";
 import { Storage } from "../utils/storage.js";
 import { Theme } from "../utils/theme.js";
-import { setupThemeToggle } from "../utils/ui-helpers.js";
+import { setupThemeToggle, getBasePath } from "../utils/ui-helpers.js";
 import { RegistrationService } from "../services/registration.service.js";
 import { renderTicketDesign, renderTicketDesignForModal } from "../components/ticket/ticket.component.js";
 import { openModal, closeModal, setupModalListeners } from "../components/modal/modal-manager.component.js";
@@ -136,7 +136,7 @@ function renderEventInfo(event) {
   }
   const bannerEl = document.getElementById("event-banner");
   if (bannerEl) {
-    bannerEl.style.backgroundImage = `url(${event.image})`;
+    bannerEl.style.backgroundImage = `url(${getBasePath()}${event.image})`;
   }
 
   // Journey points
