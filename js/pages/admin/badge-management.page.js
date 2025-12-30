@@ -1,5 +1,5 @@
 import { BadgeService } from "../../services/badge.service.js";
-import { setupThemeToggle, setupSettingsDropdown, setupLogout } from "../../utils/ui-helpers.js";
+import { setupThemeToggle, setupSettingsDropdown, setupLogout, getBasePath } from "../../utils/ui-helpers.js";
 import { Theme } from "../../utils/theme.js";
 import { openModal, closeModal, setupModalListeners } from "../../components/modal/modal-manager.component.js";
 
@@ -39,7 +39,7 @@ function renderEvents(filteredList = null) {
 
     const imageSection = evt.image ? `
       <div class="relative h-40 w-full overflow-hidden rounded-2xl mb-4">
-        <img src="${evt.image}" alt="${evt.title}" 
+        <img src="${getBasePath()}${evt.image}" alt="${evt.title}" 
           class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105">
         <div class="absolute inset-0 bg-black/20"></div>
         <div class="absolute top-3 left-3 ${statusColor} text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm border border-white/10">${statusText}</div>
