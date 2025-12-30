@@ -58,7 +58,7 @@
         }
     </script>
     <style>
-                /* Animations */
+        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -88,6 +88,7 @@
                 opacity: 0;
                 transform: scale(0.85);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -99,6 +100,7 @@
                 opacity: 0;
                 transform: scale(0.85);
             }
+
             to {
                 opacity: 1;
                 transform: scale(0.95);
@@ -125,7 +127,7 @@
             /* Height of header (adjust if needed) */
             height: calc(100vh - 64px);
             width: 250px;
-            
+
             border-right: 1px solid #29382f;
             overflow-y: auto;
             transition: transform 0.3s;
@@ -135,15 +137,16 @@
         #admin-sidebar.open {
             transform: translateX(0);
         }
-        #sidebar-toggle:checked ~ .layout-container aside {
+
+        #sidebar-toggle:checked~.layout-container aside {
             width: 5rem;
         }
 
-        #sidebar-toggle:checked ~ .layout-container aside .nav-label {
+        #sidebar-toggle:checked~.layout-container aside .nav-label {
             display: none;
         }
 
-        #sidebar-toggle:checked ~ .layout-container aside .nav-item {
+        #sidebar-toggle:checked~.layout-container aside .nav-item {
             justify-content: center;
             padding-left: 0;
             padding-right: 0;
@@ -151,11 +154,12 @@
 
         @media (min-width: 1024px) {
             .layout-container main {
-                margin-left: 16rem; /* 256px */
+                margin-left: 16rem;
+                /* 256px */
                 transition: margin-left 0.3s ease;
             }
 
-            #sidebar-toggle:checked ~ .layout-container main {
+            #sidebar-toggle:checked~.layout-container main {
                 margin-left: 5rem;
             }
         }
@@ -164,12 +168,15 @@
             #admin-sidebar {
                 transform: translateX(0);
             }
+
             body.is-admin .main-content {
-                margin-left: 300px;          /* = sidebar width */
+                margin-left: 300px;
+                /* = sidebar width */
                 max-width: 65rem;
                 margin-right: auto;
                 padding-top: 100px;
             }
+
             body:not(.is-admin) .main-content {
                 max-width: 80rem;
                 margin-left: auto;
@@ -191,99 +198,110 @@
 
 <body
     class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-x-hidden text-gray-900 dark:text-white">
-    <header id="student-header" class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
+    <header id="student-header"
+        class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
         <div class="flex items-center gap-4">
-          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-            <span class="material-symbols-outlined">school</span>
-          </div>
-          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-            VN-UK
-          </h2>
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+                <span class="material-symbols-outlined">school</span>
+            </div>
+            <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+                VN-UK
+            </h2>
         </div>
-      
+
         <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
-          <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
-          <a href="my-event.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Tickets</a>
-          <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
-          <a href="profile.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Profile</a>
+            <a href="../home.html"
+                class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
+            <a href="my-event.html"
+                class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My
+                Tickets</a>
+            <a href="my-journey.html"
+                class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My
+                Journey</a>
+            <a href="profile.html"
+                class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Profile</a>
         </nav>
-      
+
         <div class="flex gap-3 relative">
-          <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-            <span class="material-symbols-outlined text-[20px]">notifications</span>
-          </button>
-          <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-            <span class="material-symbols-outlined text-[20px]">settings</span>
-          </button>
-          <div id="settings-dropdown" class="hidden">
-            <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
-              Logout
-            </button>
-          </div>
-          <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-            <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
-          </button>
-      
-          <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
-      
-      <!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
-      <div class="flex items-center justify-center">
-        <div id="user-avatar-initial" 
-             class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
-          A
-        </div>
-      </div>
-        </div>
-      </header>
-      <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
-      <header
-          id="admin-header" class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
-          <div class="flex items-center gap-4">
-              <label
-                  class="p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer text-gray-600 dark:text-gray-300 transition-colors"
-                  for="sidebar-toggle">
-                  <span class="material-symbols-outlined">menu</span>
-              </label>
-              <div class="flex items-center gap-4">
-                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-                    <span class="material-symbols-outlined">school</span>
-                  </div>
-                  <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-                    VN-UK
-                  </h2>
-                </div>
-          </div>
-          <div class="flex-1"></div>
-          <div class="flex items-center gap-2 sm:gap-3">
             <button
-            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-            <span class="material-symbols-outlined text-[20px]">notifications</span>
-          </button>
-              <button
-                  class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-                  <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
-              </button>
-              <button
-                  class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-                  onclick="document.documentElement.classList.toggle('dark')">
-                  <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">dark_mode</span>
-              </button>
-              <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
-              <div class="flex items-center gap-3">
-                  <div class="text-right hidden md:block">
-                      <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User</p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super Admin</p>
-                  </div>
-                  <div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
-                      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
-                  </div>
-              </div>
-          </div>
-      </header>
-          <div class="layout-container">
-              <div id="admin-layout" class="hidden">
-                  <!-- Admin Sidebar -->
-                  <aside id="admin-sidebar" class="admin-only admin-surface
+                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+            </button>
+            <button id="settings-btn"
+                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+                <span class="material-symbols-outlined text-[20px]">settings</span>
+            </button>
+            <div id="settings-dropdown" class="hidden">
+                <button id="logout-btn"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
+                    Logout
+                </button>
+            </div>
+            <button
+                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+                <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
+            </button>
+
+            <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+
+            <!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
+            <div class="flex items-center justify-center">
+                <div id="user-avatar-initial"
+                    class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
+                    A
+                </div>
+            </div>
+        </div>
+    </header>
+    <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+    <header id="admin-header"
+        class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
+        <div class="flex items-center gap-4">
+            <label
+                class="p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer text-gray-600 dark:text-gray-300 transition-colors"
+                for="sidebar-toggle">
+                <span class="material-symbols-outlined">menu</span>
+            </label>
+            <div class="flex items-center gap-4">
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+                    <span class="material-symbols-outlined">school</span>
+                </div>
+                <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+                    VN-UK
+                </h2>
+            </div>
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <button
+                class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+                <span class="material-symbols-outlined text-[20px]">notifications</span>
+            </button>
+            <button
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
+            </button>
+            <button
+                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                onclick="document.documentElement.classList.toggle('dark')">
+                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">dark_mode</span>
+            </button>
+            <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden md:block">
+                    <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super Admin</p>
+                </div>
+                <div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="layout-container">
+        <div id="admin-layout" class="hidden">
+            <!-- Admin Sidebar -->
+            <aside id="admin-sidebar" class="admin-only admin-surface
                   fixed top-0 left-0
                   w-64 h-screen
                   pt-16
@@ -292,201 +310,209 @@
                   border-r border-gray-200 dark:border-white/10
                   flex flex-col
                   z-40">
-                      <div class="p-4 space-y-2">
-                          <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary"
-                              href="home.html">
-                              <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
-                              <span class="nav-label whitespace-nowrap">Home</span>
-                          </a>
-                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                              href="admin/participants-management.html">
-                              <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
-                              <span class="nav-label whitespace-nowrap">Participant</span>
-                          </a>
-                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                              href="admin/check-in-management.html">
-                              <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
-                              <span class="nav-label whitespace-nowrap">Check-in</span>
-                          </a>
-                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                              href="admin/badge-system.html">
-                              <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
-                              <span class="nav-label whitespace-nowrap">Badge System</span>
-                          </a>
-                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                              href="admin/report.html">
-                              <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
-                              <span class="nav-label whitespace-nowrap">Report</span>
-                          </a>
-                      </div>
-                      
-                  </aside>
-    </div>
+                <div class="p-4 space-y-2">
+                    <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary"
+                        href="home.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
+                        <span class="nav-label whitespace-nowrap">Home</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/participants-management.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
+                        <span class="nav-label whitespace-nowrap">Participant</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/check-in-management.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
+                        <span class="nav-label whitespace-nowrap">Check-in</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/badge-system.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
+                        <span class="nav-label whitespace-nowrap">Badge System</span>
+                    </a>
+                    <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                        href="admin/report.html">
+                        <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
+                        <span class="nav-label whitespace-nowrap">Report</span>
+                    </a>
+                </div>
 
-    <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
-        <div>
-            <div
-                class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
-                <div id="event-banner"
-                    class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                    role="img" aria-label="Event banner">></div>
+            </aside>
+        </div>
+
+        <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+            <div>
                 <div
-                    class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/40 to-transparent">
-                </div>
-                <div class="absolute bottom-0 left-0 p-6 sm:hidden">
-                    <span id="banner-category"
-                        class="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-2 backdrop-blur-sm border border-primary/20">
-                    </span>
-                </div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <div class="lg:col-span-8 flex flex-col gap-8">
-                    <div class="flex flex-col gap-4">
-                        <div class="flex flex-wrap items-center gap-3">
-                            <span id="event-category"
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5"></span>
-                            <span
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5">Open
-                                to All</span>
-                        </div>
-                        <h1 id="event-name"
-                            class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
-                        </h1>
+                    class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
+                    <div id="event-banner"
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        role="img" aria-label="Event banner">></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-background-dark/90 via-background-dark/40 to-transparent">
                     </div>
+                    <div class="absolute bottom-0 left-0 p-6 sm:hidden">
+                        <span id="banner-category"
+                            class="inline-flex items-center px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold mb-2 backdrop-blur-sm border border-primary/20">
+                        </span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                    <div class="lg:col-span-8 flex flex-col gap-8">
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <span id="event-category"
+                                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5"></span>
+                                <span
+                                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5">Open
+                                    to All</span>
+                            </div>
+                            <h1 id="event-name"
+                                class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]">
+                            </h1>
+                        </div>
 
-                    <div id="event-description"
-                        class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300">
-                    </div>
-                    <div class="h-px w-full bg-gray-200 dark:bg-[#29382f]"></div>
-                    <div>
-                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">footprint</span>
-                            Attendance Journey
-                        </h3>
-                        <div class="relative">
-                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-[#29382f]"></div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-primary shadow-[0_0_15px_rgba(54,226,123,0.4)] border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span
-                                        class="material-symbols-outlined text-black text-[16px] font-bold">edit_square</span>
+                        <div id="event-description"
+                            class="prose dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-gray-300">
+                        </div>
+                        <div class="h-px w-full bg-gray-200 dark:bg-[#29382f]"></div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">footprint</span>
+                                Attendance Journey
+                            </h3>
+                            <div class="relative">
+                                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200 dark:bg-[#29382f]"></div>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-primary shadow-[0_0_15px_rgba(54,226,123,0.4)] border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-black text-[16px] font-bold">edit_square</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-900 dark:text-white">Register Online</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reserve your spot
+                                            instantly. Seats are limited.</p>
+                                    </div>
                                 </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-900 dark:text-white">Register Online</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Reserve your spot
-                                        instantly. Seats are limited.</p>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-gray-400 text-[16px]">qr_code_2</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Get Your Ticket
+                                        </h4>
+                                        <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">A digital QR code will
+                                            be
+                                            saved to "My Tickets".</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400 text-[16px]">qr_code_2</span>
+                                <div class="relative flex items-start gap-6 mb-8 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-gray-400 text-[16px]">sensor_door</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Scan at Venue
+                                        </h4>
+                                        <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">Check-in at Room 304
+                                            upon
+                                            arrival.</p>
+                                    </div>
                                 </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Get Your Ticket</h4>
-                                    <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">A digital QR code will be
-                                        saved to "My Tickets".</p>
-                                </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 mb-8 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span class="material-symbols-outlined text-gray-400 text-[16px]">sensor_door</span>
-                                </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Scan at Venue</h4>
-                                    <p class="text-sm text-gray-400 dark:text-gray-600 mt-1">Check-in at Room 304 upon
-                                        arrival.</p>
-                                </div>
-                            </div>
-                            <div class="relative flex items-start gap-6 group">
-                                <div
-                                    class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
-                                    <span
-                                        class="material-symbols-outlined text-gray-400 text-[16px]">military_tech</span>
-                                </div>
-                                <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Badges</h4>
-                                    <p id="journey-badges" class="text-sm text-gray-400 dark:text-gray-600 mt-1"></p>
+                                <div class="relative flex items-start gap-6 group">
+                                    <div
+                                        class="relative z-10 flex items-center justify-center size-8 rounded-full bg-surface-dark/10 dark:bg-surface-light/10 border-4 border-background-light dark:border-background-dark shrink-0">
+                                        <span
+                                            class="material-symbols-outlined text-gray-400 text-[16px]">military_tech</span>
+                                    </div>
+                                    <div class="pt-0.5">
+                                        <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Badges</h4>
+                                        <p id="journey-badges" class="text-sm text-gray-400 dark:text-gray-600 mt-1">
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="lg:col-span-4">
-                    <div class="sticky top-28 flex flex-col gap-6">
-                        <div
-                            class="bg-white dark:bg-[#1c2621] rounded-xl p-6 shadow-xl shadow-black/5 dark:shadow-none border border-gray-100 dark:border-white/5">
-                            <h3 class="text-xl font-bold mb-6">Event Details</h3>
-                            <div class="space-y-6">
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <div class="lg:col-span-4">
+                        <div class="sticky top-28 flex flex-col gap-6">
+                            <div
+                                class="bg-white dark:bg-[#1c2621] rounded-xl p-6 shadow-xl shadow-black/5 dark:shadow-none border border-gray-100 dark:border-white/5">
+                                <h3 class="text-xl font-bold mb-6">Event Details</h3>
+                                <div class="space-y-6">
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                        </div>
+                                        <div>
+                                            <p id="event-date" class="font-bold text-gray-900 dark:text-white"></p>
+                                            <p id="event-time" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                            <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
+                                                href="#">Add to Calendar</a>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p id="event-date" class="font-bold text-gray-900 dark:text-white"></p>
-                                        <p id="event-time" class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                        <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
-                                            href="#">Add to Calendar</a>
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">location_on</span>
+                                        </div>
+                                        <div>
+                                            <p id="event-location" class="font-bold text-gray-900 dark:text-white"></p>
+                                            <p id="event-room" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                            <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
+                                                href="#">View Map</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">location_on</span>
-                                    </div>
-                                    <div>
-                                        <p id="event-location" class="font-bold text-gray-900 dark:text-white"></p>
-                                        <p id="event-room" class="text-sm text-gray-500 dark:text-gray-400"></p>
-                                        <a class="text-xs font-medium text-primary mt-1 inline-block hover:underline"
-                                            href="#">View Map</a>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
-                                        <span class="material-symbols-outlined text-primary">group</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-bold text-gray-900 dark:text-white">Limited Capacity</p>
-                                        <div class="flex items-center gap-2 mt-1">
-                                            <div
-                                                class="h-1.5 w-16 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
-                                                <div class="h-full bg-primary w-[60%] rounded-full"></div>
+                                    <div class="flex items-start gap-4">
+                                        <div
+                                            class="size-10 rounded-full bg-surface-dark/5 dark:bg-white/5 flex items-center justify-center shrink-0">
+                                            <span class="material-symbols-outlined text-primary">group</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900 dark:text-white">Limited Capacity</p>
+                                            <div class="flex items-center gap-2 mt-1">
+                                                <div
+                                                    class="h-1.5 w-16 bg-gray-200 dark:bg-white/10 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-primary w-[60%] rounded-full"></div>
+                                                </div>
+                                                <p id="event-seats" class="text-xs text-gray-500 dark:text-gray-400">
+                                                </p>
                                             </div>
-                                            <p id="event-seats" class="text-xs text-gray-500 dark:text-gray-400"></p>
                                         </div>
                                     </div>
                                 </div>
+                                <div id="event-actions" class="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
+                                    <!-- JS will render actions here based on role -->
+                                </div>
                             </div>
-                            <div id="event-actions" class="mt-8 pt-6 border-t border-gray-100 dark:border-white/5">
-                                <!-- JS will render actions here based on role -->
-                            </div>
-                        </div>
-                        <div
-                            class="bg-white dark:bg-[#1c2621] rounded-xl p-5 border border-gray-100 dark:border-white/5 flex items-center gap-4">
-                            <div id="event-organizer-avatar"
-                                class="size-12 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden shrink-0 bg-cover bg-center"
-                                role="img" aria-label="Event organizer avatar">
-                            </div>
-                            <div>
-                                <p
-                                    class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-bold mb-0.5">
-                                    Organizer
-                                </p>
-                                <p id="event-organizer" class="font-bold text-sm"></p>
-                                <p id="event-organizer-dept" class="text-xs text-gray-500"></p>
+                            <div
+                                class="bg-white dark:bg-[#1c2621] rounded-xl p-5 border border-gray-100 dark:border-white/5 flex items-center gap-4">
+                                <div id="event-organizer-avatar"
+                                    class="size-12 rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden shrink-0 bg-cover bg-center"
+                                    role="img" aria-label="Event organizer avatar">
+                                </div>
+                                <div>
+                                    <p
+                                        class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-bold mb-0.5">
+                                        Organizer
+                                    </p>
+                                    <p id="event-organizer" class="font-bold text-sm"></p>
+                                    <p id="event-organizer-dept" class="text-xs text-gray-500"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
-    <footer class="mt-auto py-8 text-center text-gray-500 text-sm">
-        <p>© 2023 Student Portal System. All rights reserved.</p>
-    </footer>
+        </main>
+        <footer class="mt-auto py-8 text-center text-gray-500 text-sm">
+            <p>© 2023 Student Portal System. All rights reserved.</p>
+        </footer>
     </div>
 
 
@@ -503,7 +529,7 @@
             <!-- Header -->
             <div
                 class="px-6 py-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between shrink-0">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Đăng Ký Sự Kiện</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Event Registration</h3>
                 <button id="close-register-modal-btn"
                     class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
                     <span class="material-symbols-outlined">close</span>
@@ -513,8 +539,9 @@
             <!-- Form Content -->
             <div class="p-6 overflow-y-auto">
                 <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
-                    Vui lòng xác nhận thông tin của bạn để tạo vé tham dự. Đảm bảo thông tin trùng khớp với thẻ sinh
-                    viên.
+                    Please confirm your information to create your attendance ticket. Make sure the information matches
+                    your student
+                    ID.
                 </p>
 
                 <form id="register-form" class="space-y-5">
@@ -522,14 +549,14 @@
                     <div class="space-y-1.5 group">
                         <label for="register-name"
                             class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
-                            Họ và Tên <span class="text-primary">*</span>
+                            Full Name <span class="text-primary">*</span>
                         </label>
                         <input type="text" id="register-name" name="name" required
                             class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
-                            placeholder="Ví dụ: Nguyễn Văn A" />
+                            placeholder="e.g. John Smith" />
                         <p class="hidden text-xs text-red-500 mt-1 flex items-center gap-1" id="error-name">
                             <span class="material-symbols-outlined text-[14px]">error</span>
-                            Vui lòng nhập họ và tên
+                            Please enter your full name
                         </p>
                     </div>
 
@@ -543,12 +570,12 @@
                             <input type="text" id="register-mssv" name="mssv" required
                                 class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
                                 placeholder="20230001" />
-                            <p class="hidden text-xs text-red-500 mt-1" id="error-mssv">Vui lòng nhập MSSV</p>
+                            <p class="hidden text-xs text-red-500 mt-1" id="error-mssv">Please enter your Student ID</p>
                         </div>
                         <div class="space-y-1.5 group">
                             <label for="register-class"
                                 class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
-                                Lớp <span class="text-primary">*</span>
+                                Class <span class="text-primary">*</span>
                             </label>
                             <input type="text" id="register-class" name="class" required list="classes-list"
                                 class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
@@ -559,7 +586,7 @@
                                 <option value="23BA1"></option>
                                 <option value="23BA2"></option>
                             </datalist>
-                            <p class="hidden text-xs text-red-500 mt-1" id="error-class">Vui lòng nhập lớp</p>
+                            <p class="hidden text-xs text-red-500 mt-1" id="error-class">Please enter your class</p>
                         </div>
                     </div>
 
@@ -578,7 +605,7 @@
                                 class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 pl-11 pr-4 transition-all duration-200"
                                 placeholder="student@email.com" />
                         </div>
-                        <p class="hidden text-xs text-red-500 mt-1" id="error-email">Vui lòng nhập email hợp lệ</p>
+                        <p class="hidden text-xs text-red-500 mt-1" id="error-email">Please enter a valid email</p>
                     </div>
                 </form>
             </div>
@@ -588,11 +615,11 @@
                 class="px-6 py-5 bg-gray-50 dark:bg-black/20 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 border-t border-gray-100 dark:border-white/5 shrink-0">
                 <button type="button" id="cancel-register-btn"
                     class="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
-                    Hủy
+                    Cancel
                 </button>
                 <button type="submit" id="submit-register-btn" form="register-form"
                     class="w-full sm:w-auto px-8 py-3 rounded-full text-sm font-bold bg-primary text-black hover:bg-[#2fd16d] shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
-                    Đăng Ký Ngay
+                    Register Now
                     <span class="material-symbols-outlined text-[18px]">check_circle</span>
                 </button>
             </div>
@@ -605,12 +632,12 @@
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="qr-ticket-modal-overlay"></div>
 
         <!-- Modal box - Enlarged -->
-        <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-6">
+        <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-16">
             <div class="bg-transparent w-full max-w-lg relative">
-                <!-- Close button -->
+                <!-- Close button - positioned above ticket -->
                 <button id="close-qr-ticket-modal-btn"
-                    class="absolute -top-12 right-0 text-white hover:text-gray-200 transition-colors">
-                    <span class="material-symbols-outlined text-[32px]">close</span>
+                    class="absolute -top-10 right-0 text-white hover:text-primary transition-colors bg-black/40 hover:bg-black/60 rounded-full p-1.5">
+                    <span class="material-symbols-outlined text-[24px]">close</span>
                 </button>
 
                 <!-- Ticket container -->
@@ -649,24 +676,25 @@
                 <div id="checkout-qr-setup-section" class="py-6">
                     <div class="text-center mb-6">
                         <span class="material-symbols-outlined text-6xl text-primary mb-4">timer</span>
-                        <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Chọn thời gian hết hạn</h4>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">QR sẽ tự động hết hạn sau thời gian được
-                            chọn</p>
+                        <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Select expiration time</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">QR will automatically expire after the
+                            selected
+                            time</p>
                     </div>
                     <div class="mb-6">
                         <select id="checkout-qr-expire-time"
                             class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white text-center text-lg font-bold focus:border-primary focus:ring-2 focus:ring-primary/20">
-                            <option value="5">5 phút</option>
-                            <option value="10">10 phút</option>
-                            <option value="15" selected>15 phút</option>
-                            <option value="30">30 phút</option>
-                            <option value="60">60 phút</option>
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="15" selected>15 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">60 minutes</option>
                         </select>
                     </div>
                     <button id="create-checkout-qr-modal-btn"
                         class="w-full py-3.5 rounded-xl bg-primary hover:bg-[#2fd16f] text-background-dark font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/25">
                         <span class="material-symbols-outlined">qr_code_2</span>
-                        Tạo Checkout QR
+                        Create Checkout QR
                     </button>
                 </div>
 
@@ -682,15 +710,15 @@
                             <span class="material-symbols-outlined text-primary">schedule</span>
                             <span id="checkout-qr-countdown" class="text-3xl font-bold text-primary">15:00</span>
                         </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Thời gian còn lại</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Time remaining</p>
                     </div>
 
                     <!-- Instructions -->
                     <div class="bg-gray-50 dark:bg-black/20 rounded-xl p-4 mb-6">
                         <p class="text-sm text-gray-600 dark:text-gray-400">
-                            <span class="font-bold text-primary">💡 Hướng dẫn:</span> Sinh viên quét mã này bằng nút
-                            "Scan
-                            Code" trong My Tickets để checkout và nhận badge.
+                            <span class="font-bold text-primary">💡 Instructions:</span> Students scan this code using
+                            the "Scan Checkout
+                            Code" button in My Tickets to checkout and receive badges.
                         </p>
                     </div>
 
@@ -698,12 +726,12 @@
                     <div class="flex gap-3">
                         <button id="close-checkout-qr-btn"
                             class="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-700 dark:text-white font-bold transition-colors">
-                            Đóng
+                            Close
                         </button>
                         <button id="stop-checkout-qr-modal-btn"
                             class="flex-1 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-colors flex items-center justify-center gap-2">
                             <span class="material-symbols-outlined text-[20px]">cancel</span>
-                            Hủy QR
+                            Cancel QR
                         </button>
                     </div>
                 </div>

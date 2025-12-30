@@ -1,5 +1,5 @@
 import { Theme } from "../../utils/theme.js";
-import { setupThemeToggle } from "../../utils/ui-helpers.js";
+import { setupThemeToggle, setupSettingsDropdown, setupLogout } from "../../utils/ui-helpers.js";
 
 /**
  * ==========================================
@@ -147,7 +147,7 @@ function handleQRCodeScanned(decodedText) {
 
     // Kiểm tra nếu đã chọn event
     if (!selectedEventId) {
-        showNotification("Chưa chọn event", "Vui lòng chọn event từ dropdown trước khi quét QR Code", "error");
+        showNotification("Event not selected", "Please select an event from the dropdown before scanning QR Code", "error");
         return;
     }
 
@@ -161,7 +161,7 @@ function handleQRCodeScanned(decodedText) {
 
     if (!registration) {
         // Không tìm thấy đăng ký
-        showToast("QR Code không tồn tại trong hệ thống", 'error');
+        showToast("QR Code does not exist in the system", 'error');
         return;
     }
 
@@ -170,7 +170,7 @@ function handleQRCodeScanned(decodedText) {
         const event = EVENTS.find(e => e.id === registration.eventId);
         const selectedEvent = EVENTS.find(e => e.id === selectedEventId);
         showToast(
-            `QR Code này thuộc event "${event?.title || registration.eventId}" nhưng bạn đang quét cho event "${selectedEvent?.title || selectedEventId}"`,
+            `This QR Code belongs to event "${event?.title || registration.eventId}" but you are scanning for event "${selectedEvent?.title || selectedEventId}"`,
             'error',
             5000
         );
@@ -182,7 +182,7 @@ function handleQRCodeScanned(decodedText) {
         // Đã check-in rồi
         showStudentInfo(registration, true);
         updateRecentCheckIns();
-        showToast(`Sinh viên ${registration.name} (${registration.mssv}) đã check-in trước đó`, 'warning', 4000);
+        showToast(`Student ${registration.name} (${registration.mssv}) has already checked in`, 'warning', 4000);
         return;
     }
 
@@ -203,7 +203,7 @@ function handleQRCodeScanned(decodedText) {
         showStudentInfo(updatedRegistration, false);
 
         // Hiển thị thông báo thành công
-        showToast(`${updatedRegistration.name} đã được check-in thành công`, 'success');
+        showToast(`${updatedRegistration.name} checked in successfully`, 'success');
 
         // Cập nhật danh sách recent check-ins
         updateRecentCheckIns();
@@ -220,8 +220,8 @@ function showStudentInfo(registration, isAlreadyCheckedIn) {
 
     // Badge trạng thái ở góc trên bên phải
     const statusBadge = isAlreadyCheckedIn
-        ? '<div class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-xs font-bold rounded-full border border-yellow-500/20 animate-pulse"><span class="material-symbols-outlined text-[16px]">warning</span>Đã check-in trước đó</div>'
-        : '<div class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500/20 animate-bounce"><span class="material-symbols-outlined text-[16px]">check_circle</span>Check-in thành công!</div>';
+        ? '<div class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 text-xs font-bold rounded-full border border-yellow-500/20 animate-pulse"><span class="material-symbols-outlined text-[16px]">warning</span>Already checked in</div>'
+        : '<div class="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 bg-green-500/10 text-green-600 dark:text-green-400 text-xs font-bold rounded-full border border-green-500/20 animate-bounce"><span class="material-symbols-outlined text-[16px]">check_circle</span>Check-in successful!</div>';
 
     // Format thời gian check-in
     const checkInTime = registration.checkInTime
@@ -246,7 +246,7 @@ function showStudentInfo(registration, isAlreadyCheckedIn) {
         : 'N/A';
 
     // Tên sự kiện
-    const eventTitle = registration.eventTitle || 'Sự kiện';
+    const eventTitle = registration.eventTitle || 'Event';
 
     studentInfoCard.innerHTML = `
         <div class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-lg border-2 ${isAlreadyCheckedIn ? 'border-yellow-500/30' : 'border-green-500/30'} relative overflow-hidden animate-in fade-in zoom-in">
@@ -274,7 +274,7 @@ function showStudentInfo(registration, isAlreadyCheckedIn) {
                 <div class="flex items-center gap-3 p-3 bg-surface-dark/5 dark:bg-white/5 rounded-xl">
                     <span class="material-symbols-outlined text-primary">school</span>
                     <div class="flex-1">
-                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold">Lớp</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold">Class</p>
                         <p class="text-base font-medium text-gray-900 dark:text-white">${registration.class}</p>
                     </div>
                 </div>
@@ -291,15 +291,15 @@ function showStudentInfo(registration, isAlreadyCheckedIn) {
             <!-- Grid thông tin check-in -->
             <div class="grid grid-cols-2 gap-4 mb-4">
                 <div class="bg-gradient-to-br ${isAlreadyCheckedIn ? 'from-yellow-500/10 to-yellow-600/5' : 'from-green-500/10 to-green-600/5'} rounded-xl p-4 border ${isAlreadyCheckedIn ? 'border-yellow-500/20' : 'border-green-500/20'}">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold mb-2">Trạng thái</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold mb-2">Status</p>
                     <p class="${isAlreadyCheckedIn ? 'text-yellow-600 dark:text-yellow-400' : 'text-green-600 dark:text-green-400'} font-bold text-lg flex items-center gap-2">
                         <span class="size-3 rounded-full ${isAlreadyCheckedIn ? 'bg-yellow-500' : 'bg-green-500'} animate-pulse"></span>
-                        Đã check-in
+                        Checked in
                     </p>
                 </div>
                 
                 <div class="bg-gradient-to-br from-blue-500/10 to-blue-600/5 rounded-xl p-4 border border-blue-500/20">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold mb-2">Thời gian</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase font-bold mb-2">Time</p>
                     <p class="text-gray-900 dark:text-white font-bold text-lg">${checkInTime}</p>
                 </div>
             </div>
@@ -309,7 +309,7 @@ function showStudentInfo(registration, isAlreadyCheckedIn) {
                 <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">calendar_today</span>
-                        Đăng ký: ${registrationDate}
+                        Registered: ${registrationDate}
                     </span>
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">qr_code</span>
@@ -362,7 +362,7 @@ function startScanner() {
 
     // Kiểm tra thư viện đã load chưa
     if (typeof Html5Qrcode === "undefined") {
-        showToast("Thư viện quét QR Code chưa được tải. Vui lòng reload trang hoặc sử dụng chế độ nhập thủ công.", 'warning');
+        showToast("QR Code library not loaded. Please reload the page or use manual input mode.", 'warning');
         return;
     }
 
@@ -414,23 +414,23 @@ function startScanner() {
             if (stopBtn) stopBtn.classList.remove('hidden');
         }).catch((err) => {
             // Hiển thị thông báo lỗi chi tiết hơn
-            let errorMsg = "Không thể khởi động camera.\n\n";
+            let errorMsg = "Cannot start camera.\n\n";
 
             if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
-                errorMsg += "Vui lòng cho phép truy cập camera trong cài đặt trình duyệt.";
+                errorMsg += "Please grant camera access in browser settings.";
             } else if (err.name === "NotFoundError" || err.name === "DevicesNotFoundError") {
-                errorMsg += "Không tìm thấy camera. Vui lòng kiểm tra camera đã được kết nối chưa.";
+                errorMsg += "Camera not found. Please check if camera is connected.";
             } else if (err.name === "NotReadableError" || err.name === "TrackStartError") {
-                errorMsg += "Camera đang được sử dụng bởi ứng dụng khác. Vui lòng đóng ứng dụng đó.";
+                errorMsg += "Camera is being used by another application. Please close that application.";
             } else {
-                errorMsg += `Lỗi: ${err.message || err}\n\nVui lòng sử dụng chế độ nhập thủ công.`;
+                errorMsg += `Error: ${err.message || err}\n\nPlease use manual input mode.`;
             }
 
             showToast(errorMsg, 'error', 5000);
             isScanning = false;
         });
     } catch (error) {
-        showToast("Lỗi khi khởi tạo scanner. Vui lòng reload trang hoặc sử dụng chế độ nhập thủ công.", 'error');
+        showToast("Error initializing scanner. Please reload the page or use manual input mode.", 'error');
         isScanning = false;
     }
 }
@@ -468,7 +468,7 @@ function stopScanner() {
 function handleManualCheckIn() {
     // Kiểm tra nếu đã chọn event
     if (!selectedEventId) {
-        showNotification("Chưa chọn event", "Vui lòng chọn event từ dropdown trước khi nhập mã", "error");
+        showNotification("Event not selected", "Please select an event from the dropdown before entering the code", "error");
         return;
     }
 
@@ -476,7 +476,7 @@ function handleManualCheckIn() {
     const qrCodeString = ticketCodeInput.value.trim();
 
     if (!qrCodeString) {
-        showToast("Vui lòng nhập mã QR Code", 'warning');
+        showToast("Please enter QR Code", 'warning');
         return;
     }
 
@@ -630,6 +630,8 @@ function switchMode(mode) {
 document.addEventListener('DOMContentLoaded', () => {
     Theme.init();
     setupThemeToggle();
+    setupSettingsDropdown();
+    setupLogout();
 
     // Tab Listeners
     document.getElementById('tab-qr')?.addEventListener('click', () => switchMode('qr'));

@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const roleRadio = document.querySelector('input[name="role"]:checked');
 
     if (!email || !password || !roleRadio) {
-      Toast.warning("Vui lòng điền đầy đủ thông tin và chọn vai trò");
+      Toast.warning("Please fill in all information and select a role");
       return;
     }
 
     try {
       login(email, password, roleRadio.value);
-      Toast.success("Đăng nhập thành công!");
+      Toast.success("Login successful!");
       setTimeout(() => { window.location.href = "home.html"; }, 1000);
     } catch (err) {
       Toast.error(err.message);

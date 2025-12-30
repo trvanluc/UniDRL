@@ -196,12 +196,21 @@
                 <span class="material-symbols-outlined text-[20px]">notifications</span>
             </button>
 
-            <button
-                class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
-            </button>
+            <div class="relative">
+                <button id="admin-settings-btn"
+                    class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
+                </button>
+                <div id="admin-settings-dropdown"
+                    class="hidden absolute top-full right-0 mt-2 bg-white dark:bg-surface-dark border border-gray-200 dark:border-white/10 rounded-lg z-50 shadow-lg">
+                    <button id="admin-logout-btn"
+                        class="block w-full px-4 py-2 text-sm text-red-500 hover:bg-red-500/10 text-left whitespace-nowrap">
+                        Logout
+                    </button>
+                </div>
+            </div>
 
-            <button id="theme-toggle-btn"
+            <button id="admin-theme-toggle-btn"
                 class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
                 <span
                     class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300 theme-toggle-icon">light_mode</span>
@@ -287,7 +296,7 @@
                         </div>
                     </div>
                     <p id="selected-event-info" class="mt-3 text-sm text-gray-600 dark:text-gray-400 hidden">
-                        <span class="font-bold">Event đã chọn:</span> <span id="selected-event-name">-</span>
+                        <span class="font-bold">Selected Event:</span> <span id="selected-event-name">-</span>
                     </p>
                 </div>
 
@@ -315,8 +324,8 @@
                                 <!-- Container để hiển thị camera quét QR -->
                                 <div id="qr-reader"
                                     class="w-full max-w-sm mb-6 min-h-[300px] bg-black rounded-2xl overflow-hidden flex items-center justify-center">
-                                    <p class="text-white text-sm text-center px-4">Camera sẽ hiển thị ở đây sau khi
-                                        click "Bắt Đầu Quét"</p>
+                                    <p class="text-white text-sm text-center px-4">Camera will display here after
+                                        clicking "Start Scanning"</p>
                                 </div>
 
                                 <!-- Nút Start/Stop Scanner -->
@@ -324,25 +333,25 @@
                                     <button id="start-scanner-btn"
                                         class="px-6 py-2 rounded-xl bg-primary hover:bg-primary-hover text-black font-bold transition-all shadow-lg flex items-center gap-2">
                                         <span class="material-symbols-outlined">camera</span>
-                                        Bắt Đầu Quét
+                                        Start Scanning
                                     </button>
                                     <button id="stop-scanner-btn"
                                         class="px-6 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-all shadow-lg hidden flex items-center gap-2">
                                         <span class="material-symbols-outlined">stop</span>
-                                        Dừng Quét
+                                        Stop Scanning
                                     </button>
                                 </div>
 
                                 <div
                                     class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 max-w-md">
-                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Hướng dẫn
-                                        quét:</p>
+                                    <p class="text-sm text-blue-800 dark:text-blue-300 font-medium mb-2">💡 Scanning
+                                        instructions:</p>
                                     <ul
                                         class="text-xs text-blue-700 dark:text-blue-400 space-y-1 list-disc list-inside">
-                                        <li>Đưa QR Code vào khung camera</li>
-                                        <li>Giữ khoảng cách 20-30cm từ camera</li>
-                                        <li>Đảm bảo ánh sáng đủ</li>
-                                        <li>Hoặc dùng <strong>Manual Input Mode</strong> để nhập mã</li>
+                                        <li>Position QR Code in camera frame</li>
+                                        <li>Keep a distance of 20-30cm from camera</li>
+                                        <li>Ensure adequate lighting</li>
+                                        <li>Or use <strong>Manual Input Mode</strong> to enter code</li>
                                     </ul>
                                 </div>
                             </div>
@@ -376,7 +385,7 @@
                                         </div>
                                         <button id="manual-checkin-btn"
                                             class="w-full py-3.5 px-6 rounded-xl bg-primary hover:bg-primary-hover text-surface-dark font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group">
-                                            <span>Xác Nhận Check-in</span>
+                                            <span>Confirm Check-in</span>
                                             <span
                                                 class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
                                         </button>
@@ -398,26 +407,25 @@
                                     <span
                                         class="material-symbols-outlined text-4xl text-gray-400">qr_code_scanner</span>
                                 </div>
-                                <p class="text-gray-500 dark:text-gray-400">Quét QR Code để xem thông tin sinh viên</p>
+                                <p class="text-gray-500 dark:text-gray-400">Scan QR Code to view student information</p>
                             </div>
                         </div>
 
                         <div
                             class="bg-surface-light dark:bg-surface-dark rounded-3xl p-6 shadow-sm border border-gray-200 dark:border-white/5 flex-1 flex flex-col">
                             <h3 class="font-bold text-lg mb-4 flex items-center justify-between">
-                                Check-in Gần Đây
-                                <span
-                                    class="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-lg">5
-                                    mới nhất</span>
+                                Recent Check-ins
+                                <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">5
+                                    latest</span>
                             </h3>
                             <div class="overflow-x-auto">
                                 <table id="recent-checkins-table" class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="text-xs text-gray-400 border-b border-gray-100 dark:border-white/5">
                                             <th class="font-medium py-3 pl-2">MSSV</th>
-                                            <th class="font-medium py-3">Tên</th>
-                                            <th class="font-medium py-3">Thời gian</th>
-                                            <th class="font-medium py-3 pr-2 text-right">Trạng thái</th>
+                                            <th class="font-medium py-3">Name</th>
+                                            <th class="font-medium py-3">Time</th>
+                                            <th class="font-medium py-3 pr-2 text-right">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-sm">

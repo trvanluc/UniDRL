@@ -122,8 +122,8 @@ function loadJourney(user) {
       container.innerHTML = `
         <div class="text-center py-12 bg-card-dark rounded-xl border border-[#29382f]">
           <span class="material-symbols-outlined text-6xl text-red-500 mb-4">error</span>
-          <h3 class="text-xl font-bold text-white mb-2">Đã có lỗi xảy ra</h3>
-          <p class="text-slate-400">Không thể tải dữ liệu hành trình. Vui lòng thử lại sau.</p>
+          <h3 class="text-xl font-bold text-white mb-2">An error occurred</h3>
+          <p class="text-slate-400">Unable to load journey data. Please try again later.</p>
         </div>
       `;
     }
@@ -219,11 +219,11 @@ function renderJourneyList(events, limit) {
           <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-[#29382f] rounded-full flex items-center justify-center mb-6">
             <span class="material-symbols-outlined text-4xl text-slate-500 dark:text-slate-400">rocket_launch</span>
           </div>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Hành trình của bạn bắt đầu tại đây</h3>
-          <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-8">Bạn chưa tham gia sự kiện nào. Hãy khám phá và đăng ký các hoạt động thú vị ngay!</p>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Your journey starts here</h3>
+          <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-8">You haven't participated in any events yet. Explore and register for exciting activities now!</p>
           <a href="../home.html#events" class="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-primary text-black font-bold hover:bg-emerald-400 hover:scale-105 transition-all shadow-glow">
             <span class="material-symbols-outlined">explore</span>
-            Khám phá các hoạt động
+            Explore activities
           </a>
         </div>
       `;
@@ -231,11 +231,11 @@ function renderJourneyList(events, limit) {
       container.innerHTML = `
         <div class="text-center py-12 bg-white dark:bg-card-dark rounded-xl border border-slate-200 dark:border-[#29382f]">
           <span class="material-symbols-outlined text-6xl text-slate-400 dark:text-slate-600 mb-4">search_off</span>
-          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Không tìm thấy kết quả</h3>
-          <p class="text-slate-500 dark:text-slate-400">Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">No results found</h3>
+          <p class="text-slate-500 dark:text-slate-400">Try changing the filter or search keyword</p>
           <button onclick="document.getElementById('search-input').value=''; currentFilter='All'; setupControls(); filterAndRender();" 
             class="mt-4 text-primary font-medium hover:underline">
-            Xóa bộ lọc
+            Clear filters
           </button>
         </div>
       `;
@@ -251,7 +251,7 @@ function renderJourneyList(events, limit) {
   const headerHtml = `
     <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
       <span class="material-symbols-outlined text-primary">history</span>
-      Lịch sử hoạt động <span class="text-slate-400 text-sm font-normal">(${events.length})</span>
+      Activity History <span class="text-slate-400 text-sm font-normal">(${events.length})</span>
     </h3>
   `;
 
