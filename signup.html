@@ -77,10 +77,14 @@
         <div class="flex h-full grow flex-col md:flex-row">
 
             <div class="relative hidden md:flex md:w-1/2 lg:w-7/12 flex-col justify-end p-10 lg:p-16 overflow-hidden">
-                <div class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-                    data-alt="Abstract image of network connections"
-                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBn1-kQ2VDNbFPZv_gXksGkYXS6GS4J0NNg2p57aksOcDAXJVCGl8MqL761D98aUXqB5qlsuDpxEnLhFHtM8ol9V1dzza5rloLFXseeamsckT3K5w1cp1-CWDvxKpNqjyr05pyXCk_pVXuqHBxRVVcVizd38zb9HiEEI2VjIMZrbcNoWjxbZjuykZEoCWyXWtXiqVJp_ZzIUCA2oOL9OWjPTR36LJj_ZjZz8d0vIDfU04TAXTJKV3TBnOIcr2OfhGls7fnC6RLeRTQ");'>
-                </div>
+                <picture class="absolute inset-0 z-0">
+                    <source srcset="/assets/images/signup-desktop.avif" type="image/avif">
+                    <source srcset="/assets/images/signup-desktop.webp" type="image/webp">
+                    <img src="/assets/images/signup-desktop.jpg" 
+                        alt="Abstract network connections technology background" 
+                        class="w-full h-full object-cover object-center" 
+                        loading="eager" fetchpriority="high">
+                </picture>
 
                 <div class="absolute inset-0 z-10 bg-background-dark/70 mix-blend-multiply"></div>
                 <div
@@ -103,10 +107,15 @@
 
             <div class="flex w-full md:w-1/2 lg:w-5/12 flex-col justify-center items-center p-6 sm:p-12 relative z-30">
 
-                <div class="absolute inset-0 md:hidden z-0 bg-cover bg-center"
-                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6ieJZqMIyjbVRInro6IGxvo6UWtBnSd1W-FvrsMOKdKWSs3Rl72KRO1BRa2-GXNG2x-vpcVRx2OAIAugszL-SEVu6P7Xw619daeikhWQW7FOy66fOfZL95YrWN8XY1aCuBWjlLOQpfxcRrrAU6tM124MXWmyyJ1b3nqu_DML5GllIgAWrFGp0BjJ-rT-s0W0iCawgOGRKBLLZp2-A9SwPOMS1oc_j-QpHDXCZMHZzeLau9QpN6LDH3p6PurPWGUNmAdWsqfk3hV4");'>
-                    <div class="absolute inset-0 bg-background-dark/90"></div>
-                </div>
+                <picture class="absolute inset-0 md:hidden z-0">
+                    <source srcset="/assets/images/signup-mobile.avif" type="image/avif">
+                    <source srcset="/assets/images/signup-mobile.webp" type="image/webp">
+                    <img src="/assets/images/signup-mobile.jpg" 
+                        alt="Futuristic technology abstract background mobile" 
+                        class="w-full h-full object-cover object-center" 
+                        loading="eager">
+                </picture>
+                <div class="absolute inset-0 bg-background-dark/90"></div>
 
                 <div class="relative z-10 w-full max-w-[440px] flex flex-col gap-8">
                     <a href="login.html"
