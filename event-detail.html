@@ -17,7 +17,7 @@
     <!-- Thư viện tạo QR Code - Load từ local nếu có, nếu không thì dùng CDN -->
     <script>
         // Ưu tiên load từ local trước
-        (function() {
+        (function () {
             const localScript = document.createElement("script");
             localScript.src = "./js/libs/qrcode.min.js";
             localScript.onerror = () => {
@@ -58,7 +58,7 @@
         }
     </script>
     <style>
-        /* Animations */
+                /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -125,7 +125,7 @@
             /* Height of header (adjust if needed) */
             height: calc(100vh - 64px);
             width: 250px;
-            background: #111714;
+            
             border-right: 1px solid #29382f;
             overflow-y: auto;
             transition: transform 0.3s;
@@ -135,112 +135,195 @@
         #admin-sidebar.open {
             transform: translateX(0);
         }
+        #sidebar-toggle:checked ~ .layout-container aside {
+            width: 5rem;
+        }
+
+        #sidebar-toggle:checked ~ .layout-container aside .nav-label {
+            display: none;
+        }
+
+        #sidebar-toggle:checked ~ .layout-container aside .nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        @media (min-width: 1024px) {
+            .layout-container main {
+                margin-left: 16rem; /* 256px */
+                transition: margin-left 0.3s ease;
+            }
+
+            #sidebar-toggle:checked ~ .layout-container main {
+                margin-left: 5rem;
+            }
+        }
 
         @media (min-width: 1024px) {
             #admin-sidebar {
                 transform: translateX(0);
             }
+            body.is-admin .main-content {
+                margin-left: 300px;          /* = sidebar width */
+                max-width: 65rem;
+                margin-right: auto;
+                padding-top: 100px;
+            }
+            body:not(.is-admin) .main-content {
+                max-width: 80rem;
+                margin-left: auto;
+                margin-right: auto;
+            }
         }
     </style>
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YNFP8F87K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
 
-  gtag('config', 'G-9YNFP8F87K');
-</script>
+        gtag('config', 'G-9YNFP8F87K');
+    </script>
 </head>
 
 
-<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-x-hidden text-gray-900 dark:text-white">
+<body
+    class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col overflow-x-hidden text-gray-900 dark:text-white">
     <header id="student-header" class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#29382f] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 py-4 lg:px-10">
-  <div class="flex items-center gap-4">
-    <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
-      <span class="material-symbols-outlined">school</span>
+        <div class="flex items-center gap-4">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+            <span class="material-symbols-outlined">school</span>
+          </div>
+          <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+            VN-UK
+          </h2>
+        </div>
+      
+        <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
+          <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
+          <a href="my-event.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Tickets</a>
+          <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
+          <a href="profile.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Profile</a>
+        </nav>
+      
+        <div class="flex gap-3 relative">
+          <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+            <span class="material-symbols-outlined text-[20px]">notifications</span>
+          </button>
+          <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+            <span class="material-symbols-outlined text-[20px]">settings</span>
+          </button>
+          <div id="settings-dropdown" class="hidden">
+            <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
+              Logout
+            </button>
+          </div>
+          <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+            <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
+          </button>
+      
+          <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+      
+      <!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
+      <div class="flex items-center justify-center">
+        <div id="user-avatar-initial" 
+             class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
+          A
+        </div>
+      </div>
+        </div>
+      </header>
+      <input class="peer hidden" id="sidebar-toggle" type="checkbox" />
+      <header
+          id="admin-header" class="fixed top-0 left-0 right-0 h-16 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/10 z-50 px-4 sm:px-6 flex items-center justify-between transition-colors duration-300">
+          <div class="flex items-center gap-4">
+              <label
+                  class="p-2 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 cursor-pointer text-gray-600 dark:text-gray-300 transition-colors"
+                  for="sidebar-toggle">
+                  <span class="material-symbols-outlined">menu</span>
+              </label>
+              <div class="flex items-center gap-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-background-dark">
+                    <span class="material-symbols-outlined">school</span>
+                  </div>
+                  <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
+                    VN-UK
+                  </h2>
+                </div>
+          </div>
+          <div class="flex-1"></div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button
+            class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
+            <span class="material-symbols-outlined text-[20px]">notifications</span>
+          </button>
+              <button
+                  class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+                  <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">settings</span>
+              </button>
+              <button
+                  class="flex items-center justify-center size-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+                  onclick="document.documentElement.classList.toggle('dark')">
+                  <span class="material-symbols-outlined text-[20px] text-gray-600 dark:text-gray-300">dark_mode</span>
+              </button>
+              <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
+              <div class="flex items-center gap-3">
+                  <div class="text-right hidden md:block">
+                      <p class="text-sm font-bold text-gray-900 dark:text-white leading-none">Admin User</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-none">Super Admin</p>
+                  </div>
+                  <div class="size-10 rounded-full bg-cover bg-center border-2 border-primary/20"
+                      style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAclZlTCcV6pkP9D4Cx7Kil4TmKbWG_TXdXvXdoWqActcpmKPt_gKetEFolphy9rT6UCXi7Hk6V3lprVVU3Sv6DP1iDIrUyAzgNjycfvaLgynaPylK9D8osnTu_-276i47jD-VcxFFItt56oEoxFz0PVOdetayWkWj0nfO2ZXwW5QVzqCx6JtgtC4dAQmUtrbDCZbFpSMFOJvSrBxTdq3rqzC6_1CXvnewoSRq7GWAqoWc4e6bPmPO7IwAHbfLAvUhzWXzToWqdXuQ');">
+                  </div>
+              </div>
+          </div>
+      </header>
+          <div class="layout-container">
+              <div id="admin-layout" class="hidden">
+                  <!-- Admin Sidebar -->
+                  <aside id="admin-sidebar" class="admin-only admin-surface
+                  fixed top-0 left-0
+                  w-64 h-screen
+                  pt-16
+                  bg-white/90 dark:bg-surface-dark/90
+                  backdrop-blur-md
+                  border-r border-gray-200 dark:border-white/10
+                  flex flex-col
+                  z-40">
+                      <div class="p-4 space-y-2">
+                          <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border-l-4 border-primary"
+                              href="home.html">
+                              <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
+                              <span class="nav-label whitespace-nowrap">Home</span>
+                          </a>
+                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                              href="admin/participants-management.html">
+                              <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
+                              <span class="nav-label whitespace-nowrap">Participant</span>
+                          </a>
+                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                              href="admin/check-in-management.html">
+                              <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
+                              <span class="nav-label whitespace-nowrap">Check-in</span>
+                          </a>
+                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                              href="admin/badge-system.html">
+                              <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
+                              <span class="nav-label whitespace-nowrap">Badge System</span>
+                          </a>
+                          <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
+                              href="admin/report.html">
+                              <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
+                              <span class="nav-label whitespace-nowrap">Report</span>
+                          </a>
+                      </div>
+                      
+                  </aside>
     </div>
-    <h2 class="text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">
-      VN-UK
-    </h2>
-  </div>
 
-  <nav id="nav-menu" class="hidden md:flex items-center justify-center gap-8 flex-1">
-    <a href="../home.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Home</a>
-    <a href="my-event.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Tickets</a>
-    <a href="my-journey.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">My Journey</a>
-    <a href="profile.html" class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">Profile</a>
-  </nav>
-
-  <div class="flex gap-3 relative">
-    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px]">notifications</span>
-    </button>
-    <button id="settings-btn" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px]">settings</span>
-    </button>
-    <div id="settings-dropdown" class="hidden">
-      <button id="logout-btn" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-500/10">
-        Logout
-      </button>
-    </div>
-    <button class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-slate-200 dark:bg-[#29382f] hover:bg-slate-300 dark:hover:bg-[#384b40] transition-colors text-slate-700 dark:text-white">
-      <span class="material-symbols-outlined text-[20px] theme-toggle-icon">light_mode</span>
-    </button>
-
-    <div class="h-8 w-px bg-gray-200 dark:bg-white/10 mx-2"></div>
-
-<!-- Avatar tròn xanh với chữ cái đầu tên người dùng -->
-<div class="flex items-center justify-center">
-  <div id="user-avatar-initial" 
-       class="size-10 rounded-full bg-primary text-background-dark flex items-center justify-center text-xl font-bold shadow-glow select-none">
-    A
-  </div>
-</div>
-  </div>
-</header>
-    <div id="admin-layout" class="hidden">
-        <!-- Admin Sidebar -->
-        <aside id="admin-sidebar" class="flex-col z-40">
-            <div class="p-4 space-y-2">
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold bg-primary/10 text-primary border border-primary/20 transition-all group overflow-hidden"
-                    href="home.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">home</span>
-                    <span class="nav-label whitespace-nowrap">Home</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/participants-management.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">groups</span>
-                    <span class="nav-label whitespace-nowrap">Participant</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/check-in-management.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">fact_check</span>
-                    <span class="nav-label whitespace-nowrap">Check-in</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/badge-system.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">workspace_premium</span>
-                    <span class="nav-label whitespace-nowrap">Badge System</span>
-                </a>
-                <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all group overflow-hidden"
-                    href="admin/report.html">
-                    <span class="material-symbols-outlined text-[24px] shrink-0">analytics</span>
-                    <span class="nav-label whitespace-nowrap">Report</span>
-                </a>
-            </div>
-            <div class="mt-auto p-6 border-t border-gray-200 dark:border-[#29382f] system-status">
-                <div class="bg-surface-dark/5 dark:bg-white/5 rounded-xl p-4">
-                    <p class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">System Status</p>
-                    <div class="flex items-center gap-2 mt-2">
-                        <div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
-                        <p class="text-sm font-medium text-gray-900 dark:text-white">Operational</p>
-                    </div>
-            </div>
-        </aside>
-    </div>
-    
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+    <main class="main-content flex-grow w-full  px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         <div>
             <div
                 class="w-full relative rounded-2xl sm:rounded-3xl overflow-hidden aspect-[21/9] sm:aspect-[21/8] mb-8 group">
@@ -262,8 +345,6 @@
                         <div class="flex flex-wrap items-center gap-3">
                             <span id="event-category"
                                 class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5"></span>
-                            <span id="event-points"
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/20 text-primary text-sm font-bold border border-primary/20"></span>
                             <span
                                 class="inline-flex items-center px-4 py-1.5 rounded-full bg-surface-dark/5 dark:bg-surface-light/10 text-sm font-medium border border-black/5 dark:border-white/5">Open
                                 to All</span>
@@ -325,8 +406,8 @@
                                         class="material-symbols-outlined text-gray-400 text-[16px]">military_tech</span>
                                 </div>
                                 <div class="pt-0.5">
-                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Points</h4>
-                                    <p id="journey-points" class="text-sm text-gray-400 dark:text-gray-600 mt-1"></p>
+                                    <h4 class="text-lg font-bold text-gray-400 dark:text-gray-500">Earn Badges</h4>
+                                    <p id="journey-badges" class="text-sm text-gray-400 dark:text-gray-600 mt-1"></p>
                                 </div>
                             </div>
                         </div>
@@ -406,112 +487,114 @@
     <footer class="mt-auto py-8 text-center text-gray-500 text-sm">
         <p>© 2023 Student Portal System. All rights reserved.</p>
     </footer>
+    </div>
 
 
 
     <!-- REGISTER EVENT MODAL - Popup Form Đăng Ký -->
-    <div id="register-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <!-- Overlay - Click để đóng popup -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="register-modal-overlay"></div>
+    <div id="register-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-background-dark/80 backdrop-blur-md" id="register-modal-overlay"></div>
 
-        <!-- Modal box -->
-        <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-8">
+        <!-- Modal Content -->
+        <div
+            class="relative w-full max-w-lg bg-white dark:bg-[#1c2621] rounded-2xl sm:rounded-3xl shadow-2xl shadow-black/50 ring-1 ring-black/5 dark:ring-white/10 overflow-hidden flex flex-col max-h-[90vh]">
+
+            <!-- Header -->
             <div
-                class="bg-white dark:bg-[#1c2621] rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-xl animate-in fade-in zoom-in max-h-[90vh] overflow-y-auto">
-                
-                <!-- Header -->
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">
-                        Đăng Ký Sự Kiện
-                    </h3>
-                    <button id="close-register-modal-btn" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                        <span class="material-symbols-outlined text-[28px]">close</span>
-                    </button>
-                </div>
+                class="px-6 py-5 border-b border-gray-100 dark:border-white/5 flex items-center justify-between shrink-0">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Đăng Ký Sự Kiện</h3>
+                <button id="close-register-modal-btn"
+                    class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors p-1 rounded-full hover:bg-black/5 dark:hover:bg-white/5">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
 
-                <!-- Form đăng ký -->
-                <form id="register-form" class="space-y-4">
+            <!-- Form Content -->
+            <div class="p-6 overflow-y-auto">
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                    Vui lòng xác nhận thông tin của bạn để tạo vé tham dự. Đảm bảo thông tin trùng khớp với thẻ sinh
+                    viên.
+                </p>
+
+                <form id="register-form" class="space-y-5">
                     <!-- Họ tên -->
-                    <div>
-                        <label for="register-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Họ và Tên <span class="text-red-500">*</span>
+                    <div class="space-y-1.5 group">
+                        <label for="register-name"
+                            class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
+                            Họ và Tên <span class="text-primary">*</span>
                         </label>
-                        <input 
-                            type="text" 
-                            id="register-name" 
-                            name="name"
-                            required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                            placeholder="Nhập họ và tên của bạn"
-                        />
-                        <p class="text-xs text-red-500 mt-1 hidden" id="error-name">Vui lòng nhập họ và tên</p>
+                        <input type="text" id="register-name" name="name" required
+                            class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
+                            placeholder="Ví dụ: Nguyễn Văn A" />
+                        <p class="hidden text-xs text-red-500 mt-1 flex items-center gap-1" id="error-name">
+                            <span class="material-symbols-outlined text-[14px]">error</span>
+                            Vui lòng nhập họ và tên
+                        </p>
                     </div>
 
-                    <!-- Lớp -->
-                    <div>
-                        <label for="register-class" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Lớp <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            id="register-class" 
-                            name="class"
-                            required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                            placeholder="Ví dụ: CS-2023-A"
-                        />
-                        <p class="text-xs text-red-500 mt-1 hidden" id="error-class">Vui lòng nhập lớp</p>
+                    <!-- MSSV và Lớp - 2 cột -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="space-y-1.5 group">
+                            <label for="register-mssv"
+                                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
+                                MSSV <span class="text-primary">*</span>
+                            </label>
+                            <input type="text" id="register-mssv" name="mssv" required
+                                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
+                                placeholder="20230001" />
+                            <p class="hidden text-xs text-red-500 mt-1" id="error-mssv">Vui lòng nhập MSSV</p>
+                        </div>
+                        <div class="space-y-1.5 group">
+                            <label for="register-class"
+                                class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
+                                Lớp <span class="text-primary">*</span>
+                            </label>
+                            <input type="text" id="register-class" name="class" required list="classes-list"
+                                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 px-4 transition-all duration-200"
+                                placeholder="23SE1" />
+                            <datalist id="classes-list">
+                                <option value="23SE1"></option>
+                                <option value="23SE2"></option>
+                                <option value="23BA1"></option>
+                                <option value="23BA2"></option>
+                            </datalist>
+                            <p class="hidden text-xs text-red-500 mt-1" id="error-class">Vui lòng nhập lớp</p>
+                        </div>
                     </div>
 
                     <!-- Email -->
-                    <div>
-                        <label for="register-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Email <span class="text-red-500">*</span>
+                    <div class="space-y-1.5 group">
+                        <label for="register-email"
+                            class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide group-focus-within:text-primary transition-colors">
+                            Email <span class="text-primary">*</span>
                         </label>
-                        <input 
-                            type="email" 
-                            id="register-email" 
-                            name="email"
-                            required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                            placeholder="example@email.com"
-                        />
-                        <p class="text-xs text-red-500 mt-1 hidden" id="error-email">Vui lòng nhập email hợp lệ</p>
-                    </div>
-
-                    <!-- MSSV -->
-                    <div>
-                        <label for="register-mssv" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            MSSV (Mã số sinh viên) <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            id="register-mssv" 
-                            name="mssv"
-                            required
-                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono"
-                            placeholder="20230001"
-                        />
-                        <p class="text-xs text-red-500 mt-1 hidden" id="error-mssv">Vui lòng nhập MSSV</p>
-                    </div>
-
-                    <!-- Buttons -->
-                    <div class="flex justify-end gap-3 pt-4">
-                        <button 
-                            type="button"
-                            id="cancel-register-btn"
-                            class="px-5 py-2.5 rounded-xl text-sm font-medium border border-gray-300 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
-                            Hủy
-                        </button>
-                        <button 
-                            type="submit"
-                            id="submit-register-btn"
-                            class="px-6 py-2.5 rounded-xl bg-primary text-black font-bold hover:bg-[#2fd16d] transition-all shadow-lg shadow-primary/25">
-                            Đăng Ký Ngay
-                        </button>
+                        <div class="relative">
+                            <div
+                                class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-[18px]">mail</span>
+                            </div>
+                            <input type="email" id="register-email" name="email" required
+                                class="block w-full rounded-xl border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-black/20 text-gray-900 dark:text-white placeholder-gray-400 focus:border-primary focus:ring-primary focus:ring-2 focus:ring-opacity-20 focus:bg-white dark:focus:bg-black/40 sm:text-sm py-3 pl-11 pr-4 transition-all duration-200"
+                                placeholder="student@email.com" />
+                        </div>
+                        <p class="hidden text-xs text-red-500 mt-1" id="error-email">Vui lòng nhập email hợp lệ</p>
                     </div>
                 </form>
+            </div>
 
+            <!-- Footer -->
+            <div
+                class="px-6 py-5 bg-gray-50 dark:bg-black/20 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 border-t border-gray-100 dark:border-white/5 shrink-0">
+                <button type="button" id="cancel-register-btn"
+                    class="w-full sm:w-auto px-6 py-3 rounded-full text-sm font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+                    Hủy
+                </button>
+                <button type="submit" id="submit-register-btn" form="register-form"
+                    class="w-full sm:w-auto px-8 py-3 rounded-full text-sm font-bold bg-primary text-black hover:bg-[#2fd16d] shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+                    Đăng Ký Ngay
+                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                </button>
             </div>
         </div>
     </div>
@@ -521,17 +604,108 @@
         <!-- Overlay - Click để đóng popup -->
         <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="qr-ticket-modal-overlay"></div>
 
-        <!-- Modal box -->
-        <div class="relative z-10 flex items-center justify-center min-h-screen px-6 py-8">
-            <div class="bg-transparent w-full max-w-md relative">
+        <!-- Modal box - Enlarged -->
+        <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-6">
+            <div class="bg-transparent w-full max-w-lg relative">
                 <!-- Close button -->
-                <button id="close-qr-ticket-modal-btn" class="absolute -top-12 right-0 text-white hover:text-gray-200 transition-colors">
+                <button id="close-qr-ticket-modal-btn"
+                    class="absolute -top-12 right-0 text-white hover:text-gray-200 transition-colors">
                     <span class="material-symbols-outlined text-[32px]">close</span>
                 </button>
-                
+
                 <!-- Ticket container -->
                 <div id="qr-ticket-modal-content">
                     <!-- Ticket sẽ được render vào đây -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT QR MODAL FOR ADMIN - Hiển thị QR Code lớn -->
+    <div id="checkout-qr-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" id="checkout-qr-modal-overlay"></div>
+        <div class="relative z-10 w-full max-w-lg mx-4">
+            <div
+                class="bg-white dark:bg-[#1c2621] rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-white/10">
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-3xl">qr_code_2</span>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Checkout QR</h3>
+                            <p id="checkout-qr-event-name" class="text-sm text-gray-500 dark:text-gray-400">Event Name
+                            </p>
+                        </div>
+                    </div>
+                    <button id="close-checkout-qr-modal-btn"
+                        class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <span class="material-symbols-outlined text-[28px]">close</span>
+                    </button>
+                </div>
+
+                <!-- Time Selector Section (shown initially) -->
+                <div id="checkout-qr-setup-section" class="py-6">
+                    <div class="text-center mb-6">
+                        <span class="material-symbols-outlined text-6xl text-primary mb-4">timer</span>
+                        <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Chọn thời gian hết hạn</h4>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">QR sẽ tự động hết hạn sau thời gian được
+                            chọn</p>
+                    </div>
+                    <div class="mb-6">
+                        <select id="checkout-qr-expire-time"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-black/20 text-gray-900 dark:text-white text-center text-lg font-bold focus:border-primary focus:ring-2 focus:ring-primary/20">
+                            <option value="5">5 phút</option>
+                            <option value="10">10 phút</option>
+                            <option value="15" selected>15 phút</option>
+                            <option value="30">30 phút</option>
+                            <option value="60">60 phút</option>
+                        </select>
+                    </div>
+                    <button id="create-checkout-qr-modal-btn"
+                        class="w-full py-3.5 rounded-xl bg-primary hover:bg-[#2fd16f] text-background-dark font-bold text-lg flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/25">
+                        <span class="material-symbols-outlined">qr_code_2</span>
+                        Tạo Checkout QR
+                    </button>
+                </div>
+
+                <!-- QR Code Display (hidden initially) -->
+                <div id="checkout-qr-display-section" class="hidden">
+                    <div class="flex flex-col items-center py-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg mb-6">
+                            <img id="checkout-qr-image-large" src="" alt="Checkout QR" class="w-64 h-64">
+                        </div>
+
+                        <!-- Timer -->
+                        <div id="checkout-qr-timer-display" class="flex items-center gap-3 mb-4">
+                            <span class="material-symbols-outlined text-primary">schedule</span>
+                            <span id="checkout-qr-countdown" class="text-3xl font-bold text-primary">15:00</span>
+                        </div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Thời gian còn lại</p>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="bg-gray-50 dark:bg-black/20 rounded-xl p-4 mb-6">
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <span class="font-bold text-primary">💡 Hướng dẫn:</span> Sinh viên quét mã này bằng nút
+                            "Scan
+                            Code" trong My Tickets để checkout và nhận badge.
+                        </p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-3">
+                        <button id="close-checkout-qr-btn"
+                            class="flex-1 py-3 rounded-xl bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-700 dark:text-white font-bold transition-colors">
+                            Đóng
+                        </button>
+                        <button id="stop-checkout-qr-modal-btn"
+                            class="flex-1 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white font-bold transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]">cancel</span>
+                            Hủy QR
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

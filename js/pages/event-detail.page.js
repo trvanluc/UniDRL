@@ -18,6 +18,8 @@ import { RegistrationService } from "../services/registration.service.js";
 import { renderTicketDesign, renderTicketDesignForModal } from "../components/ticket/ticket.component.js";
 import { openModal, closeModal, setupModalListeners } from "../components/modal/modal-manager.component.js";
 import { FormValidator } from "../utils/validation.js";
+import { Toast } from "../components/toast/toast.js";
+import { Dialog } from "../components/dialog/dialog.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   Theme.init();
@@ -28,18 +30,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // TOGGLE LAYOUT THEO ROLE
   const studentLayout = document.getElementById("student-layout");
   const adminLayout = document.getElementById("admin-layout");
+  const studentHeader = document.getElementById("student-header");
+  const adminHeader = document.getElementById("admin-header");
+
   if (user.role === ROLES.STUDENT) {
     studentLayout?.classList.remove("hidden");
     adminLayout?.classList.add("hidden");
+    document.body.classList.remove("is-admin");
+    studentHeader?.classList.remove("hidden");
+    adminHeader?.classList.add("hidden");
   } else {
     adminLayout?.classList.remove("hidden");
     studentLayout?.classList.add("hidden");
-  }
-  const studentHeader = document.getElementById("student-header");
-  if (user.role !== ROLES.STUDENT) {
+    adminHeader?.classList.remove("hidden");
     studentHeader?.classList.add("hidden");
-  } else {
-    studentHeader?.classList.remove("hidden");
+    document.body.classList.add("is-admin");
   }
   // Get event ID from URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -59,8 +64,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const event = storedEvents.find(e => e.id === eventId);
   if (!event) {
     console.error("Event not found:", eventId);
-    alert("Event not found");
-    window.location.href = "home.html";
+    Toast.error("Không tìm thấy sự kiện");
+    setTimeout(() => { window.location.href = "home.html"; }, 1500);
     return;
   }
   console.log("Event loaded:", event.title);
@@ -110,10 +115,8 @@ function renderEventInfo(event) {
   if (dateEl) dateEl.textContent = event.date;
   if (timeEl) timeEl.textContent = event.time;
   const categoryEl = document.getElementById("event-category");
-  const pointsEl = document.getElementById("event-points");
   const bannerCategoryEl = document.getElementById("banner-category");
   if (categoryEl) categoryEl.textContent = event.category;
-  if (pointsEl) pointsEl.textContent = `${event.points} DRL Points`;
   if (bannerCategoryEl) bannerCategoryEl.textContent = event.category;
   const locationEl = document.getElementById("event-location");
   const roomEl = document.getElementById("event-room");
@@ -135,9 +138,11 @@ function renderEventInfo(event) {
   if (bannerEl) {
     bannerEl.style.backgroundImage = `url(${event.image})`;
   }
-  const journeyPointsEl = document.getElementById("journey-points");
-  if (journeyPointsEl) {
-    journeyPointsEl.textContent = `${event.points} DRL points added to your profile automatically.`;
+
+  // Journey points
+  const journeyBadgesEl = document.getElementById("journey-badges");
+  if (journeyBadgesEl) {
+    journeyBadgesEl.textContent = `Event badge added to your profile automatically.`;
   }
 }
 
@@ -292,31 +297,54 @@ function renderEventActions(user, event) {
       });
     }
   } else {
+    // ADMIN/ADVISOR/MANAGER - Show Edit, Delete, and Checkout QR buttons
     actionsContainer.innerHTML = `
-      <div class="grid grid-cols-2 gap-2 mb-3">
-        <button id="edit-event-btn" class="h-12 bg-blue-500 hover:bg-blue-600 text-white font-bold text-base rounded-full shadow-lg shadow-blue-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
-          Edit
-          <span class="material-symbols-outlined text-[20px]">edit</span>
+      <div class="space-y-3 mb-3">
+        <!-- Checkout QR Button - Main action -->
+        <button id="checkout-qr-btn" class="w-full h-12 bg-primary hover:bg-[#2fd16d] text-black font-bold text-base rounded-full shadow-lg shadow-primary/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">qr_code_2</span>
+          <span>Tạo Checkout QR</span>
         </button>
-        <button id="delete-event-btn" class="h-12 bg-red-500 hover:bg-red-600 text-white font-bold text-base rounded-full shadow-lg shadow-red-500/25 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 group">
-          Delete
-          <span class="material-symbols-outlined text-[20px]">delete</span>
-        </button>
+        
+        <!-- Edit & Delete buttons -->
+        <div class="grid grid-cols-2 gap-2">
+          <button id="edit-event-btn" class="h-10 bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm rounded-full shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">edit</span>
+            Edit
+          </button>
+          <button id="delete-event-btn" class="h-10 bg-red-500 hover:bg-red-600 text-white font-bold text-sm rounded-full shadow-lg shadow-red-500/25 transition-all flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-[18px]">delete</span>
+            Delete
+          </button>
+        </div>
       </div>
-      <p class="text-center text-xs text-gray-400 mt-3">
-        Event management available for administrators
+      <p class="text-center text-xs text-gray-400">
+        Tạo mã QR để sinh viên checkout khi kết thúc sự kiện
       </p>
     `;
+
+    // Checkout QR button handler
+    const checkoutQRBtn = document.getElementById("checkout-qr-btn");
+    checkoutQRBtn?.addEventListener("click", () => {
+      openCheckoutQRModal(event);
+    });
+
     const editBtn = document.getElementById("edit-event-btn");
     editBtn?.addEventListener("click", () => {
       enableInlineEdit(event);
     });
     const deleteBtn = document.getElementById("delete-event-btn");
-    deleteBtn?.addEventListener("click", () => {
-      if (confirm(`Are you sure you want to delete "${event.title}"?`)) {
-        alert(`Event deleted: ${event.title}`);
+    deleteBtn?.addEventListener("click", async () => {
+      const confirmed = await Dialog.confirm(
+        "Xóa sự kiện",
+        `Bạn có chắc chắn muốn xóa "${event.title}"?`,
+        "Xóa",
+        "Hủy"
+      );
+      if (confirmed) {
+        Toast.success(`Đã xóa sự kiện: ${event.title}`);
         // TODO: Delete event from database
-        window.location.href = "home.html";
+        setTimeout(() => { window.location.href = "home.html"; }, 1500);
       }
     });
   }
@@ -562,7 +590,7 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Kiểm tra MSSV đã đăng ký chưa
   if (RegistrationService.isRegistered(mssv, event.id)) {
-    alert("MSSV này đã đăng ký cho sự kiện này rồi!");
+    Toast.warning("MSSV này đã đăng ký cho sự kiện này rồi!");
     return;
   }
 
@@ -585,9 +613,9 @@ function handleRegisterSubmit(event, formEvent) {
 
   // Lưu vào localStorage thông qua RegistrationService
   const success = RegistrationService.save(registration);
-  
+
   if (!success) {
-    alert("Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại!");
+    Toast.error("Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại!");
     return;
   }
 
@@ -610,7 +638,7 @@ function handleRegisterSubmit(event, formEvent) {
     console.log("Đã cập nhật user.studentId:", mssv);
 
     // Hiển thị thông báo thành công
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
+    Toast.success(`Đăng ký thành công! Bạn sẽ nhận được huy chương điểm sau khi hoàn thành.`);
 
     // Render lại tab content và button actions
     setTimeout(() => {
@@ -618,7 +646,192 @@ function handleRegisterSubmit(event, formEvent) {
       renderEventActions(user, event);
     }, 100);
   } else {
-    alert(`Đăng ký thành công!\n\nBạn sẽ nhận được ${event.points} DRL điểm sau khi hoàn thành sự kiện.`);
-    window.location.reload();
+    Toast.success(`Đăng ký thành công! Bạn sẽ nhận được huy chương điểm sau khi hoàn thành.`);
+    setTimeout(() => { window.location.reload(); }, 1500);
   }
+}
+
+// ================================
+// CHECKOUT QR MODAL FUNCTIONS
+// ================================
+
+let checkoutQRTimerInterval = null;
+let currentCheckoutEvent = null;
+
+/**
+ * Open Checkout QR Modal for Admin
+ * Shows time selector first, creates QR when button is clicked
+ */
+function openCheckoutQRModal(event) {
+  currentCheckoutEvent = event;
+
+  // Update modal content
+  const eventNameEl = document.getElementById('checkout-qr-event-name');
+  if (eventNameEl) eventNameEl.textContent = event.title;
+
+  // Check if there's an existing active QR for this event
+  const allCheckoutQR = JSON.parse(localStorage.getItem('vnuk_checkout_qr') || '{}');
+  const qrData = allCheckoutQR[event.id];
+
+  const setupSection = document.getElementById('checkout-qr-setup-section');
+  const displaySection = document.getElementById('checkout-qr-display-section');
+
+  if (qrData && new Date() < new Date(qrData.expiresAt)) {
+    // QR exists and not expired - show it directly
+    setupSection?.classList.add('hidden');
+    displaySection?.classList.remove('hidden');
+
+    // Update QR image
+    const qrImageEl = document.getElementById('checkout-qr-image-large');
+    if (qrImageEl) {
+      qrImageEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(qrData.qrCode)}&bgcolor=ffffff&color=000000`;
+    }
+
+    // Start countdown timer
+    startCheckoutQRTimer(qrData.expiresAt);
+  } else {
+    // No QR or expired - show setup section
+    setupSection?.classList.remove('hidden');
+    displaySection?.classList.add('hidden');
+  }
+
+  // Show modal
+  openModal('checkout-qr-modal');
+
+  // Setup modal event listeners
+  setupCheckoutQRModalListeners();
+}
+
+/**
+ * Create Checkout QR with selected time
+ */
+function createCheckoutQRWithTime() {
+  if (!currentCheckoutEvent) return;
+
+  const expireMinutes = parseInt(document.getElementById('checkout-qr-expire-time')?.value || '15');
+  const now = new Date();
+  const expiresAt = new Date(now.getTime() + expireMinutes * 60 * 1000);
+
+  const qrData = {
+    qrCode: `CHECKOUT_${currentCheckoutEvent.id}_${now.getTime()}`,
+    eventId: currentCheckoutEvent.id,
+    createdAt: now.toISOString(),
+    expiresAt: expiresAt.toISOString(),
+    createdBy: 'admin'
+  };
+
+  // Save to localStorage
+  const allCheckoutQR = JSON.parse(localStorage.getItem('vnuk_checkout_qr') || '{}');
+  allCheckoutQR[currentCheckoutEvent.id] = qrData;
+  localStorage.setItem('vnuk_checkout_qr', JSON.stringify(allCheckoutQR));
+
+  console.log(`✅ Checkout QR created for event: ${currentCheckoutEvent.id}, expires in ${expireMinutes} minutes`);
+
+  // Switch to display section
+  const setupSection = document.getElementById('checkout-qr-setup-section');
+  const displaySection = document.getElementById('checkout-qr-display-section');
+
+  setupSection?.classList.add('hidden');
+  displaySection?.classList.remove('hidden');
+
+  // Update QR image
+  const qrImageEl = document.getElementById('checkout-qr-image-large');
+  if (qrImageEl) {
+    qrImageEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=${encodeURIComponent(qrData.qrCode)}&bgcolor=ffffff&color=000000`;
+  }
+
+  // Start countdown timer
+  startCheckoutQRTimer(qrData.expiresAt);
+}
+
+/**
+ * Start countdown timer for checkout QR
+ */
+function startCheckoutQRTimer(expiresAt) {
+  // Clear existing timer
+  if (checkoutQRTimerInterval) {
+    clearInterval(checkoutQRTimerInterval);
+  }
+
+  const countdownEl = document.getElementById('checkout-qr-countdown');
+
+  function updateTimer() {
+    const now = new Date();
+    const expires = new Date(expiresAt);
+    const diff = expires - now;
+
+    if (diff <= 0) {
+      // Timer expired
+      clearInterval(checkoutQRTimerInterval);
+      if (countdownEl) countdownEl.textContent = '00:00';
+      alert('QR đã hết hạn! Vui lòng tạo mới.');
+      closeCheckoutQRModal();
+      return;
+    }
+
+    const minutes = Math.floor(diff / 60000);
+    const seconds = Math.floor((diff % 60000) / 1000);
+
+    if (countdownEl) {
+      countdownEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+  }
+
+  // Update immediately
+  updateTimer();
+
+  // Update every second
+  checkoutQRTimerInterval = setInterval(updateTimer, 1000);
+}
+
+/**
+ * Close Checkout QR Modal
+ */
+function closeCheckoutQRModal() {
+  if (checkoutQRTimerInterval) {
+    clearInterval(checkoutQRTimerInterval);
+    checkoutQRTimerInterval = null;
+  }
+  closeModal('checkout-qr-modal');
+}
+
+/**
+ * Stop/Delete Checkout QR
+ */
+function stopCheckoutQR() {
+  if (!currentCheckoutEvent) return;
+
+  const allCheckoutQR = JSON.parse(localStorage.getItem('vnuk_checkout_qr') || '{}');
+  delete allCheckoutQR[currentCheckoutEvent.id];
+  localStorage.setItem('vnuk_checkout_qr', JSON.stringify(allCheckoutQR));
+
+  // Switch back to setup section
+  const setupSection = document.getElementById('checkout-qr-setup-section');
+  const displaySection = document.getElementById('checkout-qr-display-section');
+
+  setupSection?.classList.remove('hidden');
+  displaySection?.classList.add('hidden');
+
+  if (checkoutQRTimerInterval) {
+    clearInterval(checkoutQRTimerInterval);
+    checkoutQRTimerInterval = null;
+  }
+
+  alert('Đã hủy Checkout QR');
+}
+
+/**
+ * Setup Checkout QR Modal event listeners
+ */
+function setupCheckoutQRModalListeners() {
+  // Close button
+  document.getElementById('close-checkout-qr-modal-btn')?.addEventListener('click', closeCheckoutQRModal);
+  document.getElementById('close-checkout-qr-btn')?.addEventListener('click', closeCheckoutQRModal);
+  document.getElementById('checkout-qr-modal-overlay')?.addEventListener('click', closeCheckoutQRModal);
+
+  // Create QR button
+  document.getElementById('create-checkout-qr-modal-btn')?.addEventListener('click', createCheckoutQRWithTime);
+
+  // Stop/Cancel QR button
+  document.getElementById('stop-checkout-qr-modal-btn')?.addEventListener('click', stopCheckoutQR);
 }

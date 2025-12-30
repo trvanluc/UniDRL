@@ -14,6 +14,16 @@ import { Theme } from "../utils/theme.js";
 import { Storage } from "../utils/storage.js";
 import { setupSettingsDropdown, setupLogout, setupThemeToggle } from "../utils/ui-helpers.js";
 
+const user = Storage.getCurrentUser();
+
+if (user) {
+  if (user.role === ROLES.STUDENT) {
+    document.body.classList.add("role-student");
+  } else {
+    document.body.classList.add("role-admin");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const user = requireAuth();
   if (!user) return;
@@ -38,12 +48,15 @@ function renderWelcome(user) {
   if (title) title.textContent = `Welcome back, ${user.name || "User"}.`;
 }
 
+
 /**
  * =========================
  * ROLE-BASED LAYOUT
  * =========================
  */
 function renderLayoutByRole(user) {
+  const adminHeader = document.getElementById("admin-header");
+  const studentHeader = document.getElementById("student-header");
   const navMenu = document.getElementById("nav-menu");
   const adminSidebar = document.getElementById("admin-sidebar");
   const openCreateModal = document.getElementById("open-create-modal");
@@ -53,6 +66,8 @@ function renderLayoutByRole(user) {
   if (!navMenu) return;
   // ===== STUDENT =====
   if (user.role === ROLES.STUDENT) {
+    adminHeader?.classList.add("hidden");
+    studentHeader?.classList.remove("hidden");
     navMenu.innerHTML = `
       <a class="text-sm font-bold text-primary" href="home.html">Home</a>
       <a class="text-sm font-medium hover:text-primary transition-colors" href="student/my-event.html">My Tickets</a>
@@ -63,10 +78,19 @@ function renderLayoutByRole(user) {
     if (mainContent) mainContent.style.marginLeft = "0"; // reset margin-left
     [adminSidebar, openCreateModal, sidebarToggleBtn, adminProfileHeader].forEach(el => el?.classList.add("hidden"));
     if (studentProfileHeader) studentProfileHeader.classList.remove("hidden");
+
+    // Update avatar check
+    const avatar = document.getElementById("student-avatar-initial");
+    if (avatar && user.name) {
+      avatar.textContent = user.name.charAt(0).toUpperCase();
+      avatar.classList.remove("hidden");
+    }
     return;
   }
   // ===== ADMIN / ADVISOR / MANAGER =====
   if ([ROLES.ADMIN, ROLES.ADVISOR, ROLES.MANAGER].includes(user.role)) {
+    adminHeader?.classList.remove("hidden");
+    studentHeader?.classList.add("hidden");
     if (adminSidebar) adminSidebar.classList.remove("hidden"); // hiện sidebar
     if (openCreateModal) openCreateModal.classList.remove("hidden");
     if (sidebarToggleBtn) sidebarToggleBtn.classList.remove("hidden");
@@ -85,13 +109,13 @@ function renderLayoutByRole(user) {
 function initEvents() {
   const grid = document.getElementById("events-grid");
   const searchInput = document.querySelector('input[placeholder*="Search"]');
- 
+
   if (!grid) {
     console.error("Element #events-grid not found");
     return;
   }
   const filterButtons = document.querySelectorAll("[data-filter]");
- 
+
   // ===== STATE =====
   let currentPage = 1;
   const eventsPerPage = 6;
@@ -216,11 +240,10 @@ function initEvents() {
         paginationHTML += `
           <button
             onclick="window.changePage(${i})"
-            class="w-10 h-10 flex items-center justify-center rounded-lg ${
-              i === currentPage
-                ? 'bg-primary text-background-dark font-bold shadow-glow'
-                : 'border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400'
-            }"
+            class="w-10 h-10 flex items-center justify-center rounded-lg ${i === currentPage
+            ? 'bg-primary text-background-dark font-bold shadow-glow'
+            : 'border border-slate-200 dark:border-[#2a3630] hover:border-primary/50 hover:text-primary transition-all font-medium text-slate-600 dark:text-slate-400'
+          }"
           >
             ${i}
           </button>
@@ -242,7 +265,7 @@ function initEvents() {
   }
 
   // Global function for pagination buttons
-  window.changePage = function(page) {
+  window.changePage = function (page) {
     // Recalculate based on current filter and search
     let filteredEvents = filterEventsByCategory(EVENTS, currentFilter);
     filteredEvents = filterEventsBySearch(filteredEvents, searchQuery);
@@ -311,13 +334,10 @@ function createEventCard(event) {
           </div>
         </div>
         <div class="mt-auto pt-4 flex items-center justify-between border-t border-slate-100 dark:border-[#2a3630]">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[20px]">stars</span>
-            <span class="text-sm font-bold text-slate-900 dark:text-white">${event.points} DRL</span>
-          </div>
-          <a
-            href="event-detail.html?id=${event.id}"
-            class="h-10 px-5 flex items-center rounded-full bg-slate-100 dark:bg-[#2a3630] group-hover:bg-primary text-slate-900 dark:text-white group-hover:text-background-dark font-bold text-sm transition-colors"
+          
+          <a 
+            href="event-detail.html?id=${event.id}" 
+            class="ml-auto h-10 px-5 flex items-center rounded-full bg-slate-100 dark:bg-[#2a3630] group-hover:bg-primary text-slate-900 dark:text-white group-hover:text-background-dark font-bold text-sm transition-colors"
           >
             View Detail
           </a>

@@ -5,6 +5,7 @@
  */
 
 import { login } from "../services/auth.service.js";
+import { Toast } from "../components/toast/toast.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("loginForm");
@@ -19,15 +20,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const roleRadio = document.querySelector('input[name="role"]:checked');
 
     if (!email || !password || !roleRadio) {
-      alert("Please fill all fields and select role");
+      Toast.warning("Vui lòng điền đầy đủ thông tin và chọn vai trò");
       return;
     }
 
     try {
       login(email, password, roleRadio.value);
-      window.location.href = "home.html";
+      Toast.success("Đăng nhập thành công!");
+      setTimeout(() => { window.location.href = "home.html"; }, 1000);
     } catch (err) {
-      alert(err.message);
+      Toast.error(err.message);
     }
   });
 });

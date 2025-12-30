@@ -1,45 +1,48 @@
+import { Theme } from "../../utils/theme.js";
+import { setupThemeToggle } from "../../utils/ui-helpers.js";
+
 const EVENTS = {
   "hackathon-2024": {
     title: "Annual Hackathon 2024",
     code: "hackathon-2024",
     status: "Upcoming",
-    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+    statusClass: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
   },
   "career-fair": {
     title: "Career Fair Prep Workshop",
     code: "career-fair",
     status: "Upcoming",
-    statusClass: "bg-blue-500/10 text-blue-600 border-blue-500/20"
+    statusClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
   },
   "jazz-night": {
     title: "Campus Jazz Night",
     code: "jazz-night",
     status: "Closed",
-    statusClass: "bg-purple-500/10 text-purple-600 border-purple-500/20"
+    statusClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
   },
   "robotics": {
     title: "Intro to Robotics",
     code: "robotics",
     status: "Upcoming",
-    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+    statusClass: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
   },
   "yoga-week": {
     title: "Wellness Week: Yoga",
     code: "yoga-week",
     status: "Upcoming",
-    statusClass: "bg-blue-500/10 text-blue-600 border-blue-500/20"
+    statusClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
   },
   "leadership-summit": {
     title: "Student Leadership Summit",
     code: "leadership-summit",
     status: "Upcoming",
-    statusClass: "bg-purple-500/10 text-purple-600 border-purple-500/20"
+    statusClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
   },
   "blockchain-workshop": {
     title: "Blockchain & Web3 Workshop",
     code: "blockchain-workshop",
     status: "Upcoming",
-    statusClass: "bg-green-500/10 text-green-600 border-green-500/20"
+    statusClass: "bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20"
   }
 };
 
@@ -49,8 +52,10 @@ let currentEventId = null;
 let currentStudentId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  Theme.init();
+  setupThemeToggle();
   currentEventId = new URLSearchParams(window.location.search).get("id");
-  
+
   const event = EVENTS.find(e => e.id === currentEventId);
   const titleEl = document.getElementById("event-title");
 
