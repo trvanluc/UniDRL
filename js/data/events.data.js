@@ -18,7 +18,7 @@ export const EVENTS = [
     location: "Innovation Hall",
     room: "Main Auditorium",
     seats: { total: 0, left: 0 },
-    image: "/assets/images/events/hackathon-2024.avif",
+    image: "/UniDRL/assets/images/events/hackathon-2024.avif",
     description: `
       <p>The Annual Hackathon 2024 brings together students to solve real-world problems using technology.</p>
       <p>Teams will compete over 48 hours with mentorship from industry experts.</p>
